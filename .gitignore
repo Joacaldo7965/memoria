@@ -1,4 +1,10 @@
+# Tmp files
 __pycache__
+
+# Build files
+mesher/mesher/build
+
+# Repos
 mesher-reupload
 MixedOcTree
 view210907
