@@ -2,7 +2,8 @@
 __pycache__
 
 # Build files
-mesher/mesher/build
+mesher/build
+
 
 # Repos
 mesher-reupload
