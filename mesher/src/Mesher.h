@@ -62,6 +62,8 @@ namespace Clobscode
 		Mesher();
 		
 		virtual ~Mesher();
+
+        virtual void print_octants();
 				
 		virtual FEMesh generateMesh(TriMesh &input, const unsigned short &rl,
                                     const string &name, list<RefinementRegion *> &all_reg);

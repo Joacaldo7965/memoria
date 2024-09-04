@@ -19,6 +19,7 @@
 
 #include "Mesher.h"
 #include <math.h>
+#include <algorithm>
 
 namespace Clobscode
 {
@@ -119,6 +120,85 @@ namespace Clobscode
         
         return mesh;
     }
+
+    void print_input(TriMesh &input){
+        vector<Point3D> vertices = input.getPoints();
+        vector<SurfTriangle> faces = input.getFaces();
+
+        cout << "Input mesh: " << vertices.size() << " vertices, " << faces.size() << " faces\n";
+
+        for (auto pt: vertices) {
+            cout << pt.print() << endl;
+        }
+    }
+
+    void Mesher::print_octants(){
+        cout << "Num Octants: " << octants.size() << ", Num points: " << points.size() << endl;
+
+        unsigned int num = 0;
+        for (auto p: points) {
+            Point3D pt = p.getPoint();
+            cout << "Point " << num << ": " << pt.print() << endl;
+            num++;
+        }
+
+        for (auto oct: octants) {
+            vector<unsigned int> oct_points = oct.getPoints();
+
+            cout << "Octant "<< oct.getIndex() << ": (" << oct_points.size() << " points)" << endl;
+
+            cout << "Points: [";
+            for (auto pt: oct_points) {
+                cout << pt << ", ";
+            }
+            cout << "]" << endl;
+        }
+
+        // Get the octants that share points indices in common
+
+        vector<unsigned int> oct_with_shared_points;
+
+        unsigned int count_oct1 = 0;
+        unsigned int count_oct2 = 0;
+        for (auto oct: octants){
+            vector<unsigned int> oct_points = oct.getPoints();
+
+            count_oct2 = 0;
+
+            for (auto oct2: octants){
+                if (count_oct2 <= count_oct1){
+                    count_oct2++;
+                    continue;
+                }
+
+                if (oct.getIndex() != oct2.getIndex()){
+                    vector<unsigned int> oct2_points = oct2.getPoints();
+
+                    for (auto pt: oct_points){
+                        for (auto pt2: oct2_points){
+                            if (pt == pt2){
+                                // Add octant index if not already added
+                                if (std::find(oct_with_shared_points.begin(), oct_with_shared_points.end(), oct.getIndex()) == oct_with_shared_points.end()){
+                                    oct_with_shared_points.push_back(oct.getIndex());
+                                }
+                                if (std::find(oct_with_shared_points.begin(), oct_with_shared_points.end(), oct2.getIndex()) == oct_with_shared_points.end()){
+                                    oct_with_shared_points.push_back(oct2.getIndex());
+                                }
+                            }
+                        }
+                    }
+                }
+                count_oct2++;
+            }
+            count_oct1++;
+        }
+
+        cout << "Octants with shared points: (" << oct_with_shared_points.size() << ")" << endl;
+        for (auto oct: oct_with_shared_points){
+            cout << oct << " ";
+        }
+        cout << endl;
+    }
     
 	
 	//--------------------------------------------------------------------------------
@@ -167,18 +247,23 @@ namespace Clobscode
         
         projectCloseToBoundaryNodes(input);
    		removeOnSurface(input);
+
+
+        // Tests
+        //print_input(input);
+        //print_octants();
 		
 		// ////apQQ
-        applySurfacePatterns(input);
-        removeOnSurface(input);
+        // applySurfacePatterns(input);
+        // removeOnSurface(input);
         
-        detectInsideNodes(input);
+        // detectInsideNodes(input);
         
-        //update element and node info.
-        linkElementsToNodes();
+        // //update element and node info.
+        // linkElementsToNodes();
         
-        //shrink outside nodes to the input domain boundary
-        shrinkToBoundary(input);
+        // //shrink outside nodes to the input domain boundary
+        // shrinkToBoundary(input);
         
         if (rotated) {
             for (unsigned int i=0; i<points.size(); i++) {

@@ -46,7 +46,7 @@ using Clobscode::Point3D;
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 
-void endMsg(){
+void endMsg_(){
 	cout << "use: ./mesher [-d] input.mdl [-o] input.off [-u] output\n";
     cout << "              [-c] volume_mesh.oct (octant mesh to start from)\n";
     cout << "              [-s] ref_level [-a] ref_level [-b] file.reg [-l] list_file.txt\n";
@@ -72,10 +72,10 @@ void endMsg(){
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 
-int main(int argc,char** argv){
+int main_(int argc,char** argv){
 	
     if (argc<4) {
-        endMsg();
+        endMsg_();
         return 0;
     }
     
@@ -115,7 +115,7 @@ int main(int argc,char** argv){
         
 		if (argv[i][0]!='-') {
 			cout << "Error: expected option -X and got " << argv[i] << "\n";
-			endMsg();
+			endMsg_();
 			return 0;
 		}
         
@@ -149,7 +149,7 @@ int main(int argc,char** argv){
         
 		if (argc==i+1) {
 			cout << "Error: expected argument for option " << argv[i] << "\n";
-			endMsg();
+			endMsg_();
 			return 0;
 		}
         
