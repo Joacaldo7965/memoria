@@ -1,8 +1,12 @@
 # Tmp files
 __pycache__
 
+# VSCode
+.vscode
+
 # Build files
 mesher/build
+mesher/build_test
 
 
 # Repos
