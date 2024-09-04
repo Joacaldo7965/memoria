@@ -13,13 +13,9 @@ def execute_command(command, verbose=False):
         if verbose: print(f"Command failed with error: {e}")
         return
 
-#DIR = os.path.join("/home", "joacaldo", "memoria", "mesher")
-#DIR = os.path.join("/home", "joacaldo", "memoria", "mesher-reupload", "mesher")
-DIR = os.path.join("/home", "joacaldo", "memoria", "MixedOcTree")
-
-
 def compile_mesher(args):
-    if args['clean']:
+    if args['clean_compilation']:
+        print("Clean compilation")
         execute_command(f"rm -rf {os.path.join(args['mesher_path'], 'build')}")
         execute_command(f"mkdir {os.path.join(args['mesher_path'], 'build')}")
 
@@ -28,7 +24,7 @@ def compile_mesher(args):
     cmake_output, cmake_error = cmake_process.communicate()
 
     if cmake_process.returncode == 0:
-        if args['verbose']: print(cmake_output)
+        if args['verbose_compilation']: print(cmake_output)
 
         make_process = subprocess.Popen(["make"], cwd=os.path.join(args['mesher_path'], "build"), shell=True,
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -36,7 +32,7 @@ def compile_mesher(args):
         make_output, make_error = make_process.communicate()
 
         if make_process.returncode == 0:
-            if args['verbose']: print(make_output)
+            if args['verbose_compilation']: print(make_output)
             make_output = make_output.strip()
 
             if make_output.endswith("[100%] Built target mesher_roi"):
@@ -48,8 +44,8 @@ def compile_mesher(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compile mesher")
-    parser.add_argument("-v", "--verbose", default=False, required=False, help="Verbose", action=argparse.BooleanOptionalAction)
-    parser.add_argument("-c", "--clean", required=False, help="Boolean to make clean compilation", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-v", "--verbose-compilation", default=False, required=False, help="Verbose", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-c", "--clean-compilation", required=False, help="Boolean to make clean compilation", action=argparse.BooleanOptionalAction)
     parser.add_argument("-m", "--mesher-path", required=True, help="Mesher path to be compiled", type=str)
     args_pars = parser.parse_args()
 
