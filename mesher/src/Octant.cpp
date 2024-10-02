@@ -53,6 +53,15 @@ namespace Clobscode
 	//--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
 
+	void Octant::updatePoints(unsigned int old_value, unsigned int new_value){
+		for (unsigned int i=0; i<pointindex.size(); i++) {
+			if (pointindex[i]==old_value) {
+				pointindex[i] = new_value;
+				break;
+			}
+		}
+	}
+
 
     bool Octant::accept(Visitor *v)
     {

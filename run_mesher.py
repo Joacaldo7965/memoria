@@ -4,7 +4,8 @@ import subprocess
 
 from compile import execute_command, compile_mesher
 
-MESHER = "/home/joacaldo/memoria/mesher/build/mesher_roi"
+MESHER = "/home/joacaldo/memoria/mesher2/build/mesher_roi" #"/home/joacaldo/memoria/mesher/build/mesher_roi"
+MESHER_TEST = "/home/joacaldo/memoria/mesher2/build_test/mesher_roi_tests" #/home/joacaldo/memoria/mesher/build_test/mesher_roi_tests"
 MESHER_P = "/home/joacaldo/memoria/MixedOcTree/build/mesher_roi"
 MESHER_T = "/home/joacaldo/memoria/mesher-reupload/mesher/build/mesher_roi"
 
@@ -24,6 +25,9 @@ def run_mesher(args):
     elif args['mesher'] == "j":
         mesher = MESHER
         out_dir = os.path.join(DATA_PATH, "out")
+    elif args['mesher'] == "test":
+        mesher = MESHER_TEST
+        out_dir = os.path.join(DATA_PATH, "out_tests")
     else:
         print("Invalid mesher option")
         return
@@ -74,10 +78,12 @@ if __name__ == "__main__":
 
     # Compilation parameters
     parser.add_argument("-vc", "--verbose-compilation", default=False, required=False, help="Verbose compilation", action=argparse.BooleanOptionalAction)
-    parser.add_argument("-cc", "--clean-compilation", required=False, default=True, help="Make clean compilation", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-cc", "--clean-compilation", required=False, default=False, help="Make clean compilation", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-ct", "--compile-test", required=False, default=False, help="Make clean compilation", action=argparse.BooleanOptionalAction)
     #parser.add_argument("-m", "--mesher-path", required=False, help="Mesher path to be compiled", type=str)
     
-    
+    #python run_mesher.py -m test -o space -s 1 -c -vc -v -cc -ct  (Use -s or -a: i.e: -a 4)
+
     # Parse arguments
     args_pars = parser.parse_args()
 

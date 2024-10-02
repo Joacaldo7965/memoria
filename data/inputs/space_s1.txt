@@ -1,0 +1,71 @@
+OFF
+45
+
+Point 0: -0.02 -0.02 -1.04
+Point 1: 4.02 -0.02 -1.04
+Point 2: -0.02 4.02 -1.04
+Point 3: 4.02 4.02 -1.04
+Point 4: -0.02 -0.02 3
+Point 5: 4.02 -0.02 3
+Point 6: -0.02 4.02 3
+Point 7: 4.02 4.02 3
+Point 8: -0.02 -0.02 7.04
+Point 9: 4.02 -0.02 7.04
+Point 10: -0.02 4.02 7.04
+Point 11: 4.02 4.02 7.04
+Point 12: -0.02 -0.02 0.98
+Point 13: 2 -0.02 3
+Point 14: 4.02 -0.02 0.98
+Point 15: 2 -0.02 -1.04
+Point 16: -0.02 2 -1.04
+Point 17: -0.02 2 3
+Point 18: 4.02 2 3
+Point 19: 4.02 2 -1.04
+Point 20: -0.02 4.02 0.98
+Point 21: 2 4.02 3
+Point 22: 4.02 4.02 0.98
+Point 23: 2 4.02 -1.04
+Point 24: 2 -0.02 0.98
+Point 25: -0.02 2 0.98
+Point 26: 2 2 3
+Point 27: 4.02 2 0.98
+Point 28: 2 2 -1.04
+Point 29: 2 4.02 0.98
+Point 30: 2 2 0
+Point 31: -0.02 -0.02 5.02
+Point 32: 2 -0.02 7.04
+Point 33: 4.02 -0.02 5.02
+Point 34: -0.02 2 7.04
+Point 35: 4.02 2 7.04
+Point 36: -0.02 4.02 5.02
+Point 37: 2 4.02 7.04
+Point 38: 4.02 4.02 5.02
+Point 39: 2 -0.02 5.02
+Point 40: -0.02 2 5.02
+Point 41: 2 2 7.04
+Point 42: 4.02 2 5.02
+Point 43: 2 4.02 5.02
+Point 44: 2 2 6
+Octant 3: (8 points)
+Points: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30, ]
+Position 1st point: -0.02 -0.02 0.98
+Octant 4: (8 points)
+Points: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
+Position 1st point: 2 -0.02 0.98
+Octant 7: (8 points)
+Points: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
+Position 1st point: -0.02 2 0.98
+Octant 8: (8 points)
+Points: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
+Position 1st point: 2 2 0
+Octant 10: (8 points)
+Points: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z) , ]
+Position 1st point: -0.02 -0.02 3
+Octant 13: (8 points)
+Points: [13(MID_Z) , 39, 33, 5(MID_Z) , 26(MID_Z) , 44, 42, 18(MID_Z) , ]
+Position 1st point: 2 -0.02 3
+Octant 14: (8 points)
+Points: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
+Position 1st point: -0.02 2 3
+Octant 17: (8 points)
+Points: [26(MID_Z) , 44, 42, 18(MID_Z) , 21(MID_Z) , 43, 38, 7(MID_Z) , ]

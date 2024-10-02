@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/mdl2dolfinXML.dir/MdlToDolfinXML.cpp.o /home/joacaldo/memoria/join/geometry/Point.o /home/joacaldo/memoria/join/geometry/Face.o /home/joacaldo/memoria/join/geometry/FaceContainer.o /home/joacaldo/memoria/join/read_write/ReadMdl.o /home/joacaldo/memoria/join/read_write/WriteDolfinTriangleXML.o -o mdl2dolfinXML 

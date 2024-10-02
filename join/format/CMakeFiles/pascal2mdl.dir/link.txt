@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/pascal2mdl.dir/PascalToMdl.cpp.o /home/joacaldo/memoria/join/geometry/Point.o /home/joacaldo/memoria/join/geometry/Face.o /home/joacaldo/memoria/join/geometry/FaceContainer.o /home/joacaldo/memoria/join/read_write/WriteMdl.o /home/joacaldo/memoria/join/read_write/ReadPascal.o -o pascal2mdl 

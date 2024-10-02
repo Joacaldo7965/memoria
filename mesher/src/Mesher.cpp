@@ -132,15 +132,67 @@ namespace Clobscode
         }
     }
 
+    void Mesher::showMapEdgeInfo(unsigned int idx1, unsigned int idx2){
+        auto bug = MapEdges.find(OctreeEdge(idx1, idx2));
+        
+        if (bug!=MapEdges.end()) {
+            cout << " State of edge (" << idx1 << ", " << idx2 << ")";
+            for (unsigned int m=0;m<bug->second.getNeighborOcts().size();m++) {
+                cout << " " << bug->second[m];
+            }
+            cout << "\n";
+        } else{
+            cout << "Edge not found\n";
+        }
+    }
+
     void Mesher::print_octants(){
         cout << "Num Octants: " << octants.size() << ", Num points: " << points.size() << endl;
+
+        float max_x = -1000000;
+        float max_y = -1000000;
+        float max_z = -1000000;
+        float min_x = 1000000;
+        float min_y = 1000000;
+        float min_z = 1000000;
+        float mid_x = 0;
+        float mid_y = 0;
+        float mid_z = 0;
 
         unsigned int num = 0;
         for (auto p: points) {
             Point3D pt = p.getPoint();
             cout << "Point " << num << ": " << pt.print() << endl;
             num++;
+
+            if (pt.X() > max_x) {
+                max_x = pt.X();
+            } 
+            if (pt.Y() > max_y) {
+                max_y = pt.Y();
+            }
+            if (pt.Z() > max_z) {
+                max_z = pt.Z();
+            }
+
+            if (pt.X() < min_x) {
+                min_x = pt.X();
+            }
+            if (pt.Y() < min_y) {
+                min_y = pt.Y();
+            }
+            if (pt.Z() < min_z) {
+                min_z = pt.Z();
+            }
+
         }
+
+        mid_x = (max_x + min_x) / 2;
+        mid_y = (max_y + min_y) / 2;
+        mid_z = (max_z + min_z) / 2;
+        float epsilon = 0.0001;
+
+        vector<unsigned int> mid_points;
 
         for (auto oct: octants) {
             vector<unsigned int> oct_points = oct.getPoints();
@@ -148,56 +200,182 @@ namespace Clobscode
             cout << "Octant "<< oct.getIndex() << ": (" << oct_points.size() << " points)" << endl;
 
             cout << "Points: [";
-            for (auto pt: oct_points) {
-                cout << pt << ", ";
-            }
-            cout << "]" << endl;
-        }
-
-        // Get the octants that share points indices in common
-
-        vector<unsigned int> oct_with_shared_points;
-
-        unsigned int count_oct1 = 0;
-        unsigned int count_oct2 = 0;
-        for (auto oct: octants){
-            vector<unsigned int> oct_points = oct.getPoints();
-
-            count_oct2 = 0;
-
-            for (auto oct2: octants){
-                if (count_oct2 <= count_oct1){
-                    count_oct2++;
-                    continue;
-                }
-
-                if (oct.getIndex() != oct2.getIndex()){
-                    vector<unsigned int> oct2_points = oct2.getPoints();
-
-                    for (auto pt: oct_points){
-                        for (auto pt2: oct2_points){
-                            if (pt == pt2){
-                                // Add octant index if not already added
-                                if (std::find(oct_with_shared_points.begin(), oct_with_shared_points.end(), oct.getIndex()) == oct_with_shared_points.end()){
-                                    oct_with_shared_points.push_back(oct.getIndex());
-                                }
-                                if (std::find(oct_with_shared_points.begin(), oct_with_shared_points.end(), oct2.getIndex()) == oct_with_shared_points.end()){
-                                    oct_with_shared_points.push_back(oct2.getIndex());
-                                }
-                            }
-                        }
+            for (auto pt_idx: oct_points) {
+                cout << pt_idx;
+                Point3D pt = points[pt_idx].getPoint();
+                
+                // if point near epsilon
+                if (abs(pt.Z() - mid_z) < epsilon) {
+                    cout << "(MID_Z) ";
+                    if (std::find(mid_points.begin(), mid_points.end(), pt_idx) == mid_points.end()) {
+                        mid_points.push_back(pt_idx);
                     }
                 }
-                count_oct2++;
+                cout << ", ";
+                
             }
-            count_oct1++;
+            cout << "]" << endl;
+            cout << "Position 1st point: " << points[oct_points[0]].getPoint().print() << endl;
         }
 
-        cout << "Octants with shared points: (" << oct_with_shared_points.size() << ")" << endl;
-        for (auto oct: oct_with_shared_points){
-            cout << oct << " ";
+        cout << "Max X: " << max_x << ", Min X: " << min_x << endl;
+        cout << "Max Y: " << max_y << ", Min Y: " << min_y << endl;
+        cout << "Max Z: " << max_z << ", Min Z: " << min_z << endl;
+
+        // Print mid_points
+        cout << "Mid points: ";
+        for (auto pt_idx: mid_points) {
+            cout << pt_idx << ", ";
         }
         cout << endl;
+
+        showMapEdgeInfo(4, 17);
+        showMapEdgeInfo(17, 6);
+        showMapEdgeInfo(6, 21);
+        showMapEdgeInfo(21, 7);
+        showMapEdgeInfo(7, 18);
+        showMapEdgeInfo(18, 5);
+        showMapEdgeInfo(5, 13);
+        showMapEdgeInfo(13, 4);
+
+        showMapEdgeInfo(45, 49);
+
+        /* // Get the octants that share points indices in common
+
+        // vector<unsigned int> oct_with_shared_points;
+
+        // unsigned int count_oct1 = 0;
+        // unsigned int count_oct2 = 0;
+        // for (auto oct: octants){
+        //     vector<unsigned int> oct_points = oct.getPoints();
+
+        //     count_oct2 = 0;
+
+        //     for (auto oct2: octants){
+        //         if (count_oct2 <= count_oct1){
+        //             count_oct2++;
+        //             continue;
+        //         }
+
+        //         if (oct.getIndex() != oct2.getIndex()){
+        //             vector<unsigned int> oct2_points = oct2.getPoints();
+
+        //             for (auto pt: oct_points){
+        //                 for (auto pt2: oct2_points){
+        //                     if (pt == pt2){
+        //                         // Add octant index if not already added
+        //                         if (std::find(oct_with_shared_points.begin(), oct_with_shared_points.end(), oct.getIndex()) == oct_with_shared_points.end()){
+        //                             oct_with_shared_points.push_back(oct.getIndex());
+        //                         }
+        //                         if (std::find(oct_with_shared_points.begin(), oct_with_shared_points.end(), oct2.getIndex()) == oct_with_shared_points.end()){
+        //                             oct_with_shared_points.push_back(oct2.getIndex());
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         count_oct2++;
+        //     }
+        //     count_oct1++;
+        // }
+
+        // cout << "Octants with shared points: (" << oct_with_shared_points.size() << ")" << endl;
+        // for (auto oct: oct_with_shared_points){
+        //     cout << oct << " ";
+        // }
+        // cout << endl;
+        */
+    }
+
+    void Mesher::splitPoints(){
+        vector<MeshPoint> new_points;
+        unsigned int total_points = points.size();
+
+        vector<unsigned int> point_idx_to_split = {4, 5, 6, 7, 13, 17, 18, 21, 26};
+
+        /* Add new points */
+
+        map<unsigned int, unsigned int> old_to_new_points_idx;
+
+        for (auto idx: point_idx_to_split){
+            Point3D p = points[idx].getPoint();
+            MeshPoint mp(p);
+            mp.setOutside();
+            mp.outsideChecked();
+            new_points.push_back(mp);
+            old_to_new_points_idx[idx] = total_points;
+            total_points++;
+        }
+
+        points.reserve(points.size() + new_points.size());
+        points.insert(points.end(), new_points.begin(), new_points.end());
+
+        for (const auto& pair : old_to_new_points_idx) {
+            cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+        }
+
+        /* Update Octants point indices */
+
+        // TODO: Get octant indices that contain the points to split
+        //octants = {3, 4, 7, 8, 10, 13, 14, 17}
+
+        // Split O3-O10
+        // O3: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30]
+        // O10: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z)]
+
+        // O10 -> idx 4
+        octants[4].updatePoints(4, old_to_new_points_idx[4]);
+        octants[4].updatePoints(13, old_to_new_points_idx[13]);
+        octants[4].updatePoints(17, old_to_new_points_idx[17]);
+        octants[4].updatePoints(26, old_to_new_points_idx[26]);
+
+        // Split O4-O13
+        // O4: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
+        // O13: [13(MID_Z) , 39, 33, 5(MID_Z) , 26(MID_Z) , 44, 42, 18(MID_Z) , ]
+
+        // O13 -> idx 5
+        octants[5].updatePoints(5, old_to_new_points_idx[5]);
+        octants[5].updatePoints(13, old_to_new_points_idx[13]);
+        octants[5].updatePoints(18, old_to_new_points_idx[18]);
+        octants[5].updatePoints(26, old_to_new_points_idx[26]);
+
+        // Split O7-O14
+        // O7: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
+        // O14: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
+
+        // O14 -> idx 6
+        octants[6].updatePoints(6, old_to_new_points_idx[6]);
+        octants[6].updatePoints(17, old_to_new_points_idx[17]);
+        octants[6].updatePoints(21, old_to_new_points_idx[21]);
+        octants[6].updatePoints(26, old_to_new_points_idx[26]);
+
+        // Split O8-O17
+        // O8: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
+        // O17: [26(MID_Z) , 44, 42, 18(MID_Z) , 21(MID_Z) , 43, 38, 7(MID_Z) , ]
+
+        // O17 -> idx 7
+        octants[7].updatePoints(7, old_to_new_points_idx[7]);
+        octants[7].updatePoints(18, old_to_new_points_idx[18]);
+        octants[7].updatePoints(21, old_to_new_points_idx[21]);
+        octants[7].updatePoints(26, old_to_new_points_idx[26]);
+
+        /* Update MapEdges */
+        //MapEdges[OctreeEdge(4, 13)].update(4, 5);
+
+        //unsigned int removed = std::numeric_limits<unsigned int>::max();
+        
+        EdgeVisitor::insertEdges(&octants[0], MapEdges);
+        EdgeVisitor::insertEdges(&octants[1], MapEdges);
+        EdgeVisitor::insertEdges(&octants[2], MapEdges);
+        EdgeVisitor::insertEdges(&octants[3], MapEdges);
+
+        EdgeVisitor::insertEdges(&octants[4], MapEdges);
+        EdgeVisitor::insertEdges(&octants[5], MapEdges);
+        EdgeVisitor::insertEdges(&octants[6], MapEdges);
+        EdgeVisitor::insertEdges(&octants[7], MapEdges);
+
+        
+        
     }
     
 	
@@ -244,26 +422,29 @@ namespace Clobscode
 		//link element and node info for code optimization.
 		linkElementsToNodes();
 		detectInsideNodes(input);
+
+        splitPoints();
         
         projectCloseToBoundaryNodes(input);
    		removeOnSurface(input);
 
+        //splitPoints();
 
         // Tests
         //print_input(input);
         //print_octants();
 		
 		// ////apQQ
-        // applySurfacePatterns(input);
-        // removeOnSurface(input);
+        //applySurfacePatterns(input);
+        removeOnSurface(input);
         
-        // detectInsideNodes(input);
+        detectInsideNodes(input);
         
         // //update element and node info.
-        // linkElementsToNodes();
+        linkElementsToNodes();
         
         // //shrink outside nodes to the input domain boundary
-        // shrinkToBoundary(input);
+        shrinkToBoundary(input);
         
         if (rotated) {
             for (unsigned int i=0; i<points.size(); i++) {
@@ -279,6 +460,8 @@ namespace Clobscode
         
         //Write element-octant info the file
         Services::addOctElemntInfo(name,octants,removedoct,octmeshidx);
+
+        print_octants();
         
 		return mesh;
 	}
@@ -1014,35 +1197,37 @@ namespace Clobscode
         }
         
         processed.erase(processed.begin(),processed.end());
+
+        //splitPoints();
         
         
         //----------------------------------------------------------
         // apply transition patterns
         //----------------------------------------------------------
         
-        //TransitionPatternVisitor section
-        TransitionPatternVisitor tpv;
-        tpv.setPoints(points);
-        tpv.setNewPoints(new_pts);
-        tpv.setMapEdges(MapEdges);
-        tpv.setMaxRefLevel(max_rl);
+        // //TransitionPatternVisitor section
+        // TransitionPatternVisitor tpv;
+        // tpv.setPoints(points);
+        // tpv.setNewPoints(new_pts);
+        // tpv.setMapEdges(MapEdges);
+        // tpv.setMaxRefLevel(max_rl);
 
 
-        //Apply transition patterns to remaining Octs
-        for (auto &to: clean_processed) {
-            if (!to.accept(&tpv)) {
-                std::cerr << "Error at Mesher::generateOcttreeMesh";
-                std::cerr << " Transition Pattern not found\n";
-            }
-        }
+        // //Apply transition patterns to remaining Octs
+        // for (auto &to: clean_processed) {
+        //     if (!to.accept(&tpv)) {
+        //         std::cerr << "Error at Mesher::generateOcttreeMesh";
+        //         std::cerr << " Transition Pattern not found\n";
+        //     }
+        // }
         
-        //if no points were added at this iteration, it is no longer
-        //necessary to continue the refinement.
-        if (!new_pts.empty()) {
-            //add the new points to the vector
-            points.reserve(points.size() + new_pts.size());
-            points.insert(points.end(),new_pts.begin(),new_pts.end());
-        }
+        // //if no points were added at this iteration, it is no longer
+        // //necessary to continue the refinement.
+        // if (!new_pts.empty()) {
+        //     //add the new points to the vector
+        //     points.reserve(points.size() + new_pts.size());
+        //     points.insert(points.end(),new_pts.begin(),new_pts.end());
+        // }
         
         //insert will reserve space as well
         octants.insert(octants.end(),make_move_iterator(candidates.begin()),make_move_iterator(candidates.end()));

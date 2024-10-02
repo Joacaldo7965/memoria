@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/off2vtk_normal.dir/OffToVTK_normals.cpp.o /home/joacaldo/memoria/join/geometry/Point.o /home/joacaldo/memoria/join/geometry/Face.o /home/joacaldo/memoria/join/geometry/FaceContainer.o /home/joacaldo/memoria/join/read_write/ReadOff.o -o off2vtk_normal 

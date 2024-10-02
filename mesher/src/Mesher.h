@@ -64,6 +64,10 @@ namespace Clobscode
 		virtual ~Mesher();
 
         virtual void print_octants();
+
+        virtual void splitPoints();
+
+        virtual void showMapEdgeInfo(unsigned int idx1, unsigned int idx2);
 				
 		virtual FEMesh generateMesh(TriMesh &input, const unsigned short &rl,
                                     const string &name, list<RefinementRegion *> &all_reg);

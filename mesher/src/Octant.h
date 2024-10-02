@@ -72,6 +72,8 @@ namespace Clobscode
 				
 		//access methods
 		virtual vector<unsigned int> &getPoints();
+
+		virtual void updatePoints(unsigned int old_value, unsigned int new_value);
 		
 		virtual bool isInside();
 		

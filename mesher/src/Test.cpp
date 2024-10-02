@@ -63,10 +63,11 @@ void splitPoints(vector<MeshPoint> &points, vector<unsigned int> &shared_points)
         MeshPoint mp(p);
         new_points.push_back(mp);
     }
+    points.reserve(points.size() + new_points.size());
     points.insert(points.end(), new_points.begin(), new_points.end());
 }
 
-int main(int argc, char** argv){
+int main__(int argc, char** argv){
     vector<MeshPoint> points;
     vector<unsigned int> epts1, epts2;
     for (unsigned int i=0; i<8; i++) {
@@ -111,8 +112,14 @@ int main(int argc, char** argv){
     }
     cout << endl;
 
+    // Split shared points
     splitPoints(points, indices_shared_points);
 
+    // TODO: Update octants with new points
+
+    printf("\nAfter split\n");
+    print_octant(O1);
+    print_octant(O2);
     print_points(points);
 
     
@@ -143,7 +150,7 @@ void endMsg(){
 }
 
 
-int main__(int argc,char** argv){
+int main(int argc,char** argv){
 
     if (argc<4) {
         endMsg();
