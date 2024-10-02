@@ -151,7 +151,7 @@ namespace Clobscode
 	
 	inline void MeshPoint::setProjected(){
 		projected = true;
-		inside = false;
+        inside = false;
 	}
 	
 	inline bool MeshPoint::wasProjected(){

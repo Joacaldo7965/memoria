@@ -4,8 +4,8 @@ import subprocess
 
 from compile import execute_command, compile_mesher
 
-MESHER = "/home/joacaldo/memoria/mesher2/build/mesher_roi" #"/home/joacaldo/memoria/mesher/build/mesher_roi"
-MESHER_TEST = "/home/joacaldo/memoria/mesher2/build_test/mesher_roi_tests" #/home/joacaldo/memoria/mesher/build_test/mesher_roi_tests"
+MESHER = "/home/joacaldo/memoria/mesher/build/mesher_roi" #"/home/joacaldo/memoria/meshert/build/mesher_roi"
+MESHER_TEST = "/home/joacaldo/memoria/mesher/build_test/mesher_roi_tests" #/home/joacaldo/memoria/meshert/build_test/mesher_roi_tests"
 MESHER_P = "/home/joacaldo/memoria/MixedOcTree/build/mesher_roi"
 MESHER_T = "/home/joacaldo/memoria/mesher-reupload/mesher/build/mesher_roi"
 

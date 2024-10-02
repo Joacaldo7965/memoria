@@ -41,13 +41,12 @@
 #include <set>
 #include <cstdlib>
 #include <ctime>
-#include <string.h>
-#include <memory>
+#include <cstring>
+#include <chrono>
 
 using std::vector;
 using std::list;
 using std::set;
-using std::shared_ptr;
 using Clobscode::OctreeEdge;
 using Clobscode::TriMesh;
 using Clobscode::RefinementRegion;
@@ -62,12 +61,6 @@ namespace Clobscode
 		Mesher();
 		
 		virtual ~Mesher();
-
-        virtual void print_octants();
-
-        virtual void splitPoints();
-
-        virtual void showMapEdgeInfo(unsigned int idx1, unsigned int idx2);
 				
 		virtual FEMesh generateMesh(TriMesh &input, const unsigned short &rl,
                                     const string &name, list<RefinementRegion *> &all_reg);
@@ -81,6 +74,12 @@ namespace Clobscode
         
         virtual void setInitialState(vector<MeshPoint> &epts, vector<Octant> &eocts,
                                      map<OctreeEdge, EdgeInfo> &edge_map);
+
+        virtual void print_octants();
+
+        virtual void splitPoints();
+
+        virtual void showMapEdgeInfo(unsigned int idx1, unsigned int idx2);
         
 	protected:
         
@@ -108,11 +107,9 @@ namespace Clobscode
 		
 		virtual void linkElementsToNodes();
 
-        // puntos que estan adentro
 		virtual void detectInsideNodes(TriMesh &input);
 
-        // aquiiiiiiiiii remove
-		virtual void removeOnSurface(TriMesh &input);
+		virtual void removeOnSurface();
 		
 		virtual void applySurfacePatterns(TriMesh &input);
 

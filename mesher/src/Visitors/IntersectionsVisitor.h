@@ -60,10 +60,6 @@ namespace Clobscode
         void setPoints(vector<MeshPoint> &points);
         void setFaces(list<unsigned int> &faces);
         void setCoords(vector<Point3D> &coords);
-        bool intersectsTriangle(SurfTriangle &st, vector<Point3D> &input_pts, const Point3D &pmin, const Point3D &pmax);
-        bool edgeTriangleIntersection(SurfTriangle &st, vector<Point3D> &input_pts,
-                                      const Point3D &pmin, const Point3D &pmax);
-        vector<vector<Point3D>> getEdges(const Point3D &pmin, const Point3D &pmax);
 
     protected:
         //variables
@@ -74,12 +70,16 @@ namespace Clobscode
         bool select_faces;
 
         //auxiliary functions
+        bool intersectsTriangle(SurfTriangle &st, vector<Point3D> &input_pts, const Point3D &pmin, const Point3D &pmax);
 
         bool clipGeneralCase(const Point3D &p1, const Point3D &p2, const Point3D &pmin, const Point3D &pmax);
 
+        bool edgeTriangleIntersection(SurfTriangle &st, vector<Point3D> &input_pts,
+                                      const Point3D &pmin, const Point3D &pmax);
 
         unsigned int computePosition(const Point3D &p, const Point3D &pmin, const Point3D &pmax);
 
+        vector<vector<Point3D>> getEdges(const Point3D &pmin, const Point3D &pmax);
 
 
     };

@@ -106,13 +106,10 @@ namespace SurfMesh
 		
 		//if both, ep1 and ep2 are at the same side of the
 		//plane, there is no intersection.
-		if ((dis_max>0 && dis_min>0) || (dis_max<0 && dis_min<0)) { // cuando dan 0
+		if ((dis_max>0 && dis_min>0) || (dis_max<0 && dis_min<0)) {
 			return false;
 		}
 		
-		// if(fabs(dis_max)<1.0e-10 || fabs(dis_min)<1.0e-10){
-		// 	return false;
-		// }
 		/*if (dis_min==0) {
 			
 		}*/
@@ -137,7 +134,7 @@ namespace SurfMesh
 		if(d==0){
 			cout << "error !!! malformed triangle\n";
 			cout << "at HexTriIntersection::";
-			cout << "edgeTriangleIntersection";
+            cout << "edgeTriangleIntersection\n";
 			return false;
 		}
 		

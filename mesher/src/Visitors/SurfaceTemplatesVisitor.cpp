@@ -59,7 +59,7 @@ namespace Clobscode
 
         for (unsigned int i=0; i<pointindex.size(); i++) {
 
-            if (meshpts->at(pointindex[i]).isOutside() && !(meshpts->at(pointindex[i]).wasProjected())) {
+            if (meshpts->at(pointindex[i]).isOutside()) {
                 tmpout.push_back(i);
             }
             else {
@@ -67,7 +67,7 @@ namespace Clobscode
             }
         }
 
-        //save the points in a std::vector for quick access
+        //save the points in a std::vector for quick acces
         inpts.reserve(tmpin.size());
         for(piter=tmpin.begin();piter!=tmpin.end();piter++)
             inpts.push_back(*piter);
@@ -77,13 +77,9 @@ namespace Clobscode
 
 
         if (pointindex.size()==8 && sub_elements.size()==1) {
+
             //if we are here, the "inside" projected nodes will count as
             //outside nodes.
-            //A change has been made, and now the "inside" projected nodes
-            //will count as inside
-            if (inpts.size() == 0) { // Returns the whole octant for lower levels
-                return true;
-            }
             return applyHexSurfaceTemplates(o, inpts, outpts);
         }
         //if we are here, the octant contains mixed elements (either from a previous
@@ -109,7 +105,7 @@ namespace Clobscode
                 vector<bool> nds_inside (5,true);
                 for (unsigned int j=0; j<5; j++) {
 
-                    if (meshpts->at(sub_elements[i][j]).isOutside() && !(meshpts->at(sub_elements[i][j]).wasProjected())) {
+                    if (meshpts->at(sub_elements[i][j]).isOutside()) {
                         nds_inside[j] = false;
                     }
                 }
@@ -133,7 +129,7 @@ namespace Clobscode
                 //check inside state for each of its nodes
                 vector<bool> nds_inside (6,true);
                 for (unsigned int j=0; j<6; j++) {
-                    if (meshpts->at(sub_elements[i][j]).isOutside() && !(meshpts->at(sub_elements[i][j]).wasProjected())) {
+                    if (meshpts->at(sub_elements[i][j]).isOutside()) {
                         nds_inside[j] = false;
                     }
                 }
@@ -146,8 +142,9 @@ namespace Clobscode
                 continue;
             }
 
-            if (sub_elements[i].size() == 8 ) {
+            if (sub_elements[i].size() == 8) {
                 //manage a hexahedron
+
                 SurfHexahedron h(sub_elements[i]);
 
                 vector<vector<unsigned int> > new_sub_eles;

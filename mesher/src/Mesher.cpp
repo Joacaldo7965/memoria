@@ -82,18 +82,18 @@ namespace Clobscode
             removedoct[o.getIndex()] = true;
             octmeshidx.push_back(o.getIndex());
         }
-        
+
         //link element and node info for code optimization.
         linkElementsToNodes();
         detectInsideNodes(input);
         
         projectCloseToBoundaryNodes(input);
-        removeOnSurface(input);
+        removeOnSurface();
         
         //linkElementsToNodes();
         //apply the surface Patterns
         applySurfacePatterns(input);
-        removeOnSurface(input);
+        removeOnSurface();
         
         detectInsideNodes(input);
         
@@ -119,17 +119,6 @@ namespace Clobscode
         Services::addOctElemntInfo(name,octants,removedoct,octmeshidx);
         
         return mesh;
-    }
-
-    void print_input(TriMesh &input){
-        vector<Point3D> vertices = input.getPoints();
-        vector<SurfTriangle> faces = input.getFaces();
-
-        cout << "Input mesh: " << vertices.size() << " vertices, " << faces.size() << " faces\n";
-
-        for (auto pt: vertices) {
-            cout << pt.print() << endl;
-        }
     }
 
     void Mesher::showMapEdgeInfo(unsigned int idx1, unsigned int idx2){
@@ -423,28 +412,25 @@ namespace Clobscode
 		linkElementsToNodes();
 		detectInsideNodes(input);
 
-        splitPoints();
+        //splitPoints();
         
         projectCloseToBoundaryNodes(input);
-   		removeOnSurface(input);
-
-        //splitPoints();
-
-        // Tests
-        //print_input(input);
-        //print_octants();
+   		removeOnSurface();
 		
-		// ////apQQ
-        //applySurfacePatterns(input);
-        removeOnSurface(input);
+		//apply the surface Patterns
+		//applySurfacePatterns(input);
+        //removeOnSurface();
+
         
+        //projectCloseToBoundaryNodes(input);
+		//removeOnSurface();
         detectInsideNodes(input);
         
-        // //update element and node info.
-        linkElementsToNodes();
+		//update element and node info.
+		linkElementsToNodes();
         
-        // //shrink outside nodes to the input domain boundary
-        shrinkToBoundary(input);
+		//shrink outside nodes to the input domain boundary
+		shrinkToBoundary(input);
         
         if (rotated) {
             for (unsigned int i=0; i<points.size(); i++) {
@@ -460,8 +446,6 @@ namespace Clobscode
         
         //Write element-octant info the file
         Services::addOctElemntInfo(name,octants,removedoct,octmeshidx);
-
-        print_octants();
         
 		return mesh;
 	}
@@ -507,6 +491,8 @@ namespace Clobscode
         vector<double> all_x, all_y, all_z;
         vector<vector<unsigned int> > elements;
         
+        auto start_time = chrono::high_resolution_clock::now();
+
         GridMesher gm;
         gm.generatePoints(input.getBounds(),all_x,all_y,all_z);
         gm.generateMesh(all_x,all_y,all_z,points,elements);
@@ -530,6 +516,11 @@ namespace Clobscode
                 octants.push_back(o);
             }
         }
+
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * generateGridMesh in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
     }
     
     //--------------------------------------------------------------------------------
@@ -541,7 +532,7 @@ namespace Clobscode
         octants.assign(make_move_iterator(eocts.begin()),
                        make_move_iterator(eocts.end()));
         
-        //Erase previous quadrants to save memory
+        //Erase previous octants to save memory
         eocts.erase(eocts.begin(),eocts.end());
         
         points.assign(make_move_iterator(epts.begin()),make_move_iterator(epts.end()));
@@ -872,6 +863,8 @@ namespace Clobscode
                                     const string &name, const unsigned short &minrl,
                                     const unsigned short &givenmaxrl){
 		
+        auto start_time = chrono::high_resolution_clock::now();
+
         //The list of candidate Octs to refine and the tmp version of
         //adding those how are still candidates for the next iteration.
         list<Octant> candidates, new_candidates, clean_processed, refine_tmp;
@@ -894,7 +887,7 @@ namespace Clobscode
         candidates.assign(make_move_iterator(octants.begin()),
                           make_move_iterator(octants.end()));
         
-        //The starting point for assignaiting indexes
+        //The starting point for assignating indexes
         unsigned int new_o_idx = candidates.size();
         
         //Erase previous Octrants to save memory
@@ -908,7 +901,11 @@ namespace Clobscode
         sv.setProcessedOctVector(processed);
         sv.setMapProcessed(idx_pos_map);
         sv.setToBalanceList(toBalance);
-        
+
+        auto start_refine_octant_time = chrono::high_resolution_clock::now();
+
+        auto start_refine_rl_time = chrono::high_resolution_clock::now();
+
         unsigned short max_rl;
         if (givenmaxrl==0) {
             max_rl = rl;
@@ -925,9 +922,14 @@ namespace Clobscode
         
         
         //unsigned int oct_ref = 0, oct_bal = 0;
-        
+
+        auto end_refine_rl_time = chrono::high_resolution_clock::now();
+        cout << "         * boundary max " << rl << " in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_refine_rl_time-start_refine_rl_time).count();
+        cout << " ms"<< endl;
+
         //----------------------------------------------------------
-        //refine each Octrant until the Refinement Level is reached
+        //refine each Octant until the Refinement Level is reached
         //----------------------------------------------------------
         
         //when producing a new mesh, minrl will be always 0. But as this
@@ -935,6 +937,8 @@ namespace Clobscode
         //the starting refinement level will not be 0, but the min rl
         //among the Octrants in the starting mesh.
         for (unsigned short i=minrl; i<rl; i++) {
+            auto start_refine_rl_time = chrono::high_resolution_clock::now();
+
             list<RefinementRegion *>::const_iterator reg_iter;
             
             //detect Octants to refine
@@ -1038,7 +1042,12 @@ namespace Clobscode
                     }
                 }
             }
-        
+
+            auto end_refine_rl_time = chrono::high_resolution_clock::now();
+            cout << "         * level " << i << " (#" << new_candidates.size() << ") in "
+            << std::chrono::duration_cast<chrono::milliseconds>(end_refine_rl_time-start_refine_rl_time).count();
+            cout << " ms";
+
             //Erase the list to refine
             refine_tmp.erase(refine_tmp.begin(),refine_tmp.end());
             
@@ -1137,7 +1146,11 @@ namespace Clobscode
             //if no points were added at this iteration, it is no longer
             //necessary to continue the refinement.
             if (new_pts.empty()) {
-                //cout << "warning at Mesher::generateOcttreeMesh no new points!!!\n";
+                cout << "warning at Mesher::generateOcttreeMesh no new points!!!\n";
+                auto end_balanced_time = chrono::high_resolution_clock::now();
+                cout << " - Balanced in "
+                << std::chrono::duration_cast<chrono::milliseconds>(end_balanced_time-end_refine_rl_time).count();
+                cout << " ms"<< endl;
                 //cout << "i: " << i << " minrl " << minrl << " maxrl " << max_rl << "\n";
                 break;
             }
@@ -1184,6 +1197,11 @@ namespace Clobscode
                     cout << "\n";
                 }
             }*/
+
+            auto end_balanced_time = chrono::high_resolution_clock::now();
+            cout << " - Balanced in "
+            << std::chrono::duration_cast<chrono::milliseconds>(end_balanced_time-end_refine_rl_time).count();
+            cout << " ms"<< endl;
         }
         
         
@@ -1197,15 +1215,17 @@ namespace Clobscode
         }
         
         processed.erase(processed.begin(),processed.end());
+        
+        auto end_refine_octant_time = chrono::high_resolution_clock::now();
+        cout << "       * Refine Octant (#" << candidates.size() << ") in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_refine_octant_time-start_refine_octant_time).count();
+        cout << " ms"<< endl;
 
-        //splitPoints();
-        
-        
         //----------------------------------------------------------
         // apply transition patterns
         //----------------------------------------------------------
         
-        // //TransitionPatternVisitor section
+        //TransitionPatternVisitor section
         // TransitionPatternVisitor tpv;
         // tpv.setPoints(points);
         // tpv.setNewPoints(new_pts);
@@ -1235,7 +1255,15 @@ namespace Clobscode
         candidates.erase(candidates.begin(),candidates.end());
         octants.insert(octants.end(),make_move_iterator(clean_processed.begin()),make_move_iterator(clean_processed.end()));
         clean_processed.erase(clean_processed.begin(),clean_processed.end());
-	}
+
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "       * Transition Patterns (#" << octants.size() << ") in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-end_refine_octant_time).count();
+        cout << " ms"<< endl;
+        cout << "    * generateOctreeMesh in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
+    }
 
     //--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
@@ -1558,7 +1586,9 @@ namespace Clobscode
     //--------------------------------------------------------------------------------
     
 	void Mesher::linkElementsToNodes(){
-		//clear previous information
+        auto start_time = chrono::high_resolution_clock::now();
+
+        //clear previous information
 		for (unsigned int i=0; i<points.size(); i++) {
 			points.at(i).clearElements();
 		}
@@ -1573,15 +1603,19 @@ namespace Clobscode
 				points.at(o_pts[j]).addElement(i);
 			}
 		}
-	}
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * linkElementsToNodes in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
+    }
 	
 	//--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
 	
 	void Mesher::detectInsideNodes(TriMesh &input){
-        
+        auto start_time = chrono::high_resolution_clock::now();
 
-		for (unsigned int i=0; i<points.size(); i++) {
+        for (unsigned int i=0; i<points.size(); i++) {
 			if (points[i].wasOutsideChecked()) {
 				continue;
 			}
@@ -1610,34 +1644,31 @@ namespace Clobscode
 				points[i].setInside();
 			}
 		}
-	}
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * detectInsideNodes in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
+    }
 	
 	//--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
-	////notes:  FUNCION MEMORIA TT
-	void Mesher::removeOnSurface(TriMesh &input){
-		
-		list<Octant> newele,removed,to_review;
+	
+	void Mesher::removeOnSurface(){
+        auto start_time = chrono::high_resolution_clock::now();
+
+		list<Octant> newele,removed;
 		list<Octant>::iterator eiter;
-        RemoveSubElementsVisitor rsv; // visitors
+        RemoveSubElementsVisitor rsv;
         rsv.setPoints(points);
-        rsv.setTriMesh(input);
-        // rsv.setTriMesh(input);
 		//remove elements without an inside node.
-        // cout << "oct size: "<< octants.size() << "\n\n";
-        // for (unsigned int i=0; i<18; i++) {
 		for (unsigned int i=0; i<octants.size(); i++) {
-            list<unsigned int> inter_faces = octants[i].getIntersectedFaces();
-            rsv.setFaces(inter_faces);
-            //notes: octantes siempre adentro, ya no hace test.
-            // cout << "oct"<< i << ": " << octants[i] << "\n";
-			if (octants[i].isInside()) { 
-                //notes: guarda el octante
+			if (octants[i].isInside()) {
 				newele.push_back(octants[i]);
 				continue;
 			}
-            //notes: 
-            if (octants[i].accept(&rsv)) {  
+
+            //if (octants[i].removeOutsideSubElements(points)) {
+            if (octants[i].accept(&rsv)) {
                 removed.push_back(octants[i]);
             }
             else {
@@ -1664,7 +1695,11 @@ namespace Clobscode
 		}
 		
 		if (removed.empty()) {
-			return;
+            auto end_time = chrono::high_resolution_clock::now();
+            cout << "    * RemoveOnSurface in "
+            << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+            cout << " ms"<< endl;
+            return;
 		}
 		
 		//clear removed elements
@@ -1675,13 +1710,20 @@ namespace Clobscode
 		for (eiter = newele.begin(); eiter!=newele.end(); eiter++) {
 			octants.push_back(*eiter);
 		}
-	}
+
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * RemoveOnSurface in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
+    }
     
 	//--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
 	
 	void Mesher::applySurfacePatterns(TriMesh &input){
-		//apply patters to avoid flat, invalid and
+        auto start_time = chrono::high_resolution_clock::now();
+
+        //apply patterns to avoid flat, invalid and
 		//poor quality elements.
 		list<MeshPoint> tmppts;
 		list<MeshPoint>::iterator piter;
@@ -1691,11 +1733,16 @@ namespace Clobscode
         stv.setInput(input);
 
 		for (unsigned int i=0; i<octants.size(); i++) {
+			
+            
             
             //El siguiente if debe estar activo al final. Problema
             //con que nuevos Octantes internos y sub-divididos no
             //son considerados como de superficie.
-
+            
+            
+            
+            
 			if (octants[i].isSurface()) {
                 stv.setNewPoints(tmppts);
                 stv.setIdx(i);
@@ -1716,7 +1763,12 @@ namespace Clobscode
 				points.push_back(*piter);
 			}
 		}
-	}
+
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * ApplySurfacePatterns in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
+    }
 	
 	
 	//--------------------------------------------------------------------------------
@@ -1725,7 +1777,8 @@ namespace Clobscode
 	//input surfaces
 	
 	void Mesher::shrinkToBoundary(TriMesh &input){
-		
+        auto start_time = chrono::high_resolution_clock::now();
+
 		//Slow element removed (but works): from elements intersecting the
 		//input domain, detect inner nodes. Project this nodes onto the
 		//surface. If after all is done, if an element counts only with "on
@@ -1734,7 +1787,6 @@ namespace Clobscode
 		list<Octant>::iterator oiter;
         
 		for (unsigned int i=0; i<octants.size(); i++) {
-            octants[i].setProjectedNodes();
 			if (octants[i].isInside()) {
 				continue;
 			}
@@ -1756,11 +1808,11 @@ namespace Clobscode
 					}
 				}
 				
-				if (points[epts[j]].wasProjected() && !points[epts[j]].isInside()) {
+				if (points[epts[j]].wasProjected()) {
 					continue;
 				}
 				
-				if (points[epts[j]].isOutside() && !points[epts[j]].wasProjected()) {
+				if (points[epts[j]].isOutside()) {
 					out_nodes.push_back(epts[j]);
 				}
 			}
@@ -1878,23 +1930,28 @@ namespace Clobscode
          }*/
         
 		//cout.flush();
-	}
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * ShrinkToBoundary in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
+    }
 	
 	
 	//--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
 	
 	void Mesher::projectCloseToBoundaryNodes(TriMesh &input){
-        
+        auto start_time = chrono::high_resolution_clock::now();
+
         //Slow element removed (but works): from elements intersecting the
         //input domain, detect inner nodes. Project this nodes onto the
         //surface. If after all is done, if an element counts only with "on
         //surface" and "outside" nodes, remove it.
-        list<unsigned int> in_nodes, nodes_projected;
+        list<unsigned int> in_nodes;
         list<Octant>::iterator oiter;
         
         for (unsigned int i=0; i<octants.size(); i++) {
-            if (!octants[i].isSurface() || octants[i].isInside()) {
+            if (!octants[i].isSurface()) {
                 continue;
             }
             octants[i].computeMaxDistance(points);
@@ -1965,45 +2022,20 @@ namespace Clobscode
             Point3D current = points.at(*piter).getPoint();
             Point3D projected = input.getProjection(current,p_faces);
             double dis = (current - projected).Norm();
-
+            
             if(dis<points[*piter].getMaxDistance()){
                 //this node have been moved to boundary, thus every element
                 //sharing this node must be set as a border element in order
                 //to avoid topological problems.
-                
+                //points.at(*piter).setOutside();
                 points.at(*piter).setProjected();
                 points.at(*piter).setPoint(projected);
-                octants[*peiter].setProjected();
+
                 for (peiter=p_eles.begin(); peiter!=p_eles.end(); peiter++) {
                     octants[*peiter].setSurface();
                 }
             }
         }
-
-        nodes_projected.sort();
-        nodes_projected.unique();
-        std::list<unsigned int>::iterator it;
-
-        // // cout << " \n";
-        // for (it=nodes_projected.begin(); it!=nodes_projected.end(); it++) {
-        //     list<unsigned int> p_eles = points.at(*it).getElements();
-        //     list<unsigned int>::iterator peiter;
-        //     for (peiter=p_eles.begin(); peiter!=p_eles.end(); peiter++) {
-        //         if (octants[*peiter].getProjectedNodes()==0){
-        //             // octants[*peiter].setSurface();
-        //             octants[*peiter].setSurfaceAndInside();
-        //             points.at(*it).setInside();
-        //             // cout << octants[*peiter].getProjectedNodes() << " ";
-        //             vector<unsigned int> epts = octants[*peiter].getPoints();
-        //             // for (unsigned int j=0; j < epts.size(); j++) {
-        //             //     points.at(*it).setInside();
-        //             //     // points[epts[j]].setInside();
-        //             //     // points.at(*piter).setProjected();
-        //             // }
-        //         }
-        //     }
-        // }
-        // cout << " \n";
         
         /*insurf.sort();
         insurf.unique();
@@ -2021,5 +2053,9 @@ namespace Clobscode
             string tmp_name = "inregsurf";
             Services::WriteVTK(tmp_name,toref);
         }*/
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * ProjectCloseToBoundary in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
     }
 }

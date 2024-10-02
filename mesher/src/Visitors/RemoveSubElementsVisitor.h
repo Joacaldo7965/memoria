@@ -23,8 +23,6 @@
 #include "../OctreeEdge.h"
 #include "../MeshPoint.h"
 #include "../TriMesh.h"
-#include "../SurfTriangle.h"
-#include "IntersectionsVisitor.h"
 
 #include "Visitor.h"
 
@@ -38,8 +36,6 @@ using Clobscode::TriMesh;
 using std::list;
 using std::set;
 using std::vector;
-using SurfMesh::SurfTriangle;
-
 
 
 namespace Clobscode
@@ -51,19 +47,9 @@ namespace Clobscode
         bool visit(Octant *o);
 
         void setPoints(vector<MeshPoint> &points);
-        void setFaces(list<unsigned int> &faces);
-        void setTriMesh(TriMesh &mesh);
-        bool edgeTriangleIntersection(SurfTriangle &st,
-                                    vector<Point3D> &input_pts,
-                                    vector<vector<Point3D>> &oct_edges);
 
     private:
         vector<MeshPoint> *points;
-        Point3D newPoint(Point3D &point, double &dis);
-        Point3D newPointTowardsCentroide(Point3D &point, double &targetDistance, Point3D &centroid);
-        //variables
-        TriMesh *mesh;
-        list<unsigned int> *faces;
     };
 }
 

@@ -69,7 +69,7 @@ namespace Clobscode
         
         for (unsigned int i=0; i<points.size(); i++) {
             
-            if (meshpoints.at(points[i]).isOutside()  && !(meshpoints.at(points[i]).wasProjected()) ) {
+            if (meshpoints.at(points[i]).isOutside()) {
                 tmpout.push_back(i);
             }
             else {

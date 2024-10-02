@@ -62,7 +62,6 @@ namespace Clobscode
 		}
 	}
 
-
     bool Octant::accept(Visitor *v)
     {
         return v->visit(this);
