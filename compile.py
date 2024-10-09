@@ -6,7 +6,7 @@ def execute_command(command, verbose=False):
     try:
         process = subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
         if verbose: print("Command executed successfully!")
-        if verbose: print("Output:", process.stdout)
+        if verbose: print("Output:\n", process.stdout)
         if process.stderr:
             if verbose: print("Error:", process.stderr)
     except subprocess.CalledProcessError as e:
@@ -30,7 +30,7 @@ def compile_mesher(args):
     cmake_output, cmake_error = cmake_process.communicate()
 
     if cmake_process.returncode == 0:
-        if args['verbose_compilation']: print(cmake_output)
+        if args['verbose_compilation']: print(cmake_output.strip())
 
         make_process = subprocess.Popen(["make"], cwd=build_dir, shell=True,
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -38,8 +38,8 @@ def compile_mesher(args):
         make_output, make_error = make_process.communicate()
 
         if make_process.returncode == 0:
-            if args['verbose_compilation']: print(make_output)
             make_output = make_output.strip()
+            if args['verbose_compilation']: print(make_output)
 
             if make_output.endswith("[100%] Built target mesher_roi"):
                 print("Compiled successfully")

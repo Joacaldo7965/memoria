@@ -39,6 +39,8 @@ namespace Clobscode
 		MeshPoint();
 		
 		MeshPoint(const Point3D &p);
+
+		MeshPoint(const MeshPoint &mp);
 		
 		//MeshPoint(const Point3D p, const un
 		

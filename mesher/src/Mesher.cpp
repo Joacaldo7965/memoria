@@ -135,7 +135,34 @@ namespace Clobscode
         }
     }
 
+    void Mesher::showMapEdgeInfoOctant(Octant *o){
+        vector<unsigned int> oct_point_index = o->getPoints();
+
+        // X axis:
+        cout << "X axis: " << endl;
+        showMapEdgeInfo(oct_point_index[3], oct_point_index[0]);
+        showMapEdgeInfo(oct_point_index[7], oct_point_index[4]);
+        showMapEdgeInfo(oct_point_index[5], oct_point_index[6]);
+        showMapEdgeInfo(oct_point_index[1], oct_point_index[2]);
+
+        // Y axis:
+        cout << "Y axis: " << endl;
+        showMapEdgeInfo(oct_point_index[0], oct_point_index[4]);
+        showMapEdgeInfo(oct_point_index[1], oct_point_index[5]);
+        showMapEdgeInfo(oct_point_index[2], oct_point_index[6]);
+        showMapEdgeInfo(oct_point_index[3], oct_point_index[7]);
+
+        // Z axis:
+        cout << "Z axis: " << endl;
+        showMapEdgeInfo(oct_point_index[0], oct_point_index[1]);
+        showMapEdgeInfo(oct_point_index[2], oct_point_index[3]);
+        showMapEdgeInfo(oct_point_index[6], oct_point_index[7]);
+        showMapEdgeInfo(oct_point_index[4], oct_point_index[5]);
+        
+    }
+
     void Mesher::print_octants(){
+        cout << "Printing Octants info: " << endl;
         cout << "Num Octants: " << octants.size() << ", Num points: " << points.size() << endl;
 
         float max_x = -1000000;
@@ -188,7 +215,7 @@ namespace Clobscode
 
             cout << "Octant "<< oct.getIndex() << ": (" << oct_points.size() << " points)" << endl;
 
-            cout << "Points: [";
+            cout << "  Points: [";
             for (auto pt_idx: oct_points) {
                 cout << pt_idx;
                 Point3D pt = points[pt_idx].getPoint();
@@ -204,30 +231,39 @@ namespace Clobscode
                 
             }
             cout << "]" << endl;
-            cout << "Position 1st point: " << points[oct_points[0]].getPoint().print() << endl;
+            //cout << "Position 1st point: " << points[oct_points[0]].getPoint().print() << endl;
+
+            cout << "MapEdge info: " << endl;
+            showMapEdgeInfoOctant(&oct);
+
+            cout << "Intersected faces: " << oct.getIntersectedFaces().size() << endl;
+            for (auto face: oct.getIntersectedFaces()) {
+                cout << face << ", ";
+            }
+            cout << endl;
         }
 
-        cout << "Max X: " << max_x << ", Min X: " << min_x << endl;
-        cout << "Max Y: " << max_y << ", Min Y: " << min_y << endl;
-        cout << "Max Z: " << max_z << ", Min Z: " << min_z << endl;
+        // cout << "Max X: " << max_x << ", Min X: " << min_x << endl;
+        // cout << "Max Y: " << max_y << ", Min Y: " << min_y << endl;
+        // cout << "Max Z: " << max_z << ", Min Z: " << min_z << endl;
 
         // Print mid_points
-        cout << "Mid points: ";
-        for (auto pt_idx: mid_points) {
-            cout << pt_idx << ", ";
-        }
-        cout << endl;
+        // cout << "Mid points: ";
+        // for (auto pt_idx: mid_points) {
+        //     cout << pt_idx << ", ";
+        // }
+        // cout << endl;
 
-        showMapEdgeInfo(4, 17);
-        showMapEdgeInfo(17, 6);
-        showMapEdgeInfo(6, 21);
-        showMapEdgeInfo(21, 7);
-        showMapEdgeInfo(7, 18);
-        showMapEdgeInfo(18, 5);
-        showMapEdgeInfo(5, 13);
-        showMapEdgeInfo(13, 4);
+        // showMapEdgeInfo(4, 17);
+        // showMapEdgeInfo(17, 6);
+        // showMapEdgeInfo(6, 21);
+        // showMapEdgeInfo(21, 7);
+        // showMapEdgeInfo(7, 18);
+        // showMapEdgeInfo(18, 5);
+        // showMapEdgeInfo(5, 13);
+        // showMapEdgeInfo(13, 4);
 
-        showMapEdgeInfo(45, 49);
+        // showMapEdgeInfo(45, 49);
 
         /* // Get the octants that share points indices in common
 
@@ -287,11 +323,26 @@ namespace Clobscode
         map<unsigned int, unsigned int> old_to_new_points_idx;
 
         for (auto idx: point_idx_to_split){
-            Point3D p = points[idx].getPoint();
-            MeshPoint mp(p);
-            mp.setOutside();
-            mp.outsideChecked();
-            new_points.push_back(mp);
+            MeshPoint mp_old = points[idx];
+
+            // Point3D moved_old_point = mp_old.getPoint() + Point3D(0, 0, -0.5);
+            // points[idx].setPoint(moved_old_point);
+
+            // list<unsigned int> elements = mp_old.getElements();
+
+            // //Print elements
+            // cout << "Elements (" << idx << "): ";
+            // for (auto e: elements){
+            //     cout << e << ", ";
+            // }
+            // cout << endl;
+
+            MeshPoint new_mp(mp_old);
+
+            // Point3D moved_new_point = mp_old.getPoint() + Point3D(0, 0, 0.5);
+            // new_mp.setPoint(moved_new_point);
+
+            new_points.push_back(new_mp);
             old_to_new_points_idx[idx] = total_points;
             total_points++;
         }
@@ -299,9 +350,10 @@ namespace Clobscode
         points.reserve(points.size() + new_points.size());
         points.insert(points.end(), new_points.begin(), new_points.end());
 
-        for (const auto& pair : old_to_new_points_idx) {
-            cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
-        }
+        // Mapping from old to new points
+        // for (const auto& pair : old_to_new_points_idx) {
+        //     cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+        // }
 
         /* Update Octants point indices */
 
@@ -312,59 +364,84 @@ namespace Clobscode
         // O3: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30]
         // O10: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z)]
 
-        // O10 -> idx 4
-        octants[4].updatePoints(4, old_to_new_points_idx[4]);
-        octants[4].updatePoints(13, old_to_new_points_idx[13]);
-        octants[4].updatePoints(17, old_to_new_points_idx[17]);
-        octants[4].updatePoints(26, old_to_new_points_idx[26]);
+        // O10 -> idx 8
+        octants[8].updatePoints(4, old_to_new_points_idx[4]);
+        octants[8].updatePoints(13, old_to_new_points_idx[13]);
+        octants[8].updatePoints(17, old_to_new_points_idx[17]);
+        octants[8].updatePoints(26, old_to_new_points_idx[26]);
 
         // Split O4-O13
         // O4: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
         // O13: [13(MID_Z) , 39, 33, 5(MID_Z) , 26(MID_Z) , 44, 42, 18(MID_Z) , ]
 
-        // O13 -> idx 5
-        octants[5].updatePoints(5, old_to_new_points_idx[5]);
-        octants[5].updatePoints(13, old_to_new_points_idx[13]);
-        octants[5].updatePoints(18, old_to_new_points_idx[18]);
-        octants[5].updatePoints(26, old_to_new_points_idx[26]);
+        // O13 -> idx 11
+        octants[11].updatePoints(5, old_to_new_points_idx[5]);
+        octants[11].updatePoints(13, old_to_new_points_idx[13]);
+        octants[11].updatePoints(18, old_to_new_points_idx[18]);
+        octants[11].updatePoints(26, old_to_new_points_idx[26]);
 
         // Split O7-O14
         // O7: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
         // O14: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
 
-        // O14 -> idx 6
-        octants[6].updatePoints(6, old_to_new_points_idx[6]);
-        octants[6].updatePoints(17, old_to_new_points_idx[17]);
-        octants[6].updatePoints(21, old_to_new_points_idx[21]);
-        octants[6].updatePoints(26, old_to_new_points_idx[26]);
+        // O14 -> idx 12
+        octants[12].updatePoints(6, old_to_new_points_idx[6]);
+        octants[12].updatePoints(17, old_to_new_points_idx[17]);
+        octants[12].updatePoints(21, old_to_new_points_idx[21]);
+        octants[12].updatePoints(26, old_to_new_points_idx[26]);
 
         // Split O8-O17
         // O8: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
         // O17: [26(MID_Z) , 44, 42, 18(MID_Z) , 21(MID_Z) , 43, 38, 7(MID_Z) , ]
 
-        // O17 -> idx 7
-        octants[7].updatePoints(7, old_to_new_points_idx[7]);
-        octants[7].updatePoints(18, old_to_new_points_idx[18]);
-        octants[7].updatePoints(21, old_to_new_points_idx[21]);
-        octants[7].updatePoints(26, old_to_new_points_idx[26]);
+        // O17 -> idx 15
+        octants[15].updatePoints(7, old_to_new_points_idx[7]);
+        octants[15].updatePoints(18, old_to_new_points_idx[18]);
+        octants[15].updatePoints(21, old_to_new_points_idx[21]);
+        octants[15].updatePoints(26, old_to_new_points_idx[26]);
 
         /* Update MapEdges */
         //MapEdges[OctreeEdge(4, 13)].update(4, 5);
 
-        //unsigned int removed = std::numeric_limits<unsigned int>::max();
+        unsigned int removed = std::numeric_limits<unsigned int>::max();
         
-        EdgeVisitor::insertEdges(&octants[0], MapEdges);
-        EdgeVisitor::insertEdges(&octants[1], MapEdges);
-        EdgeVisitor::insertEdges(&octants[2], MapEdges);
-        EdgeVisitor::insertEdges(&octants[3], MapEdges);
+        /* Update splitted points in MapEdges, removing the previous shared octant */
+        // X-axis
+        // edges
+        MapEdges[OctreeEdge(4, 13)].update(1, removed);
+        MapEdges[OctreeEdge(13, 5)].update(1, removed);
 
-        EdgeVisitor::insertEdges(&octants[4], MapEdges);
-        EdgeVisitor::insertEdges(&octants[5], MapEdges);
-        EdgeVisitor::insertEdges(&octants[6], MapEdges);
-        EdgeVisitor::insertEdges(&octants[7], MapEdges);
+        MapEdges[OctreeEdge(6, 21)].update(2, removed);
+        MapEdges[OctreeEdge(21, 7)].update(2, removed);
 
-        
-        
+        // mid
+        MapEdges[OctreeEdge(17, 26)].update(1, removed);
+        MapEdges[OctreeEdge(17, 26)].update(2, removed);
+
+        MapEdges[OctreeEdge(26, 18)].update(1, removed);
+        MapEdges[OctreeEdge(26, 18)].update(2, removed);
+
+        // Y-axis
+        // edges
+        MapEdges[OctreeEdge(4, 17)].update(1, removed);
+        MapEdges[OctreeEdge(17, 6)].update(1, removed);
+
+        MapEdges[OctreeEdge(5, 18)].update(4, removed);
+        MapEdges[OctreeEdge(18, 7)].update(4, removed);
+
+        // mid
+        MapEdges[OctreeEdge(13, 26)].update(1, removed);
+        MapEdges[OctreeEdge(13, 26)].update(4, removed);
+        MapEdges[OctreeEdge(26, 21)].update(1, removed);
+        MapEdges[OctreeEdge(26, 21)].update(4, removed);
+
+
+        // Update MapEdges to account the new edges
+        EdgeVisitor::insertEdges(&octants[8], MapEdges);
+        EdgeVisitor::insertEdges(&octants[11], MapEdges);
+        EdgeVisitor::insertEdges(&octants[12], MapEdges);
+        EdgeVisitor::insertEdges(&octants[15], MapEdges);
+
     }
     
 	
@@ -414,8 +491,8 @@ namespace Clobscode
 
         //splitPoints();
         
-        projectCloseToBoundaryNodes(input);
-   		removeOnSurface();
+        //projectCloseToBoundaryNodes(input);
+   		//removeOnSurface();
 		
 		//apply the surface Patterns
 		//applySurfacePatterns(input);
@@ -424,7 +501,7 @@ namespace Clobscode
         
         //projectCloseToBoundaryNodes(input);
 		//removeOnSurface();
-        detectInsideNodes(input);
+        //detectInsideNodes(input);
         
 		//update element and node info.
 		linkElementsToNodes();
@@ -1221,11 +1298,24 @@ namespace Clobscode
         << std::chrono::duration_cast<chrono::milliseconds>(end_refine_octant_time-start_refine_octant_time).count();
         cout << " ms"<< endl;
 
+        // Insert Octants before splitPoints();
+        //insert will reserve space as well
+        octants.insert(octants.end(),make_move_iterator(candidates.begin()),make_move_iterator(candidates.end()));
+        // better to erase as let in a indeterminate state by move
+        candidates.erase(candidates.begin(),candidates.end());
+
+        
+        /*** SPLIT POINTS ***/
+        print_octants();
+        cout << "       * splitPoints\n";
+        splitPoints();
+
+        print_octants();
+
         //----------------------------------------------------------
         // apply transition patterns
         //----------------------------------------------------------
         
-        //TransitionPatternVisitor section
         // TransitionPatternVisitor tpv;
         // tpv.setPoints(points);
         // tpv.setNewPoints(new_pts);
@@ -1249,10 +1339,6 @@ namespace Clobscode
         //     points.insert(points.end(),new_pts.begin(),new_pts.end());
         // }
         
-        //insert will reserve space as well
-        octants.insert(octants.end(),make_move_iterator(candidates.begin()),make_move_iterator(candidates.end()));
-        // better to erase as let in a indeterminate state by move
-        candidates.erase(candidates.begin(),candidates.end());
         octants.insert(octants.end(),make_move_iterator(clean_processed.begin()),make_move_iterator(clean_processed.end()));
         clean_processed.erase(clean_processed.begin(),clean_processed.end());
 

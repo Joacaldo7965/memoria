@@ -1,3 +1,0 @@
-/home/joacaldo/memoria/mesher/build_test/CMakeFiles/mesher_roi_tests.dir
-/home/joacaldo/memoria/mesher/build_test/CMakeFiles/edit_cache.dir
-/home/joacaldo/memoria/mesher/build_test/CMakeFiles/rebuild_cache.dir

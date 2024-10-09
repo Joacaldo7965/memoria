@@ -42,6 +42,8 @@ namespace Clobscode
         Point3D() : x(0.0),y(0.0),z(0.0) {}
 		
         Point3D(double x, double y, double z) : x(x),y(y),z(z) {}
+
+		Point3D(const Point3D &p) : x(p.x),y(p.y),z(p.z) {}
 		
         virtual ~Point3D() {}
 		

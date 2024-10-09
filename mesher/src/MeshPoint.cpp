@@ -50,5 +50,20 @@ namespace Clobscode
 		o << p.getPoint();
 		return o;
 	}
+
+	MeshPoint::MeshPoint(const MeshPoint &mp){
+		Point3D p(mp.point);
+		point = p;
+		inside = mp.inside;
+		outsidechecked = mp.outsidechecked;
+		projected = mp.projected;
+		maxdistance = mp.maxdistance;
+		// TODO: Check this if is really needed
+		list<unsigned int> other_elements = mp.elements;
+		for (list<unsigned int>::iterator it = other_elements.begin(); it != other_elements.end(); ++it) {
+			elements.push_back(*it);
+		}	
+	}
+
 	
 }

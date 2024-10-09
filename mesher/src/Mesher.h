@@ -80,6 +80,8 @@ namespace Clobscode
         virtual void splitPoints();
 
         virtual void showMapEdgeInfo(unsigned int idx1, unsigned int idx2);
+
+        virtual void showMapEdgeInfoOctant(Octant *o);
         
 	protected:
         
@@ -141,8 +143,6 @@ namespace Clobscode
 		map<OctreeEdge, EdgeInfo> MapEdges;
 		list<RefinementRegion *> regions;
         list<unsigned int> deb;
-
-
 
 	};
     
