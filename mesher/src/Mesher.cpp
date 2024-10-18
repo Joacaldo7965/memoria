@@ -175,9 +175,15 @@ namespace Clobscode
         float mid_y = 0;
         float mid_z = 0;
 
+        // // TODO: Delete after debugging
+        // Point3D pt_ = points[4].getPoint();
+        // pt_ = pt_ + Point3D(0, 0, 0.05);
+        // points[4].setPoint(pt_);
+
         unsigned int num = 0;
         for (auto p: points) {
             Point3D pt = p.getPoint();
+
             cout << "Point " << num << ": " << pt.print() << endl;
             num++;
 
@@ -217,9 +223,16 @@ namespace Clobscode
 
             cout << "  Points: [";
             for (auto pt_idx: oct_points) {
-                cout << pt_idx;
-                Point3D pt = points[pt_idx].getPoint();
+                cout << pt_idx << endl;
+                MeshPoint mp = points[pt_idx];
+                Point3D pt = mp.getPoint();
+
+                cout << "Inside: " << mp.getIOState();
+                cout << ", Projected: " << mp.wasProjected();
+                cout << ", OutsideChecked: " << mp.wasOutsideChecked();
+                cout << endl;
                 
+
                 // if point near epsilon
                 if (abs(pt.Z() - mid_z) < epsilon) {
                     cout << "(MID_Z) ";
@@ -233,8 +246,17 @@ namespace Clobscode
             cout << "]" << endl;
             //cout << "Position 1st point: " << points[oct_points[0]].getPoint().print() << endl;
 
+            cout << "Sub Elements:" << endl;
+            for (auto sub: oct.getSubElements()) {
+                cout << "  [";
+                for (auto idx: sub) {
+                    cout << idx << ", ";
+                }
+                cout << "]" << endl;
+            }
+
             cout << "MapEdge info: " << endl;
-            showMapEdgeInfoOctant(&oct);
+            //showMapEdgeInfoOctant(&oct);
 
             cout << "Intersected faces: " << oct.getIntersectedFaces().size() << endl;
             for (auto face: oct.getIntersectedFaces()) {
@@ -313,34 +335,20 @@ namespace Clobscode
     }
 
     void Mesher::splitPoints(){
-        vector<MeshPoint> new_points;
-        unsigned int total_points = points.size();
 
+        // TODO: Get octant indices that contain the points to split
+
+
+        // TODO: Get points indices to split
         vector<unsigned int> point_idx_to_split = {4, 5, 6, 7, 13, 17, 18, 21, 26};
 
         /* Add new points */
-
+        vector<MeshPoint> new_points;
+        unsigned int total_points = points.size();
         map<unsigned int, unsigned int> old_to_new_points_idx;
 
         for (auto idx: point_idx_to_split){
-            MeshPoint mp_old = points[idx];
-
-            // Point3D moved_old_point = mp_old.getPoint() + Point3D(0, 0, -0.5);
-            // points[idx].setPoint(moved_old_point);
-
-            // list<unsigned int> elements = mp_old.getElements();
-
-            // //Print elements
-            // cout << "Elements (" << idx << "): ";
-            // for (auto e: elements){
-            //     cout << e << ", ";
-            // }
-            // cout << endl;
-
-            MeshPoint new_mp(mp_old);
-
-            // Point3D moved_new_point = mp_old.getPoint() + Point3D(0, 0, 0.5);
-            // new_mp.setPoint(moved_new_point);
+            MeshPoint new_mp(points[idx]);
 
             new_points.push_back(new_mp);
             old_to_new_points_idx[idx] = total_points;
@@ -357,9 +365,6 @@ namespace Clobscode
 
         /* Update Octants point indices */
 
-        // TODO: Get octant indices that contain the points to split
-        //octants = {3, 4, 7, 8, 10, 13, 14, 17}
-
         // Split O3-O10
         // O3: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30]
         // O10: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z)]
@@ -369,6 +374,10 @@ namespace Clobscode
         octants[8].updatePoints(13, old_to_new_points_idx[13]);
         octants[8].updatePoints(17, old_to_new_points_idx[17]);
         octants[8].updatePoints(26, old_to_new_points_idx[26]);
+
+        // Edit sub elements
+        vector<unsigned int> se = {45, 31, 39, 49, 50, 40, 44, 53};  
+        octants[8].setSubElements(se);
 
         // Split O4-O13
         // O4: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
@@ -380,6 +389,9 @@ namespace Clobscode
         octants[11].updatePoints(18, old_to_new_points_idx[18]);
         octants[11].updatePoints(26, old_to_new_points_idx[26]);
 
+        se = {49, 39, 33, 46, 53, 44, 42, 51};
+        octants[11].setSubElements(se);
+
         // Split O7-O14
         // O7: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
         // O14: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
@@ -389,6 +401,10 @@ namespace Clobscode
         octants[12].updatePoints(17, old_to_new_points_idx[17]);
         octants[12].updatePoints(21, old_to_new_points_idx[21]);
         octants[12].updatePoints(26, old_to_new_points_idx[26]);
+
+        // Edit sub elements
+        se = {50, 40, 44, 53, 47, 36, 43, 52};
+        octants[12].setSubElements(se);
 
         // Split O8-O17
         // O8: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
@@ -400,40 +416,45 @@ namespace Clobscode
         octants[15].updatePoints(21, old_to_new_points_idx[21]);
         octants[15].updatePoints(26, old_to_new_points_idx[26]);
 
+        // Edit sub elements
+        se = {53, 44, 42, 51, 52, 43, 38, 48};
+        octants[15].setSubElements(se);
+
         /* Update MapEdges */
         //MapEdges[OctreeEdge(4, 13)].update(4, 5);
 
         unsigned int removed = std::numeric_limits<unsigned int>::max();
         
         /* Update splitted points in MapEdges, removing the previous shared octant */
+        // TODO: Check if this is really needed
         // X-axis
         // edges
-        MapEdges[OctreeEdge(4, 13)].update(1, removed);
-        MapEdges[OctreeEdge(13, 5)].update(1, removed);
+        // MapEdges[OctreeEdge(4, 13)].update(1, removed);
+        // MapEdges[OctreeEdge(13, 5)].update(1, removed);
 
-        MapEdges[OctreeEdge(6, 21)].update(2, removed);
-        MapEdges[OctreeEdge(21, 7)].update(2, removed);
+        // MapEdges[OctreeEdge(6, 21)].update(2, removed);
+        // MapEdges[OctreeEdge(21, 7)].update(2, removed);
 
-        // mid
-        MapEdges[OctreeEdge(17, 26)].update(1, removed);
-        MapEdges[OctreeEdge(17, 26)].update(2, removed);
+        // // mid
+        // MapEdges[OctreeEdge(17, 26)].update(1, removed);
+        // MapEdges[OctreeEdge(17, 26)].update(2, removed);
 
-        MapEdges[OctreeEdge(26, 18)].update(1, removed);
-        MapEdges[OctreeEdge(26, 18)].update(2, removed);
+        // MapEdges[OctreeEdge(26, 18)].update(1, removed);
+        // MapEdges[OctreeEdge(26, 18)].update(2, removed);
 
-        // Y-axis
-        // edges
-        MapEdges[OctreeEdge(4, 17)].update(1, removed);
-        MapEdges[OctreeEdge(17, 6)].update(1, removed);
+        // // Y-axis
+        // // edges
+        // MapEdges[OctreeEdge(4, 17)].update(1, removed);
+        // MapEdges[OctreeEdge(17, 6)].update(1, removed);
 
-        MapEdges[OctreeEdge(5, 18)].update(4, removed);
-        MapEdges[OctreeEdge(18, 7)].update(4, removed);
+        // MapEdges[OctreeEdge(5, 18)].update(4, removed);
+        // MapEdges[OctreeEdge(18, 7)].update(4, removed);
 
-        // mid
-        MapEdges[OctreeEdge(13, 26)].update(1, removed);
-        MapEdges[OctreeEdge(13, 26)].update(4, removed);
-        MapEdges[OctreeEdge(26, 21)].update(1, removed);
-        MapEdges[OctreeEdge(26, 21)].update(4, removed);
+        // // mid
+        // MapEdges[OctreeEdge(13, 26)].update(1, removed);
+        // MapEdges[OctreeEdge(13, 26)].update(4, removed);
+        // MapEdges[OctreeEdge(26, 21)].update(1, removed);
+        // MapEdges[OctreeEdge(26, 21)].update(4, removed);
 
 
         // Update MapEdges to account the new edges
@@ -469,6 +490,14 @@ namespace Clobscode
 		//split octants until the refinement level (rl) is achieved.
 		//The output will be a one-irregular mesh.
 		generateOctreeMesh(rl,input,all_reg,name,0);
+
+        linkElementsToNodes();
+        /*** SPLIT POINTS ***/
+        print_octants();
+        cout << "       * splitPoints\n";
+        splitPoints();
+
+        print_octants();
         
         //Any mesh generated from this one will start from the same
         //Octants as the current state.
@@ -488,8 +517,6 @@ namespace Clobscode
 		//link element and node info for code optimization.
 		linkElementsToNodes();
 		detectInsideNodes(input);
-
-        //splitPoints();
         
         //projectCloseToBoundaryNodes(input);
    		//removeOnSurface();
@@ -506,8 +533,11 @@ namespace Clobscode
 		//update element and node info.
 		linkElementsToNodes();
         
+        //print_octants();
 		//shrink outside nodes to the input domain boundary
 		shrinkToBoundary(input);
+
+        print_octants();
         
         if (rotated) {
             for (unsigned int i=0; i<points.size(); i++) {
@@ -517,9 +547,12 @@ namespace Clobscode
 		
         //the almighty output mesh
         FEMesh mesh;
-        
+
 		//save the data of the mesh in its final state
 		saveOutputMesh(mesh);
+
+        cout << "FEMesh points: " << mesh.getPoints().size() << endl;
+        
         
         //Write element-octant info the file
         Services::addOctElemntInfo(name,octants,removedoct,octmeshidx);
@@ -1304,41 +1337,34 @@ namespace Clobscode
         // better to erase as let in a indeterminate state by move
         candidates.erase(candidates.begin(),candidates.end());
 
-        
-        /*** SPLIT POINTS ***/
-        print_octants();
-        cout << "       * splitPoints\n";
-        splitPoints();
-
-        print_octants();
 
         //----------------------------------------------------------
         // apply transition patterns
         //----------------------------------------------------------
         
-        // TransitionPatternVisitor tpv;
-        // tpv.setPoints(points);
-        // tpv.setNewPoints(new_pts);
-        // tpv.setMapEdges(MapEdges);
-        // tpv.setMaxRefLevel(max_rl);
+        TransitionPatternVisitor tpv;
+        tpv.setPoints(points);
+        tpv.setNewPoints(new_pts);
+        tpv.setMapEdges(MapEdges);
+        tpv.setMaxRefLevel(max_rl);
 
 
-        // //Apply transition patterns to remaining Octs
-        // for (auto &to: clean_processed) {
-        //     if (!to.accept(&tpv)) {
-        //         std::cerr << "Error at Mesher::generateOcttreeMesh";
-        //         std::cerr << " Transition Pattern not found\n";
-        //     }
-        // }
+        //Apply transition patterns to remaining Octs
+        for (auto &to: clean_processed) {
+            if (!to.accept(&tpv)) {
+                std::cerr << "Error at Mesher::generateOcttreeMesh";
+                std::cerr << " Transition Pattern not found\n";
+            }
+        }
         
-        // //if no points were added at this iteration, it is no longer
-        // //necessary to continue the refinement.
-        // if (!new_pts.empty()) {
-        //     //add the new points to the vector
-        //     points.reserve(points.size() + new_pts.size());
-        //     points.insert(points.end(),new_pts.begin(),new_pts.end());
-        // }
-        
+        //if no points were added at this iteration, it is no longer
+        //necessary to continue the refinement.
+        if (!new_pts.empty()) {
+            //add the new points to the vector
+            points.reserve(points.size() + new_pts.size());
+            points.insert(points.end(),new_pts.begin(),new_pts.end());
+        }
+
         octants.insert(octants.end(),make_move_iterator(clean_processed.begin()),make_move_iterator(clean_processed.end()));
         clean_processed.erase(clean_processed.begin(),clean_processed.end());
 
@@ -1383,6 +1409,8 @@ namespace Clobscode
         //therefore the actual index is shiffted in 1. In other words, node 0 is node 1,
         //and node n is node n+1.
         vector<unsigned int> new_idxs (points.size(),0);
+        cout << "points size " << points.size() << "\n";
+        cout << "new_idxs size " << new_idxs.size() << "\n";
         unsigned int out_node_count = 0;
         list<Point3D> out_points_tmp;
         
@@ -1415,6 +1443,8 @@ namespace Clobscode
         for (iter=tmp_els.begin(); iter!=tmp_els.end(); iter++) {
             out_els.push_back(*iter);
         }
+
+        cout << "out_points_tmp size " << out_points_tmp.size() << "\n";
         
         //write output points
         list<Point3D>::iterator opi;
@@ -1422,6 +1452,8 @@ namespace Clobscode
         for (opi=out_points_tmp.begin(); opi!=out_points_tmp.end(); opi++) {
             out_pts.push_back(*opi);
         }
+
+        cout << "out_pts size " << out_pts.size() << "\n";
         
         mesh.setPoints(out_pts);
         mesh.setElements(out_els);

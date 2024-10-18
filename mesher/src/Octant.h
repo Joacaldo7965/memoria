@@ -90,6 +90,8 @@ namespace Clobscode
 		virtual list<unsigned int> &getIntersectedFaces();
 		
 		virtual vector<vector<unsigned int> > &getSubElements();
+
+		virtual void setSubElements(vector<unsigned int> &se);
 		
 		virtual void computeMaxDistance(vector<MeshPoint> &mp);
 		
@@ -154,6 +156,11 @@ namespace Clobscode
 	inline vector<vector<unsigned int> > &Octant::getSubElements() {
 		return sub_elements;
 	}
+
+	inline void Octant::setSubElements(vector<unsigned int> &se){
+		sub_elements.erase(sub_elements.begin(),sub_elements.end());
+		sub_elements.push_back(se);
+    }
 	
 	inline void Octant::addProjectionInfluence(const Point3D &dir) {
 		projection_influence += dir;
