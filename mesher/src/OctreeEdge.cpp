@@ -49,6 +49,10 @@ namespace Clobscode
 			info[0]=point2;
 		}
 	}
+
+	bool OctreeEdge::contains(const unsigned int &idx){
+		return (info[0]==idx || info[1]==idx);
+	}
 	
 	ostream& operator<<(ostream& o, const OctreeEdge &e){
 		o << e[0] << " ";

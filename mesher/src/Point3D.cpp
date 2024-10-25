@@ -81,6 +81,23 @@ namespace Clobscode
         z+=t[2];
     }
 
+    bool Point3D::equal(Point3D &p2){
+        
+		Point3D p=*this-p2;
+		double dx=p[0],dy=p[1],dz=p[2];
+		double epsilon=1E-6;
+		if(dx<0) dx*=-1;
+		if(dy<0) dy*=-1;
+		if(dz<0) dz*=-1;
+		if(dx>epsilon)
+			return false;
+		if(dy>epsilon)
+			return false;
+		if(dz>epsilon)
+			return false;
+		return true;
+	}
+
 
 //	Point3D::Point3D(){
 //        x=y=z=0.0;

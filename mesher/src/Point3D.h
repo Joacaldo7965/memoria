@@ -98,6 +98,8 @@ namespace Clobscode
 		virtual Point3D operator/(double div) const;
 		
 		virtual Point3D operator*(double mul) const;
+
+		virtual bool equal(Point3D &p2);
 		
         //modification
 		virtual double &operator[](int pos);

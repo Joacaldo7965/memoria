@@ -122,12 +122,12 @@ namespace Clobscode
     }
 
     void Mesher::showMapEdgeInfo(unsigned int idx1, unsigned int idx2){
-        auto bug = MapEdges.find(OctreeEdge(idx1, idx2));
+        auto edge = MapEdges.find(OctreeEdge(idx1, idx2));
         
-        if (bug!=MapEdges.end()) {
+        if (edge!=MapEdges.end()) {
             cout << " State of edge (" << idx1 << ", " << idx2 << ")";
-            for (unsigned int m=0;m<bug->second.getNeighborOcts().size();m++) {
-                cout << " " << bug->second[m];
+            for (unsigned int m=0;m<edge->second.getNeighborOcts().size();m++) {
+                cout << " " << edge->second[m];
             }
             cout << "\n";
         } else{
@@ -175,10 +175,7 @@ namespace Clobscode
         float mid_y = 0;
         float mid_z = 0;
 
-        // // TODO: Delete after debugging
-        // Point3D pt_ = points[4].getPoint();
-        // pt_ = pt_ + Point3D(0, 0, 0.05);
-        // points[4].setPoint(pt_);
+        cout << "Points: " << endl;
 
         unsigned int num = 0;
         for (auto p: points) {
@@ -216,37 +213,50 @@ namespace Clobscode
 
         vector<unsigned int> mid_points;
 
+        cout << "Octants: (" << octants.size() << ")" << endl;
+
         for (auto oct: octants) {
             vector<unsigned int> oct_points = oct.getPoints();
 
             cout << "Octant "<< oct.getIndex() << ": (" << oct_points.size() << " points)" << endl;
+            cout << " Surface: " << oct.isSurface() << endl;
 
-            cout << "  Points: [";
+            cout << "  Points: [" << endl;
             for (auto pt_idx: oct_points) {
-                cout << pt_idx << endl;
+                cout << "  " << pt_idx << endl;
                 MeshPoint mp = points[pt_idx];
                 Point3D pt = mp.getPoint();
 
-                cout << "Inside: " << mp.getIOState();
-                cout << ", Projected: " << mp.wasProjected();
-                cout << ", OutsideChecked: " << mp.wasOutsideChecked();
-                cout << endl;
+                cout << "   Inside: " << mp.getIOState();
+                cout << "   , Projected: " << mp.wasProjected();
+                cout << "   , OutsideChecked: " << mp.wasOutsideChecked();
+                cout << "," << endl;
+
+                list<unsigned int> pt_elements = mp.getElements();
+
+                cout <<"    Elements: [";
+
+                for (auto pt_ele:pt_elements){
+                    cout << octants[pt_ele].getIndex() << ", ";
+                }
+
+                cout << "]" << endl;
                 
 
                 // if point near epsilon
                 if (abs(pt.Z() - mid_z) < epsilon) {
-                    cout << "(MID_Z) ";
+                    cout << "  (MID_Z) ";
                     if (std::find(mid_points.begin(), mid_points.end(), pt_idx) == mid_points.end()) {
                         mid_points.push_back(pt_idx);
                     }
                 }
-                cout << ", ";
+                cout << "  , " << endl;
                 
             }
             cout << "]" << endl;
             //cout << "Position 1st point: " << points[oct_points[0]].getPoint().print() << endl;
 
-            cout << "Sub Elements:" << endl;
+            cout << "Octant Sub Elements:" << endl;
             for (auto sub: oct.getSubElements()) {
                 cout << "  [";
                 for (auto idx: sub) {
@@ -256,7 +266,7 @@ namespace Clobscode
             }
 
             cout << "MapEdge info: " << endl;
-            //showMapEdgeInfoOctant(&oct);
+            showMapEdgeInfoOctant(&oct);
 
             cout << "Intersected faces: " << oct.getIntersectedFaces().size() << endl;
             for (auto face: oct.getIntersectedFaces()) {
@@ -334,136 +344,310 @@ namespace Clobscode
         */
     }
 
-    void Mesher::splitPoints(){
+    void Mesher::splitPoints(TriMesh &input){
 
-        // TODO: Get octant indices that contain the points to split
+        // Get Octants that intersect the domain
+        for (Octant o:octants){
+            // Check if the node is a surface node
+            if (!o.isSurface()){ 
+                continue;
+            }
+            vector<unsigned int> oct_point_indices = o.getPoints();
 
+            for (unsigned int oct_point_index: oct_point_indices){
+                MeshPoint mp = points[oct_point_index];
 
-        // TODO: Get points indices to split
-        vector<unsigned int> point_idx_to_split = {4, 5, 6, 7, 13, 17, 18, 21, 26};
+                if (mp.isInside()){ // Check if the node is outside
+                    continue;
+                }
+                // TODO: Check if needed that the node is not projected
+                // if (mp.wasProjected()){
+                //     continue;
+                // }
 
-        /* Add new points */
-        vector<MeshPoint> new_points;
-        unsigned int total_points = points.size();
-        map<unsigned int, unsigned int> old_to_new_points_idx;
+                // List with the octants that share the point
+                list<unsigned int> p_eles = points[oct_point_index].getElements();
 
-        for (auto idx: point_idx_to_split){
-            MeshPoint new_mp(points[idx]);
+                Point3D current_pt = mp.getPoint();
 
-            new_points.push_back(new_mp);
-            old_to_new_points_idx[idx] = total_points;
-            total_points++;
+                vector<Point3D> point_octant_projections;
+
+                for (unsigned int p_ele_idx: p_eles){
+                    list<unsigned int> o_faces = octants[p_ele_idx].getIntersectedFaces();
+
+                    o_faces.sort();
+
+                    if (o_faces.empty()){
+                        cout << "No intersected faces" << endl;
+                        continue;
+                    }
+
+                    Point3D projected_pt = input.getProjection(current_pt, o_faces);
+
+                    point_octant_projections.push_back(projected_pt);
+                }
+
+                // Check if the point is projected to the same point
+                bool same_projection = true;
+                for (unsigned int i = 1; i < point_octant_projections.size(); i++){
+                    if (!point_octant_projections[0].equal(point_octant_projections[i])){
+                        //!(point_octant_projections[i] == point_octant_projections[0])){
+                        same_projection = false;
+                        break;
+                    }
+                }
+                cout << "Point: (" << oct_point_index << ")" << current_pt.print() << endl;
+                cout << "Same projection: " << same_projection << endl << endl;
+
+            }   
         }
 
-        points.reserve(points.size() + new_points.size());
-        points.insert(points.end(), new_points.begin(), new_points.end());
 
-        // Mapping from old to new points
-        // for (const auto& pair : old_to_new_points_idx) {
-        //     cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+
+
+        /** Hardcoded Points **/
+        // vector<unsigned int> point_idx_to_split = {4, 5, 6, 7, 13, 17, 18, 21, 26};
+
+        // /* Add new points */
+        // vector<MeshPoint> new_points;
+        // unsigned int total_points = points.size();
+        // map<unsigned int, unsigned int> old_to_new_points_idx;
+
+        // for (auto idx: point_idx_to_split){
+        //     MeshPoint new_mp(points[idx]);
+
+        //     new_points.push_back(new_mp);
+        //     old_to_new_points_idx[idx] = total_points;
+        //     total_points++;
         // }
 
-        /* Update Octants point indices */
+        // points.reserve(points.size() + new_points.size());
+        // points.insert(points.end(), new_points.begin(), new_points.end());
 
-        // Split O3-O10
-        // O3: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30]
-        // O10: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z)]
+        // // Mapping from old to new points
+        // // for (const auto& pair : old_to_new_points_idx) {
+        // //     cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+        // // }
 
-        // O10 -> idx 8
-        octants[8].updatePoints(4, old_to_new_points_idx[4]);
-        octants[8].updatePoints(13, old_to_new_points_idx[13]);
-        octants[8].updatePoints(17, old_to_new_points_idx[17]);
-        octants[8].updatePoints(26, old_to_new_points_idx[26]);
+        // /* Update Octants point indices */
 
-        // Edit sub elements
-        vector<unsigned int> se = {45, 31, 39, 49, 50, 40, 44, 53};  
-        octants[8].setSubElements(se);
+        // // Split O3-O10
+        // // O3: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30]
+        // // O10: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z)]
 
-        // Split O4-O13
-        // O4: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
-        // O13: [13(MID_Z) , 39, 33, 5(MID_Z) , 26(MID_Z) , 44, 42, 18(MID_Z) , ]
+        // // O10 -> idx 8
+        // octants[8].updatePoints(4, old_to_new_points_idx[4]);
+        // octants[8].updatePoints(13, old_to_new_points_idx[13]);
+        // octants[8].updatePoints(17, old_to_new_points_idx[17]);
+        // octants[8].updatePoints(26, old_to_new_points_idx[26]);
 
-        // O13 -> idx 11
-        octants[11].updatePoints(5, old_to_new_points_idx[5]);
-        octants[11].updatePoints(13, old_to_new_points_idx[13]);
-        octants[11].updatePoints(18, old_to_new_points_idx[18]);
-        octants[11].updatePoints(26, old_to_new_points_idx[26]);
+        // // Edit sub elements
+        // vector<unsigned int> se = {45, 31, 39, 49, 50, 40, 44, 53};  
+        // octants[8].setSubElements(se);
 
-        se = {49, 39, 33, 46, 53, 44, 42, 51};
-        octants[11].setSubElements(se);
+        // // Split O4-O13
+        // // O4: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
+        // // O13: [13(MID_Z) , 39, 33, 5(MID_Z) , 26(MID_Z) , 44, 42, 18(MID_Z) , ]
 
-        // Split O7-O14
-        // O7: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
-        // O14: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
+        // // O13 -> idx 11
+        // octants[11].updatePoints(5, old_to_new_points_idx[5]);
+        // octants[11].updatePoints(13, old_to_new_points_idx[13]);
+        // octants[11].updatePoints(18, old_to_new_points_idx[18]);
+        // octants[11].updatePoints(26, old_to_new_points_idx[26]);
 
-        // O14 -> idx 12
-        octants[12].updatePoints(6, old_to_new_points_idx[6]);
-        octants[12].updatePoints(17, old_to_new_points_idx[17]);
-        octants[12].updatePoints(21, old_to_new_points_idx[21]);
-        octants[12].updatePoints(26, old_to_new_points_idx[26]);
+        // se = {49, 39, 33, 46, 53, 44, 42, 51};
+        // octants[11].setSubElements(se);
 
-        // Edit sub elements
-        se = {50, 40, 44, 53, 47, 36, 43, 52};
-        octants[12].setSubElements(se);
+        // // Split O7-O14
+        // // O7: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
+        // // O14: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
 
-        // Split O8-O17
-        // O8: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
-        // O17: [26(MID_Z) , 44, 42, 18(MID_Z) , 21(MID_Z) , 43, 38, 7(MID_Z) , ]
+        // // O14 -> idx 12
+        // octants[12].updatePoints(6, old_to_new_points_idx[6]);
+        // octants[12].updatePoints(17, old_to_new_points_idx[17]);
+        // octants[12].updatePoints(21, old_to_new_points_idx[21]);
+        // octants[12].updatePoints(26, old_to_new_points_idx[26]);
 
-        // O17 -> idx 15
-        octants[15].updatePoints(7, old_to_new_points_idx[7]);
-        octants[15].updatePoints(18, old_to_new_points_idx[18]);
-        octants[15].updatePoints(21, old_to_new_points_idx[21]);
-        octants[15].updatePoints(26, old_to_new_points_idx[26]);
+        // // Edit sub elements
+        // se = {50, 40, 44, 53, 47, 36, 43, 52};
+        // octants[12].setSubElements(se);
 
-        // Edit sub elements
-        se = {53, 44, 42, 51, 52, 43, 38, 48};
-        octants[15].setSubElements(se);
+        // // Split O8-O17
+        // // O8: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
+        // // O17: [26(MID_Z) , 44, 42, 18(MID_Z) , 21(MID_Z) , 43, 38, 7(MID_Z) , ]
 
-        /* Update MapEdges */
-        //MapEdges[OctreeEdge(4, 13)].update(4, 5);
+        // // O17 -> idx 15
+        // octants[15].updatePoints(7, old_to_new_points_idx[7]);
+        // octants[15].updatePoints(18, old_to_new_points_idx[18]);
+        // octants[15].updatePoints(21, old_to_new_points_idx[21]);
+        // octants[15].updatePoints(26, old_to_new_points_idx[26]);
 
-        unsigned int removed = std::numeric_limits<unsigned int>::max();
+        // // Edit sub elements
+        // se = {53, 44, 42, 51, 52, 43, 38, 48};
+        // octants[15].setSubElements(se);
+
+        // /* Update MapEdges */
+        // //MapEdges[OctreeEdge(4, 13)].update(4, 5);
+
+        // unsigned int removed = std::numeric_limits<unsigned int>::max();
         
-        /* Update splitted points in MapEdges, removing the previous shared octant */
-        // TODO: Check if this is really needed
-        // X-axis
-        // edges
-        // MapEdges[OctreeEdge(4, 13)].update(1, removed);
-        // MapEdges[OctreeEdge(13, 5)].update(1, removed);
-
-        // MapEdges[OctreeEdge(6, 21)].update(2, removed);
-        // MapEdges[OctreeEdge(21, 7)].update(2, removed);
-
-        // // mid
-        // MapEdges[OctreeEdge(17, 26)].update(1, removed);
-        // MapEdges[OctreeEdge(17, 26)].update(2, removed);
-
-        // MapEdges[OctreeEdge(26, 18)].update(1, removed);
-        // MapEdges[OctreeEdge(26, 18)].update(2, removed);
-
-        // // Y-axis
+        // /* Update splitted points in MapEdges, removing the previous shared octant */
+        // // TODO: Check if this is really needed
+        // // X-axis
         // // edges
-        // MapEdges[OctreeEdge(4, 17)].update(1, removed);
-        // MapEdges[OctreeEdge(17, 6)].update(1, removed);
+        // // MapEdges[OctreeEdge(4, 13)].update(1, removed);
+        // // MapEdges[OctreeEdge(13, 5)].update(1, removed);
 
-        // MapEdges[OctreeEdge(5, 18)].update(4, removed);
-        // MapEdges[OctreeEdge(18, 7)].update(4, removed);
+        // // MapEdges[OctreeEdge(6, 21)].update(2, removed);
+        // // MapEdges[OctreeEdge(21, 7)].update(2, removed);
 
-        // // mid
-        // MapEdges[OctreeEdge(13, 26)].update(1, removed);
-        // MapEdges[OctreeEdge(13, 26)].update(4, removed);
-        // MapEdges[OctreeEdge(26, 21)].update(1, removed);
-        // MapEdges[OctreeEdge(26, 21)].update(4, removed);
+        // // // mid
+        // // MapEdges[OctreeEdge(17, 26)].update(1, removed);
+        // // MapEdges[OctreeEdge(17, 26)].update(2, removed);
+
+        // // MapEdges[OctreeEdge(26, 18)].update(1, removed);
+        // // MapEdges[OctreeEdge(26, 18)].update(2, removed);
+
+        // // // Y-axis
+        // // // edges
+        // // MapEdges[OctreeEdge(4, 17)].update(1, removed);
+        // // MapEdges[OctreeEdge(17, 6)].update(1, removed);
+
+        // // MapEdges[OctreeEdge(5, 18)].update(4, removed);
+        // // MapEdges[OctreeEdge(18, 7)].update(4, removed);
+
+        // // // mid
+        // // MapEdges[OctreeEdge(13, 26)].update(1, removed);
+        // // MapEdges[OctreeEdge(13, 26)].update(4, removed);
+        // // MapEdges[OctreeEdge(26, 21)].update(1, removed);
+        // // MapEdges[OctreeEdge(26, 21)].update(4, removed);
 
 
-        // Update MapEdges to account the new edges
-        EdgeVisitor::insertEdges(&octants[8], MapEdges);
-        EdgeVisitor::insertEdges(&octants[11], MapEdges);
-        EdgeVisitor::insertEdges(&octants[12], MapEdges);
-        EdgeVisitor::insertEdges(&octants[15], MapEdges);
+        // // Update MapEdges to account the new edges
+        // EdgeVisitor::insertEdges(&octants[8], MapEdges);
+        // EdgeVisitor::insertEdges(&octants[11], MapEdges);
+        // EdgeVisitor::insertEdges(&octants[12], MapEdges);
+        // EdgeVisitor::insertEdges(&octants[15], MapEdges);
 
     }
+
+vector<unsigned int> Mesher::getOctantNeighbors(const unsigned int &idx){
+    vector<unsigned int> neighbors;
+    vector<unsigned int> oct_point_index = octants[idx].getPoints();
+
+    // Print octant points
+    cout << "Octant (idx:" << idx << ",  o:" << octants[idx].getIndex() << "): ";
+    for (auto pt_idx: oct_point_index) {
+        cout << pt_idx << ", ";
+    }
+    cout << endl;
+
+    // Check 6 neighbors
+    // Left: e(0, 1)[2]
+    // Down: e(0, 1)[4]
+    // Right: e(2, 6)[2]
+    // Near: e(2, 6)[4]
+    // Up: e(4, 7)[1]
+    // Far: e(4, 7)[3]
+
+    auto edge = MapEdges.find(OctreeEdge(oct_point_index[0], oct_point_index[1]));
+    if (edge == MapEdges.end()) cout << "Edge not found\n";
+    vector<unsigned int> neighborOcts1 = edge->second.getNeighborOcts();
+
+    auto edge2 = MapEdges.find(OctreeEdge(oct_point_index[2], oct_point_index[6]));
+    if (edge2 == MapEdges.end()) cout << "Edge2 not found\n";
+    vector<unsigned int> neighborOcts2 = edge2->second.getNeighborOcts();
+
+    auto edge3 = MapEdges.find(OctreeEdge(oct_point_index[4], oct_point_index[7]));
+    if (edge3 == MapEdges.end()) cout << "Edge3 not found\n";
+    vector<unsigned int> neighborOcts3 = edge3->second.getNeighborOcts();
+
+    // Left
+    neighbors.push_back(neighborOcts1[2]);
+    // Down
+    neighbors.push_back(neighborOcts1[4]);
+    // Right
+    neighbors.push_back(neighborOcts2[2]);
+    // Up
+    neighbors.push_back(neighborOcts3[1]);
+    // Near
+    neighbors.push_back(neighborOcts2[4]);
+    // Far
+    neighbors.push_back(neighborOcts3[3]);
+
+    return neighbors;
+}
+
+void Mesher::debug(){
+    cout << "Debugging" << endl;
+
+    // O3 -> idx 1
+    //vector<unsigned int> neighbors = getOctantNeighbors(12);
+
+    cout << "Octants: " << octants.size() << endl;
+
+    // cout << "Neighbors of O14: ";
+    // for (auto n: neighbors) {
+    //     cout << n << ", ";
+    // }
+    // cout << endl;
+    vector<vector<unsigned int>> split_candidates;
+
+    map<unsigned int, unsigned int> MapOctIDToIdx;
+
+    for(unsigned int idx = 0; idx < octants.size(); idx++){
+        unsigned int oct_id = octants[idx].getIndex();
+        MapOctIDToIdx[oct_id] = idx;
+    }
+    
+
+    for (unsigned int o1_idx = 0; o1_idx < octants.size(); o1_idx++){
+        cout << "Checking octant " << o1_idx << endl;
+        vector<unsigned int> neighbors = getOctantNeighbors(o1_idx);
+
+
+        bool condition1;
+
+        unsigned int count = 0;
+        for (auto o1_pt_idx: octants[o1_idx].getPoints()){
+            MeshPoint mp = points[o1_pt_idx];
+            if(mp.isInside()){
+                count++;
+            }
+        }
+
+        if (count != 4){
+            cout << "Octant " << o1_idx << " has " << count <<  " points inside" << endl;
+            continue;
+        } else{
+            cout << "Octant " << o1_idx << " has 4 points inside" << endl;
+        }
+
+        for (auto o2_idx: neighbors){
+            cout << "Octant " << MapOctIDToIdx[o1_idx] << " is neighbor of " << MapOctIDToIdx[o2_idx] << "(" << o1_idx << ", " << o2_idx << ")" << endl;
+            if (o2_idx == std::numeric_limits<unsigned int>::max()){
+                continue;
+            }
+            
+            unsigned int count = 0;
+            for (auto o2_pt_idx: octants[MapOctIDToIdx[o2_idx]].getPoints()){
+                MeshPoint mp = points[o2_pt_idx];
+                if(mp.isInside()){
+                    count++;
+                }
+            }
+            if (count != 4){continue;}
+
+            split_candidates.push_back({o1_idx, o2_idx});
+        }
+    }
+
+    cout << "Split candidates: " << split_candidates.size() << endl;
+    for (auto pair: split_candidates){
+        cout << "Pair: " << pair[0] << ", " << pair[1] << endl;
+    }
+
+}
     
 	
 	//--------------------------------------------------------------------------------
@@ -491,11 +675,18 @@ namespace Clobscode
 		//The output will be a one-irregular mesh.
 		generateOctreeMesh(rl,input,all_reg,name,0);
 
-        linkElementsToNodes();
         /*** SPLIT POINTS ***/
+
+        // Update LinkElementsToNodes and InsideNodes
+        linkElementsToNodes();
+		detectInsideNodes(input);
+
         print_octants();
+
         cout << "       * splitPoints\n";
-        splitPoints();
+        splitPoints(input);
+
+        //debug();
 
         print_octants();
         
@@ -533,9 +724,9 @@ namespace Clobscode
 		//update element and node info.
 		linkElementsToNodes();
         
-        //print_octants();
+        //debug();
 		//shrink outside nodes to the input domain boundary
-		shrinkToBoundary(input);
+		//shrinkToBoundary(input);
 
         print_octants();
         

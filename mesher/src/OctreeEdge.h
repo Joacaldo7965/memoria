@@ -43,7 +43,9 @@ namespace Clobscode
 		virtual ~OctreeEdge();
 		
 		virtual void assign(const unsigned int &idx1, const unsigned int &idx2);
-		
+
+		virtual bool contains(const unsigned int &idx);
+
         
         //To remove
 		virtual void updateMidPoint(const unsigned int &idx);
