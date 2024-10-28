@@ -219,28 +219,29 @@ namespace Clobscode
             vector<unsigned int> oct_points = oct.getPoints();
 
             cout << "Octant "<< oct.getIndex() << ": (" << oct_points.size() << " points)" << endl;
-            cout << " Surface: " << oct.isSurface() << endl;
+            //cout << " Surface: " << oct.isSurface() << endl;
 
             cout << "  Points: [" << endl;
             for (auto pt_idx: oct_points) {
-                cout << "  " << pt_idx << endl;
+                cout << "  " << pt_idx;
+                //cout << "  " << pt_idx << endl;
                 MeshPoint mp = points[pt_idx];
                 Point3D pt = mp.getPoint();
 
-                cout << "   Inside: " << mp.getIOState();
-                cout << "   , Projected: " << mp.wasProjected();
-                cout << "   , OutsideChecked: " << mp.wasOutsideChecked();
-                cout << "," << endl;
+                // cout << "   Inside: " << mp.getIOState();
+                // cout << "   , Projected: " << mp.wasProjected();
+                // cout << "   , OutsideChecked: " << mp.wasOutsideChecked();
+                // cout << "," << endl;
 
-                list<unsigned int> pt_elements = mp.getElements();
+                // list<unsigned int> pt_elements = mp.getElements();
 
-                cout <<"    Elements: [";
+                // cout <<"    Elements: [";
 
-                for (auto pt_ele:pt_elements){
-                    cout << octants[pt_ele].getIndex() << ", ";
-                }
+                // for (auto pt_ele:pt_elements){
+                //     cout << octants[pt_ele].getIndex() << ", ";
+                // }
 
-                cout << "]" << endl;
+                // cout << "]" << endl;
                 
 
                 // if point near epsilon
@@ -346,6 +347,10 @@ namespace Clobscode
 
     void Mesher::splitPoints(TriMesh &input){
 
+        list<unsigned int> candidate_pts_indices;
+        list<unsigned int> point_idx_to_split;
+        list<unsigned int> octant_idx_to_split;
+
         // Get Octants that intersect the domain
         for (Octant o:octants){
             // Check if the node is a surface node
@@ -365,44 +370,193 @@ namespace Clobscode
                 //     continue;
                 // }
 
-                // List with the octants that share the point
-                list<unsigned int> p_eles = points[oct_point_index].getElements();
+                // Save candidate points
+                candidate_pts_indices.push_back(oct_point_index);               
+            }  
+        }
+        // Remove duplicates
+        candidate_pts_indices.sort();
+        candidate_pts_indices.unique();
 
-                Point3D current_pt = mp.getPoint();
+        for (auto pt_idx:candidate_pts_indices){
 
-                vector<Point3D> point_octant_projections;
+            cout << "Point candidate: (" << pt_idx << ")" << endl;
 
-                for (unsigned int p_ele_idx: p_eles){
-                    list<unsigned int> o_faces = octants[p_ele_idx].getIntersectedFaces();
+            // List with the octants that share the point
+            list<unsigned int> p_eles = points[pt_idx].getElements();
 
-                    o_faces.sort();
+            Point3D current_pt = points[pt_idx].getPoint();
 
-                    if (o_faces.empty()){
-                        cout << "No intersected faces" << endl;
-                        continue;
-                    }
+            map<unsigned int, Point3D> MapOctantPointProjections;
 
-                    Point3D projected_pt = input.getProjection(current_pt, o_faces);
+            for (unsigned int p_ele_idx: p_eles){
+                list<unsigned int> o_faces = octants[p_ele_idx].getIntersectedFaces();
 
-                    point_octant_projections.push_back(projected_pt);
+                o_faces.sort();
+
+                if (o_faces.empty()){
+                    cout << "No intersected faces" << endl;
+                    continue;
                 }
 
-                // Check if the point is projected to the same point
-                bool same_projection = true;
-                for (unsigned int i = 1; i < point_octant_projections.size(); i++){
-                    if (!point_octant_projections[0].equal(point_octant_projections[i])){
-                        //!(point_octant_projections[i] == point_octant_projections[0])){
-                        same_projection = false;
+                Point3D projected_pt = input.getProjection(current_pt, o_faces);
+
+                //point_octant_projections.push_back(projected_pt);
+                MapOctantPointProjections[p_ele_idx] = projected_pt;
+            }
+
+            // Map between projection point and vector of octants that share the projection
+            map<Point3D, vector<unsigned int>> MapPointOctant;
+
+            // Group octants by projection point
+            for (auto pointProjectionPair:MapOctantPointProjections){ //& [oct_idx, projected_pt]
+                //for(Point3D projected_pt: pointProjectionPair.second){
+                bool found = false;
+                for(auto pointOctantPair:MapPointOctant){
+                    Point3D pt = pointOctantPair.first;
+                    if (pointProjectionPair.second.equal(pt)){
+                        found = true;
+                        pointOctantPair.second.push_back(pointProjectionPair.first);
                         break;
-                    }
+                    } 
                 }
-                cout << "Point: (" << oct_point_index << ")" << current_pt.print() << endl;
-                cout << "Same projection: " << same_projection << endl << endl;
+                // Add if not found
+                if (!found){
+                    vector<unsigned int> octant_list;
+                    octant_list.push_back(pointProjectionPair.first);
+                    MapPointOctant[pointProjectionPair.second] = octant_list; //{pointProjectionPair.first};
+                }
+                
+            }
+            // Print MapPointOctant
+            // for (auto pointOctantPair:MapPointOctant){
+            //     cout << "Point: (" << pt_idx << ") " << pointOctantPair.first.print() << endl;
+            //     cout << "Octants: ";
+            //     for (auto oct_idx:pointOctantPair.second){
+            //         cout << oct_idx << ", "; // TODO: Get octant ID instead of index
+            //     }
+            //     cout << endl;
+            // }
 
-            }   
+            // TODO:
+            // Check length of MapPointOctant
+            unsigned int length = MapPointOctant.size();
+
+            cout << "Point: (" << pt_idx << ")" << current_pt.print() << endl;
+            // If length is 1, then the point is not splitted
+            if (length == 0){
+                cout << "No projection found" << endl;
+                continue;
+            } else if(length == 1){
+                cout << "No split needed" << endl;
+            } else {
+                cout << "Split needed" << endl;
+                if (length == 2){
+                    cout << "Two projection split" << endl;
+                    // From the two projections, add new points and update octants in the second projection octants
+
+                    // Get second element in MapPointOctant
+                    auto it = MapPointOctant.begin();
+                    it++;
+                    Point3D second_projection = it->first;
+                    vector<unsigned int> second_projection_octants = it->second;
+
+                    // Add new point
+                    //MeshPoint new_mp(points[pt_idx]);
+                    //points.push_back(new_mp);
+
+                    point_idx_to_split.push_back(pt_idx);
+
+
+                    /* Update Octants point indices */
+                    for (auto oct_idx: second_projection_octants){
+                        // octants[oct_idx].updatePoints(pt_idx, points.size()-1);
+                        // // Update MapEdges to account the new edges
+                        // EdgeVisitor::insertEdges(&octants[oct_idx], MapEdges); // TODO: check if it can be moved to outer loop to save compute
+                        octant_idx_to_split.push_back(oct_idx);
+                    }
+
+                    
+                }else{
+                    // If length is 2 or more the point is splitted along the octants in the second elements
+                    cout << "More than 2 projection split. WIP. Skipping..." << endl;
+                }
+            }
+        }
+        point_idx_to_split.sort();
+        point_idx_to_split.unique();
+
+        octant_idx_to_split.sort();
+        octant_idx_to_split.unique();
+
+        cout << "Point to split: " << point_idx_to_split.size() << endl;
+        cout << "Octants to split: " << octant_idx_to_split.size() << endl;
+
+        // Print points to split
+        for (auto pt_idx:point_idx_to_split){
+            cout << "Point to split: (" << pt_idx << ")" << points[pt_idx].getPoint().print() << endl;
+        }
+
+        // Print octants to split
+        for (auto oct_idx:octant_idx_to_split){
+            cout << "Octant to split: (" << octants[oct_idx].getIndex() << ")" << endl;
+        }
+        
+        // Add new points
+        vector<MeshPoint> new_points;
+
+        unsigned int total_points = points.size();
+        map<unsigned int, unsigned int> old_to_new_points_idx;
+
+        for (auto idx: point_idx_to_split){
+            MeshPoint new_mp(points[idx]);
+
+            new_points.push_back(new_mp);
+            old_to_new_points_idx[idx] = total_points;
+            total_points++;
+        }
+
+        points.reserve(points.size() + new_points.size());
+        points.insert(points.end(), new_points.begin(), new_points.end());
+
+        // Update Octants
+
+        for (auto oct_idx:octant_idx_to_split){
+            vector<unsigned int> oct_points = octants[oct_idx].getPoints();
+
+            for (unsigned int i = 0; i < oct_points.size(); i++){
+                unsigned int old_value = oct_points[i];
+
+                // If the point is in the list of points to split
+                if (!(old_to_new_points_idx.find(old_value) == old_to_new_points_idx.end())) {
+                    unsigned int new_value = old_to_new_points_idx[old_value];
+                    // Update Point in the octant
+                    octants[oct_idx].updatePoints(old_value, new_value);
+                }
+            }
+        }
+
+        // Update MapEdges
+        for (auto oct_idx:octant_idx_to_split){
+            EdgeVisitor::insertEdges(&octants[oct_idx], MapEdges);
         }
 
 
+        //     // // Check if the point is projected to the same point
+        //     // bool same_projection = true;
+        //     // for (unsigned int i = 1; i < point_octant_projections.size(); i++){
+        //     //     if (!point_octant_projections[0].equal(point_octant_projections[i])){ // FIXME: Overwrite the == operator instead of equal function
+        //     //         same_projection = false;
+        //     //         break;
+        //     //     }
+        //     // }
+        //     // if (!same_projection){
+        //     //     cout << "Point: (" << pt_idx << ")" << current_pt.print() << endl;
+        //     //     cout << "Same projection: " << same_projection << endl << endl;
+        //     // }
+
+        //     // TODO: Get the octants that have different projections and split the points among them
+        // }
 
 
         /** Hardcoded Points **/
@@ -531,123 +685,123 @@ namespace Clobscode
 
     }
 
-vector<unsigned int> Mesher::getOctantNeighbors(const unsigned int &idx){
-    vector<unsigned int> neighbors;
-    vector<unsigned int> oct_point_index = octants[idx].getPoints();
+    vector<unsigned int> Mesher::getOctantNeighbors(const unsigned int &idx){
+        vector<unsigned int> neighbors;
+        vector<unsigned int> oct_point_index = octants[idx].getPoints();
 
-    // Print octant points
-    cout << "Octant (idx:" << idx << ",  o:" << octants[idx].getIndex() << "): ";
-    for (auto pt_idx: oct_point_index) {
-        cout << pt_idx << ", ";
-    }
-    cout << endl;
-
-    // Check 6 neighbors
-    // Left: e(0, 1)[2]
-    // Down: e(0, 1)[4]
-    // Right: e(2, 6)[2]
-    // Near: e(2, 6)[4]
-    // Up: e(4, 7)[1]
-    // Far: e(4, 7)[3]
-
-    auto edge = MapEdges.find(OctreeEdge(oct_point_index[0], oct_point_index[1]));
-    if (edge == MapEdges.end()) cout << "Edge not found\n";
-    vector<unsigned int> neighborOcts1 = edge->second.getNeighborOcts();
-
-    auto edge2 = MapEdges.find(OctreeEdge(oct_point_index[2], oct_point_index[6]));
-    if (edge2 == MapEdges.end()) cout << "Edge2 not found\n";
-    vector<unsigned int> neighborOcts2 = edge2->second.getNeighborOcts();
-
-    auto edge3 = MapEdges.find(OctreeEdge(oct_point_index[4], oct_point_index[7]));
-    if (edge3 == MapEdges.end()) cout << "Edge3 not found\n";
-    vector<unsigned int> neighborOcts3 = edge3->second.getNeighborOcts();
-
-    // Left
-    neighbors.push_back(neighborOcts1[2]);
-    // Down
-    neighbors.push_back(neighborOcts1[4]);
-    // Right
-    neighbors.push_back(neighborOcts2[2]);
-    // Up
-    neighbors.push_back(neighborOcts3[1]);
-    // Near
-    neighbors.push_back(neighborOcts2[4]);
-    // Far
-    neighbors.push_back(neighborOcts3[3]);
-
-    return neighbors;
-}
-
-void Mesher::debug(){
-    cout << "Debugging" << endl;
-
-    // O3 -> idx 1
-    //vector<unsigned int> neighbors = getOctantNeighbors(12);
-
-    cout << "Octants: " << octants.size() << endl;
-
-    // cout << "Neighbors of O14: ";
-    // for (auto n: neighbors) {
-    //     cout << n << ", ";
-    // }
-    // cout << endl;
-    vector<vector<unsigned int>> split_candidates;
-
-    map<unsigned int, unsigned int> MapOctIDToIdx;
-
-    for(unsigned int idx = 0; idx < octants.size(); idx++){
-        unsigned int oct_id = octants[idx].getIndex();
-        MapOctIDToIdx[oct_id] = idx;
-    }
-    
-
-    for (unsigned int o1_idx = 0; o1_idx < octants.size(); o1_idx++){
-        cout << "Checking octant " << o1_idx << endl;
-        vector<unsigned int> neighbors = getOctantNeighbors(o1_idx);
-
-
-        bool condition1;
-
-        unsigned int count = 0;
-        for (auto o1_pt_idx: octants[o1_idx].getPoints()){
-            MeshPoint mp = points[o1_pt_idx];
-            if(mp.isInside()){
-                count++;
-            }
+        // Print octant points
+        cout << "Octant (idx:" << idx << ",  o:" << octants[idx].getIndex() << "): ";
+        for (auto pt_idx: oct_point_index) {
+            cout << pt_idx << ", ";
         }
+        cout << endl;
 
-        if (count != 4){
-            cout << "Octant " << o1_idx << " has " << count <<  " points inside" << endl;
-            continue;
-        } else{
-            cout << "Octant " << o1_idx << " has 4 points inside" << endl;
+        // Check 6 neighbors
+        // Left: e(0, 1)[2]
+        // Down: e(0, 1)[4]
+        // Right: e(2, 6)[2]
+        // Near: e(2, 6)[4]
+        // Up: e(4, 7)[1]
+        // Far: e(4, 7)[3]
+
+        auto edge = MapEdges.find(OctreeEdge(oct_point_index[0], oct_point_index[1]));
+        if (edge == MapEdges.end()) cout << "Edge not found\n";
+        vector<unsigned int> neighborOcts1 = edge->second.getNeighborOcts();
+
+        auto edge2 = MapEdges.find(OctreeEdge(oct_point_index[2], oct_point_index[6]));
+        if (edge2 == MapEdges.end()) cout << "Edge2 not found\n";
+        vector<unsigned int> neighborOcts2 = edge2->second.getNeighborOcts();
+
+        auto edge3 = MapEdges.find(OctreeEdge(oct_point_index[4], oct_point_index[7]));
+        if (edge3 == MapEdges.end()) cout << "Edge3 not found\n";
+        vector<unsigned int> neighborOcts3 = edge3->second.getNeighborOcts();
+
+        // Left
+        neighbors.push_back(neighborOcts1[2]);
+        // Down
+        neighbors.push_back(neighborOcts1[4]);
+        // Right
+        neighbors.push_back(neighborOcts2[2]);
+        // Up
+        neighbors.push_back(neighborOcts3[1]);
+        // Near
+        neighbors.push_back(neighborOcts2[4]);
+        // Far
+        neighbors.push_back(neighborOcts3[3]);
+
+        return neighbors;
+    }
+
+    void Mesher::debug(){
+        cout << "Debugging" << endl;
+
+        // O3 -> idx 1
+        //vector<unsigned int> neighbors = getOctantNeighbors(12);
+
+        cout << "Octants: " << octants.size() << endl;
+
+        // cout << "Neighbors of O14: ";
+        // for (auto n: neighbors) {
+        //     cout << n << ", ";
+        // }
+        // cout << endl;
+        vector<vector<unsigned int>> split_candidates;
+
+        map<unsigned int, unsigned int> MapOctIDToIdx;
+
+        for(unsigned int idx = 0; idx < octants.size(); idx++){
+            unsigned int oct_id = octants[idx].getIndex();
+            MapOctIDToIdx[oct_id] = idx;
         }
+        
 
-        for (auto o2_idx: neighbors){
-            cout << "Octant " << MapOctIDToIdx[o1_idx] << " is neighbor of " << MapOctIDToIdx[o2_idx] << "(" << o1_idx << ", " << o2_idx << ")" << endl;
-            if (o2_idx == std::numeric_limits<unsigned int>::max()){
-                continue;
-            }
-            
+        for (unsigned int o1_idx = 0; o1_idx < octants.size(); o1_idx++){
+            cout << "Checking octant " << o1_idx << endl;
+            vector<unsigned int> neighbors = getOctantNeighbors(o1_idx);
+
+
+            bool condition1;
+
             unsigned int count = 0;
-            for (auto o2_pt_idx: octants[MapOctIDToIdx[o2_idx]].getPoints()){
-                MeshPoint mp = points[o2_pt_idx];
+            for (auto o1_pt_idx: octants[o1_idx].getPoints()){
+                MeshPoint mp = points[o1_pt_idx];
                 if(mp.isInside()){
                     count++;
                 }
             }
-            if (count != 4){continue;}
 
-            split_candidates.push_back({o1_idx, o2_idx});
+            if (count != 4){
+                cout << "Octant " << o1_idx << " has " << count <<  " points inside" << endl;
+                continue;
+            } else{
+                cout << "Octant " << o1_idx << " has 4 points inside" << endl;
+            }
+
+            for (auto o2_idx: neighbors){
+                cout << "Octant " << MapOctIDToIdx[o1_idx] << " is neighbor of " << MapOctIDToIdx[o2_idx] << "(" << o1_idx << ", " << o2_idx << ")" << endl;
+                if (o2_idx == std::numeric_limits<unsigned int>::max()){
+                    continue;
+                }
+                
+                unsigned int count = 0;
+                for (auto o2_pt_idx: octants[MapOctIDToIdx[o2_idx]].getPoints()){
+                    MeshPoint mp = points[o2_pt_idx];
+                    if(mp.isInside()){
+                        count++;
+                    }
+                }
+                if (count != 4){continue;}
+
+                split_candidates.push_back({o1_idx, o2_idx});
+            }
         }
-    }
 
-    cout << "Split candidates: " << split_candidates.size() << endl;
-    for (auto pair: split_candidates){
-        cout << "Pair: " << pair[0] << ", " << pair[1] << endl;
-    }
+        cout << "Split candidates: " << split_candidates.size() << endl;
+        for (auto pair: split_candidates){
+            cout << "Pair: " << pair[0] << ", " << pair[1] << endl;
+        }
 
-}
+    }
     
 	
 	//--------------------------------------------------------------------------------
@@ -726,7 +880,7 @@ void Mesher::debug(){
         
         //debug();
 		//shrink outside nodes to the input domain boundary
-		//shrinkToBoundary(input);
+		shrinkToBoundary(input);
 
         print_octants();
         

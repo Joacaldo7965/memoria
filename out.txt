@@ -60,40 +60,15 @@ Point 43: 2 4.02 5.02
 Point 44: 2 2 5.02
 Octants: (16)
 Octant 2: (8 points)
- Surface: 1
   Points: [
-  0
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, ]
-  , 
-  12
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, ]
-  , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  15
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, ]
-  , 
-  16
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 6, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
+  0  , 
+  12  , 
+  24  , 
+  15  , 
+  16  , 
+  25  , 
+  30  , 
+  28  , 
 ]
 Octant Sub Elements:
   [0, 12, 24, 15, 16, 25, 30, 28, ]
@@ -116,40 +91,15 @@ Z axis:
 Intersected faces: 4
 0, 6, 7, 10, 
 Octant 3: (8 points)
- Surface: 1
   Points: [
-  12
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, ]
-  , 
-  4
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 10, ]
-  (MID_Z)   , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
+  12  , 
+  4  (MID_Z)   , 
+  13  (MID_Z)   , 
+  24  , 
+  25  , 
+  17  (MID_Z)   , 
+  26  (MID_Z)   , 
+  30  , 
 ]
 Octant Sub Elements:
   [12, 4, 13, 24, 25, 17, 26, 30, ]
@@ -172,40 +122,15 @@ Z axis:
 Intersected faces: 5
 0, 1, 6, 7, 8, 
 Octant 4: (8 points)
- Surface: 1
   Points: [
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  5
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 13, ]
-  (MID_Z)   , 
-  14
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
+  24  , 
+  13  (MID_Z)   , 
+  5  (MID_Z)   , 
+  14  , 
+  30  , 
+  26  (MID_Z)   , 
+  18  (MID_Z)   , 
+  27  , 
 ]
 Octant Sub Elements:
   [24, 13, 5, 14, 30, 26, 18, 27, ]
@@ -228,40 +153,15 @@ Z axis:
 Intersected faces: 6
 0, 1, 2, 3, 8, 9, 
 Octant 5: (8 points)
- Surface: 1
   Points: [
-  15
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, ]
-  , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  14
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, ]
-  , 
-  1
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  19
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, 9, ]
-  , 
+  15  , 
+  24  , 
+  14  , 
+  1  , 
+  28  , 
+  30  , 
+  27  , 
+  19  , 
 ]
 Octant Sub Elements:
   [15, 24, 14, 1, 28, 30, 27, 19, ]
@@ -284,40 +184,15 @@ Z axis:
 Intersected faces: 5
 0, 1, 2, 10, 11, 
 Octant 6: (8 points)
- Surface: 1
   Points: [
-  16
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 6, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  2
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, ]
-  , 
-  20
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  23
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 9, ]
-  , 
+  16  , 
+  25  , 
+  30  , 
+  28  , 
+  2  , 
+  20  , 
+  29  , 
+  23  , 
 ]
 Octant Sub Elements:
   [16, 25, 30, 28, 2, 20, 29, 23, ]
@@ -340,40 +215,15 @@ Z axis:
 Intersected faces: 4
 4, 6, 10, 11, 
 Octant 7: (8 points)
- Surface: 1
   Points: [
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  20
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, ]
-  , 
-  6
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 14, ]
-  (MID_Z)   , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
+  25  , 
+  17  (MID_Z)   , 
+  26  (MID_Z)   , 
+  30  , 
+  20  , 
+  6  (MID_Z)   , 
+  21  (MID_Z)   , 
+  29  , 
 ]
 Octant Sub Elements:
   [25, 17, 26, 30, 20, 6, 21, 29, ]
@@ -396,40 +246,15 @@ Z axis:
 Intersected faces: 6
 4, 5, 6, 7, 8, 9, 
 Octant 8: (8 points)
- Surface: 1
   Points: [
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  7
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 17, ]
-  (MID_Z)   , 
-  22
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 9, ]
-  , 
+  30  , 
+  26  (MID_Z)   , 
+  18  (MID_Z)   , 
+  27  , 
+  29  , 
+  21  (MID_Z)   , 
+  7  (MID_Z)   , 
+  22  , 
 ]
 Octant Sub Elements:
   [30, 26, 18, 27, 29, 21, 7, 22, ]
@@ -452,40 +277,15 @@ Z axis:
 Intersected faces: 6
 2, 3, 4, 5, 8, 9, 
 Octant 9: (8 points)
- Surface: 1
   Points: [
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  19
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, 9, ]
-  , 
-  23
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 9, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  22
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 9, ]
-  , 
-  3
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [9, ]
-  , 
+  28  , 
+  30  , 
+  27  , 
+  19  , 
+  23  , 
+  29  , 
+  22  , 
+  3  , 
 ]
 Octant Sub Elements:
   [28, 30, 27, 19, 23, 29, 22, 3, ]
@@ -508,40 +308,15 @@ Z axis:
 Intersected faces: 6
 2, 3, 4, 5, 10, 11, 
 Octant 10: (8 points)
- Surface: 1
   Points: [
-  4
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 10, ]
-  (MID_Z)   , 
-  31
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, ]
-  , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
+  4  (MID_Z)   , 
+  31  , 
+  39  , 
+  13  (MID_Z)   , 
+  17  (MID_Z)   , 
+  40  , 
+  44  , 
+  26  (MID_Z)   , 
 ]
 Octant Sub Elements:
   [4, 31, 39, 13, 17, 40, 44, 26, ]
@@ -564,40 +339,15 @@ Z axis:
 Intersected faces: 5
 12, 13, 18, 19, 22, 
 Octant 11: (8 points)
- Surface: 1
   Points: [
-  31
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, ]
-  , 
-  8
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, ]
-  , 
-  32
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, ]
-  , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  34
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 15, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
+  31  , 
+  8  , 
+  32  , 
+  39  , 
+  40  , 
+  34  , 
+  41  , 
+  44  , 
 ]
 Octant Sub Elements:
   [31, 8, 32, 39, 40, 34, 41, 44, ]
@@ -620,40 +370,15 @@ Z axis:
 Intersected faces: 4
 12, 13, 19, 20, 
 Octant 12: (8 points)
- Surface: 1
   Points: [
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  32
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, ]
-  , 
-  9
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, ]
-  , 
-  33
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  35
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 16, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
+  39  , 
+  32  , 
+  9  , 
+  33  , 
+  44  , 
+  41  , 
+  35  , 
+  42  , 
 ]
 Octant Sub Elements:
   [39, 32, 9, 33, 44, 41, 35, 42, ]
@@ -676,40 +401,15 @@ Z axis:
 Intersected faces: 5
 13, 14, 15, 20, 21, 
 Octant 13: (8 points)
- Surface: 1
   Points: [
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  33
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, ]
-  , 
-  5
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 13, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
+  13  (MID_Z)   , 
+  39  , 
+  33  , 
+  5  (MID_Z)   , 
+  26  (MID_Z)   , 
+  44  , 
+  42  , 
+  18  (MID_Z)   , 
 ]
 Octant Sub Elements:
   [13, 39, 33, 5, 26, 44, 42, 18, ]
@@ -732,40 +432,15 @@ Z axis:
 Intersected faces: 6
 12, 13, 14, 15, 22, 23, 
 Octant 14: (8 points)
- Surface: 1
   Points: [
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  6
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 14, ]
-  (MID_Z)   , 
-  36
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
+  17  (MID_Z)   , 
+  40  , 
+  44  , 
+  26  (MID_Z)   , 
+  6  (MID_Z)   , 
+  36  , 
+  43  , 
+  21  (MID_Z)   , 
 ]
 Octant Sub Elements:
   [17, 40, 44, 26, 6, 36, 43, 21, ]
@@ -788,40 +463,15 @@ Z axis:
 Intersected faces: 6
 16, 17, 18, 19, 22, 23, 
 Octant 15: (8 points)
- Surface: 1
   Points: [
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  34
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 15, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  36
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, ]
-  , 
-  10
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, ]
-  , 
-  37
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, 16, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
+  40  , 
+  34  , 
+  41  , 
+  44  , 
+  36  , 
+  10  , 
+  37  , 
+  43  , 
 ]
 Octant Sub Elements:
   [40, 34, 41, 44, 36, 10, 37, 43, ]
@@ -844,40 +494,15 @@ Z axis:
 Intersected faces: 6
 16, 17, 18, 19, 20, 21, 
 Octant 16: (8 points)
- Surface: 1
   Points: [
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  35
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 16, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  37
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, 16, ]
-  , 
-  11
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, ]
-  , 
-  38
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, 17, ]
-  , 
+  44  , 
+  41  , 
+  35  , 
+  42  , 
+  43  , 
+  37  , 
+  11  , 
+  38  , 
 ]
 Octant Sub Elements:
   [44, 41, 35, 42, 43, 37, 11, 38, ]
@@ -900,40 +525,15 @@ Z axis:
 Intersected faces: 4
 15, 17, 20, 21, 
 Octant 17: (8 points)
- Surface: 1
   Points: [
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  38
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, 17, ]
-  , 
-  7
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 17, ]
-  (MID_Z)   , 
+  26  (MID_Z)   , 
+  44  , 
+  42  , 
+  18  (MID_Z)   , 
+  21  (MID_Z)   , 
+  43  , 
+  38  , 
+  7  (MID_Z)   , 
 ]
 Octant Sub Elements:
   [26, 44, 42, 18, 21, 43, 38, 7, ]
@@ -956,344 +556,161 @@ Z axis:
 Intersected faces: 6
 14, 15, 16, 17, 22, 23, 
        * splitPoints
+Point candidate: (0)
 Point: (0)-0.02 -0.02 -1.04
-Same projection: 1
-
-Point: (12)-0.02 -0.02 0.98
-Same projection: 1
-
-Point: (24)2 -0.02 0.98
-Same projection: 1
-
-Point: (15)2 -0.02 -1.04
-Same projection: 1
-
-Point: (16)-0.02 2 -1.04
-Same projection: 1
-
-Point: (25)-0.02 2 0.98
-Same projection: 1
-
-Point: (28)2 2 -1.04
-Same projection: 1
-
-Point: (12)-0.02 -0.02 0.98
-Same projection: 1
-
-Point: (4)-0.02 -0.02 3
-Same projection: 0
-
-Point: (13)2 -0.02 3
-Same projection: 0
-
-Point: (24)2 -0.02 0.98
-Same projection: 1
-
-Point: (25)-0.02 2 0.98
-Same projection: 1
-
-Point: (17)-0.02 2 3
-Same projection: 0
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (24)2 -0.02 0.98
-Same projection: 1
-
-Point: (13)2 -0.02 3
-Same projection: 0
-
-Point: (5)4.02 -0.02 3
-Same projection: 0
-
-Point: (14)4.02 -0.02 0.98
-Same projection: 1
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (18)4.02 2 3
-Same projection: 0
-
-Point: (27)4.02 2 0.98
-Same projection: 1
-
-Point: (15)2 -0.02 -1.04
-Same projection: 1
-
-Point: (24)2 -0.02 0.98
-Same projection: 1
-
-Point: (14)4.02 -0.02 0.98
-Same projection: 1
-
+No split needed
+Point candidate: (1)
 Point: (1)4.02 -0.02 -1.04
-Same projection: 1
-
-Point: (28)2 2 -1.04
-Same projection: 1
-
-Point: (27)4.02 2 0.98
-Same projection: 1
-
-Point: (19)4.02 2 -1.04
-Same projection: 1
-
-Point: (16)-0.02 2 -1.04
-Same projection: 1
-
-Point: (25)-0.02 2 0.98
-Same projection: 1
-
-Point: (28)2 2 -1.04
-Same projection: 1
-
+No split needed
+Point candidate: (2)
 Point: (2)-0.02 4.02 -1.04
-Same projection: 1
-
-Point: (20)-0.02 4.02 0.98
-Same projection: 1
-
-Point: (29)2 4.02 0.98
-Same projection: 1
-
-Point: (23)2 4.02 -1.04
-Same projection: 1
-
-Point: (25)-0.02 2 0.98
-Same projection: 1
-
-Point: (17)-0.02 2 3
-Same projection: 0
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (20)-0.02 4.02 0.98
-Same projection: 1
-
-Point: (6)-0.02 4.02 3
-Same projection: 0
-
-Point: (21)2 4.02 3
-Same projection: 0
-
-Point: (29)2 4.02 0.98
-Same projection: 1
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (18)4.02 2 3
-Same projection: 0
-
-Point: (27)4.02 2 0.98
-Same projection: 1
-
-Point: (29)2 4.02 0.98
-Same projection: 1
-
-Point: (21)2 4.02 3
-Same projection: 0
-
-Point: (7)4.02 4.02 3
-Same projection: 0
-
-Point: (22)4.02 4.02 0.98
-Same projection: 1
-
-Point: (28)2 2 -1.04
-Same projection: 1
-
-Point: (27)4.02 2 0.98
-Same projection: 1
-
-Point: (19)4.02 2 -1.04
-Same projection: 1
-
-Point: (23)2 4.02 -1.04
-Same projection: 1
-
-Point: (29)2 4.02 0.98
-Same projection: 1
-
-Point: (22)4.02 4.02 0.98
-Same projection: 1
-
+No split needed
+Point candidate: (3)
 Point: (3)4.02 4.02 -1.04
-Same projection: 1
-
+No split needed
+Point candidate: (4)
 Point: (4)-0.02 -0.02 3
-Same projection: 0
-
-Point: (31)-0.02 -0.02 5.02
-Same projection: 1
-
-Point: (39)2 -0.02 5.02
-Same projection: 1
-
-Point: (13)2 -0.02 3
-Same projection: 0
-
-Point: (17)-0.02 2 3
-Same projection: 0
-
-Point: (40)-0.02 2 5.02
-Same projection: 1
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (31)-0.02 -0.02 5.02
-Same projection: 1
-
-Point: (8)-0.02 -0.02 7.04
-Same projection: 1
-
-Point: (32)2 -0.02 7.04
-Same projection: 1
-
-Point: (39)2 -0.02 5.02
-Same projection: 1
-
-Point: (40)-0.02 2 5.02
-Same projection: 1
-
-Point: (34)-0.02 2 7.04
-Same projection: 1
-
-Point: (41)2 2 7.04
-Same projection: 1
-
-Point: (39)2 -0.02 5.02
-Same projection: 1
-
-Point: (32)2 -0.02 7.04
-Same projection: 1
-
-Point: (9)4.02 -0.02 7.04
-Same projection: 1
-
-Point: (33)4.02 -0.02 5.02
-Same projection: 1
-
-Point: (41)2 2 7.04
-Same projection: 1
-
-Point: (35)4.02 2 7.04
-Same projection: 1
-
-Point: (42)4.02 2 5.02
-Same projection: 1
-
-Point: (13)2 -0.02 3
-Same projection: 0
-
-Point: (39)2 -0.02 5.02
-Same projection: 1
-
-Point: (33)4.02 -0.02 5.02
-Same projection: 1
-
+Split needed
+Two projection split
+Point candidate: (5)
 Point: (5)4.02 -0.02 3
-Same projection: 0
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (42)4.02 2 5.02
-Same projection: 1
-
-Point: (18)4.02 2 3
-Same projection: 0
-
-Point: (17)-0.02 2 3
-Same projection: 0
-
-Point: (40)-0.02 2 5.02
-Same projection: 1
-
-Point: (26)2 2 3
-Same projection: 0
-
+Split needed
+Two projection split
+Point candidate: (6)
 Point: (6)-0.02 4.02 3
-Same projection: 0
-
-Point: (36)-0.02 4.02 5.02
-Same projection: 1
-
-Point: (43)2 4.02 5.02
-Same projection: 1
-
-Point: (21)2 4.02 3
-Same projection: 0
-
-Point: (40)-0.02 2 5.02
-Same projection: 1
-
-Point: (34)-0.02 2 7.04
-Same projection: 1
-
-Point: (41)2 2 7.04
-Same projection: 1
-
-Point: (36)-0.02 4.02 5.02
-Same projection: 1
-
-Point: (10)-0.02 4.02 7.04
-Same projection: 1
-
-Point: (37)2 4.02 7.04
-Same projection: 1
-
-Point: (43)2 4.02 5.02
-Same projection: 1
-
-Point: (41)2 2 7.04
-Same projection: 1
-
-Point: (35)4.02 2 7.04
-Same projection: 1
-
-Point: (42)4.02 2 5.02
-Same projection: 1
-
-Point: (43)2 4.02 5.02
-Same projection: 1
-
-Point: (37)2 4.02 7.04
-Same projection: 1
-
-Point: (11)4.02 4.02 7.04
-Same projection: 1
-
-Point: (38)4.02 4.02 5.02
-Same projection: 1
-
-Point: (26)2 2 3
-Same projection: 0
-
-Point: (42)4.02 2 5.02
-Same projection: 1
-
-Point: (18)4.02 2 3
-Same projection: 0
-
-Point: (21)2 4.02 3
-Same projection: 0
-
-Point: (43)2 4.02 5.02
-Same projection: 1
-
-Point: (38)4.02 4.02 5.02
-Same projection: 1
-
+Split needed
+Two projection split
+Point candidate: (7)
 Point: (7)4.02 4.02 3
-Same projection: 0
-
+Split needed
+Two projection split
+Point candidate: (8)
+Point: (8)-0.02 -0.02 7.04
+No split needed
+Point candidate: (9)
+Point: (9)4.02 -0.02 7.04
+No split needed
+Point candidate: (10)
+Point: (10)-0.02 4.02 7.04
+No split needed
+Point candidate: (11)
+Point: (11)4.02 4.02 7.04
+No split needed
+Point candidate: (12)
+Point: (12)-0.02 -0.02 0.98
+No split needed
+Point candidate: (13)
+Point: (13)2 -0.02 3
+Split needed
+Two projection split
+Point candidate: (14)
+Point: (14)4.02 -0.02 0.98
+No split needed
+Point candidate: (15)
+Point: (15)2 -0.02 -1.04
+No split needed
+Point candidate: (16)
+Point: (16)-0.02 2 -1.04
+No split needed
+Point candidate: (17)
+Point: (17)-0.02 2 3
+Split needed
+Two projection split
+Point candidate: (18)
+Point: (18)4.02 2 3
+Split needed
+Two projection split
+Point candidate: (19)
+Point: (19)4.02 2 -1.04
+No split needed
+Point candidate: (20)
+Point: (20)-0.02 4.02 0.98
+No split needed
+Point candidate: (21)
+Point: (21)2 4.02 3
+Split needed
+Two projection split
+Point candidate: (22)
+Point: (22)4.02 4.02 0.98
+No split needed
+Point candidate: (23)
+Point: (23)2 4.02 -1.04
+No split needed
+Point candidate: (24)
+Point: (24)2 -0.02 0.98
+No split needed
+Point candidate: (25)
+Point: (25)-0.02 2 0.98
+No split needed
+Point candidate: (26)
+Point: (26)2 2 3
+Split needed
+Two projection split
+Point candidate: (27)
+Point: (27)4.02 2 0.98
+No split needed
+Point candidate: (28)
+Point: (28)2 2 -1.04
+No split needed
+Point candidate: (29)
+Point: (29)2 4.02 0.98
+No split needed
+Point candidate: (31)
+Point: (31)-0.02 -0.02 5.02
+No split needed
+Point candidate: (32)
+Point: (32)2 -0.02 7.04
+No split needed
+Point candidate: (33)
+Point: (33)4.02 -0.02 5.02
+No split needed
+Point candidate: (34)
+Point: (34)-0.02 2 7.04
+No split needed
+Point candidate: (35)
+Point: (35)4.02 2 7.04
+No split needed
+Point candidate: (36)
+Point: (36)-0.02 4.02 5.02
+No split needed
+Point candidate: (37)
+Point: (37)2 4.02 7.04
+No split needed
+Point candidate: (38)
+Point: (38)4.02 4.02 5.02
+No split needed
+Point candidate: (39)
+Point: (39)2 -0.02 5.02
+No split needed
+Point candidate: (40)
+Point: (40)-0.02 2 5.02
+No split needed
+Point candidate: (41)
+Point: (41)2 2 7.04
+No split needed
+Point candidate: (42)
+Point: (42)4.02 2 5.02
+No split needed
+Point candidate: (43)
+Point: (43)2 4.02 5.02
+No split needed
+Point to split: 9
+Octants to split: 4
+Point to split: (4)-0.02 -0.02 3
+Point to split: (5)4.02 -0.02 3
+Point to split: (6)-0.02 4.02 3
+Point to split: (7)4.02 4.02 3
+Point to split: (13)2 -0.02 3
+Point to split: (17)-0.02 2 3
+Point to split: (18)4.02 2 3
+Point to split: (21)2 4.02 3
+Point to split: (26)2 2 3
+Octant to split: (10)
+Octant to split: (13)
+Octant to split: (14)
+Octant to split: (17)
 Printing Octants info: 
-Num Octants: 16, Num points: 45
+Num Octants: 16, Num points: 54
 Points: 
 Point 0: -0.02 -0.02 -1.04
 Point 1: 4.02 -0.02 -1.04
@@ -1340,42 +757,26 @@ Point 41: 2 2 7.04
 Point 42: 4.02 2 5.02
 Point 43: 2 4.02 5.02
 Point 44: 2 2 5.02
+Point 45: -0.02 -0.02 3
+Point 46: 4.02 -0.02 3
+Point 47: -0.02 4.02 3
+Point 48: 4.02 4.02 3
+Point 49: 2 -0.02 3
+Point 50: -0.02 2 3
+Point 51: 4.02 2 3
+Point 52: 2 4.02 3
+Point 53: 2 2 3
 Octants: (16)
 Octant 2: (8 points)
- Surface: 1
   Points: [
-  0
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, ]
-  , 
-  12
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, ]
-  , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  15
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, ]
-  , 
-  16
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 6, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
+  0  , 
+  12  , 
+  24  , 
+  15  , 
+  16  , 
+  25  , 
+  30  , 
+  28  , 
 ]
 Octant Sub Elements:
   [0, 12, 24, 15, 16, 25, 30, 28, ]
@@ -1398,40 +799,15 @@ Z axis:
 Intersected faces: 4
 0, 6, 7, 10, 
 Octant 3: (8 points)
- Surface: 1
   Points: [
-  12
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, ]
-  , 
-  4
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 10, ]
-  (MID_Z)   , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
+  12  , 
+  4  (MID_Z)   , 
+  13  (MID_Z)   , 
+  24  , 
+  25  , 
+  17  (MID_Z)   , 
+  26  (MID_Z)   , 
+  30  , 
 ]
 Octant Sub Elements:
   [12, 4, 13, 24, 25, 17, 26, 30, ]
@@ -1454,40 +830,15 @@ Z axis:
 Intersected faces: 5
 0, 1, 6, 7, 8, 
 Octant 4: (8 points)
- Surface: 1
   Points: [
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  5
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 13, ]
-  (MID_Z)   , 
-  14
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
+  24  , 
+  13  (MID_Z)   , 
+  5  (MID_Z)   , 
+  14  , 
+  30  , 
+  26  (MID_Z)   , 
+  18  (MID_Z)   , 
+  27  , 
 ]
 Octant Sub Elements:
   [24, 13, 5, 14, 30, 26, 18, 27, ]
@@ -1510,40 +861,15 @@ Z axis:
 Intersected faces: 6
 0, 1, 2, 3, 8, 9, 
 Octant 5: (8 points)
- Surface: 1
   Points: [
-  15
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, ]
-  , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  14
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, ]
-  , 
-  1
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  19
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, 9, ]
-  , 
+  15  , 
+  24  , 
+  14  , 
+  1  , 
+  28  , 
+  30  , 
+  27  , 
+  19  , 
 ]
 Octant Sub Elements:
   [15, 24, 14, 1, 28, 30, 27, 19, ]
@@ -1566,40 +892,15 @@ Z axis:
 Intersected faces: 5
 0, 1, 2, 10, 11, 
 Octant 6: (8 points)
- Surface: 1
   Points: [
-  16
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 6, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  2
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, ]
-  , 
-  20
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  23
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 9, ]
-  , 
+  16  , 
+  25  , 
+  30  , 
+  28  , 
+  2  , 
+  20  , 
+  29  , 
+  23  , 
 ]
 Octant Sub Elements:
   [16, 25, 30, 28, 2, 20, 29, 23, ]
@@ -1622,40 +923,15 @@ Z axis:
 Intersected faces: 4
 4, 6, 10, 11, 
 Octant 7: (8 points)
- Surface: 1
   Points: [
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  20
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, ]
-  , 
-  6
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 14, ]
-  (MID_Z)   , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
+  25  , 
+  17  (MID_Z)   , 
+  26  (MID_Z)   , 
+  30  , 
+  20  , 
+  6  (MID_Z)   , 
+  21  (MID_Z)   , 
+  29  , 
 ]
 Octant Sub Elements:
   [25, 17, 26, 30, 20, 6, 21, 29, ]
@@ -1678,40 +954,15 @@ Z axis:
 Intersected faces: 6
 4, 5, 6, 7, 8, 9, 
 Octant 8: (8 points)
- Surface: 1
   Points: [
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  7
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 17, ]
-  (MID_Z)   , 
-  22
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 9, ]
-  , 
+  30  , 
+  26  (MID_Z)   , 
+  18  (MID_Z)   , 
+  27  , 
+  29  , 
+  21  (MID_Z)   , 
+  7  (MID_Z)   , 
+  22  , 
 ]
 Octant Sub Elements:
   [30, 26, 18, 27, 29, 21, 7, 22, ]
@@ -1734,40 +985,15 @@ Z axis:
 Intersected faces: 6
 2, 3, 4, 5, 8, 9, 
 Octant 9: (8 points)
- Surface: 1
   Points: [
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  19
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, 9, ]
-  , 
-  23
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 9, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  22
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 9, ]
-  , 
-  3
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [9, ]
-  , 
+  28  , 
+  30  , 
+  27  , 
+  19  , 
+  23  , 
+  29  , 
+  22  , 
+  3  , 
 ]
 Octant Sub Elements:
   [28, 30, 27, 19, 23, 29, 22, 3, ]
@@ -1790,96 +1016,46 @@ Z axis:
 Intersected faces: 6
 2, 3, 4, 5, 10, 11, 
 Octant 10: (8 points)
- Surface: 1
   Points: [
-  4
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 10, ]
-  (MID_Z)   , 
-  31
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, ]
-  , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
+  45  (MID_Z)   , 
+  31  , 
+  39  , 
+  49  (MID_Z)   , 
+  50  (MID_Z)   , 
+  40  , 
+  44  , 
+  53  (MID_Z)   , 
 ]
 Octant Sub Elements:
-  [4, 31, 39, 13, 17, 40, 44, 26, ]
+  [45, 31, 39, 49, 50, 40, 44, 53, ]
 MapEdge info: 
 X axis: 
- State of edge (13, 4) 0 10 4294967295 4294967295 3
- State of edge (26, 17) 0 14 10 3 7
+ State of edge (49, 45) 0 10 4294967295 4294967295 4294967295
+ State of edge (53, 50) 0 14 10 4294967295 4294967295
  State of edge (40, 44) 0 15 11 10 14
  State of edge (31, 39) 0 11 4294967295 4294967295 10
 Y axis: 
- State of edge (4, 17) 0 10 3 4294967295 4294967295
+ State of edge (45, 50) 0 10 4294967295 4294967295 4294967295
  State of edge (31, 40) 0 11 10 4294967295 4294967295
  State of edge (39, 44) 0 12 13 10 11
- State of edge (13, 26) 0 13 4 3 10
+ State of edge (49, 53) 0 13 4294967295 4294967295 10
 Z axis: 
- State of edge (4, 31) 0 10 4294967295 4294967295 4294967295
- State of edge (39, 13) 0 13 10 4294967295 4294967295
- State of edge (44, 26) 0 17 14 10 13
- State of edge (17, 40) 0 14 4294967295 4294967295 10
+ State of edge (45, 31) 0 10 4294967295 4294967295 4294967295
+ State of edge (39, 49) 0 13 10 4294967295 4294967295
+ State of edge (44, 53) 0 17 14 10 13
+ State of edge (50, 40) 0 14 4294967295 4294967295 10
 Intersected faces: 5
 12, 13, 18, 19, 22, 
 Octant 11: (8 points)
- Surface: 1
   Points: [
-  31
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, ]
-  , 
-  8
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, ]
-  , 
-  32
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, ]
-  , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  34
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 15, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
+  31  , 
+  8  , 
+  32  , 
+  39  , 
+  40  , 
+  34  , 
+  41  , 
+  44  , 
 ]
 Octant Sub Elements:
   [31, 8, 32, 39, 40, 34, 41, 44, ]
@@ -1902,40 +1078,15 @@ Z axis:
 Intersected faces: 4
 12, 13, 19, 20, 
 Octant 12: (8 points)
- Surface: 1
   Points: [
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  32
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, ]
-  , 
-  9
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, ]
-  , 
-  33
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  35
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 16, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
+  39  , 
+  32  , 
+  9  , 
+  33  , 
+  44  , 
+  41  , 
+  35  , 
+  42  , 
 ]
 Octant Sub Elements:
   [39, 32, 9, 33, 44, 41, 35, 42, ]
@@ -1958,152 +1109,77 @@ Z axis:
 Intersected faces: 5
 13, 14, 15, 20, 21, 
 Octant 13: (8 points)
- Surface: 1
   Points: [
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  33
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, ]
-  , 
-  5
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 13, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
+  49  (MID_Z)   , 
+  39  , 
+  33  , 
+  46  (MID_Z)   , 
+  53  (MID_Z)   , 
+  44  , 
+  42  , 
+  51  (MID_Z)   , 
 ]
 Octant Sub Elements:
-  [13, 39, 33, 5, 26, 44, 42, 18, ]
+  [49, 39, 33, 46, 53, 44, 42, 51, ]
 MapEdge info: 
 X axis: 
- State of edge (5, 13) 0 13 4294967295 4294967295 4
- State of edge (18, 26) 0 17 13 4 8
+ State of edge (46, 49) 0 13 4294967295 4294967295 4294967295
+ State of edge (51, 53) 0 17 13 4294967295 4294967295
  State of edge (44, 42) 0 16 12 13 17
  State of edge (39, 33) 0 12 4294967295 4294967295 13
 Y axis: 
- State of edge (13, 26) 0 13 4 3 10
+ State of edge (49, 53) 0 13 4294967295 4294967295 10
  State of edge (39, 44) 0 12 13 10 11
  State of edge (33, 42) 0 4294967295 4294967295 13 12
- State of edge (5, 18) 0 4294967295 4294967295 4 13
+ State of edge (46, 51) 0 4294967295 4294967295 4294967295 13
 Z axis: 
- State of edge (13, 39) 0 13 10 4294967295 4294967295
- State of edge (33, 5) 0 4294967295 13 4294967295 4294967295
- State of edge (42, 18) 0 4294967295 17 13 4294967295
- State of edge (26, 44) 0 17 14 10 13
+ State of edge (49, 39) 0 13 10 4294967295 4294967295
+ State of edge (33, 46) 0 4294967295 13 4294967295 4294967295
+ State of edge (42, 51) 0 4294967295 17 13 4294967295
+ State of edge (53, 44) 0 17 14 10 13
 Intersected faces: 6
 12, 13, 14, 15, 22, 23, 
 Octant 14: (8 points)
- Surface: 1
   Points: [
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  6
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 14, ]
-  (MID_Z)   , 
-  36
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
+  50  (MID_Z)   , 
+  40  , 
+  44  , 
+  53  (MID_Z)   , 
+  47  (MID_Z)   , 
+  36  , 
+  43  , 
+  52  (MID_Z)   , 
 ]
 Octant Sub Elements:
-  [17, 40, 44, 26, 6, 36, 43, 21, ]
+  [50, 40, 44, 53, 47, 36, 43, 52, ]
 MapEdge info: 
 X axis: 
- State of edge (26, 17) 0 14 10 3 7
- State of edge (21, 6) 0 4294967295 14 7 4294967295
+ State of edge (53, 50) 0 14 10 4294967295 4294967295
+ State of edge (52, 47) 0 4294967295 14 4294967295 4294967295
  State of edge (36, 43) 0 4294967295 15 14 4294967295
  State of edge (40, 44) 0 15 11 10 14
 Y axis: 
- State of edge (17, 6) 0 14 7 4294967295 4294967295
+ State of edge (50, 47) 0 14 4294967295 4294967295 4294967295
  State of edge (40, 36) 0 15 14 4294967295 4294967295
  State of edge (44, 43) 0 16 17 14 15
- State of edge (26, 21) 0 17 8 7 14
+ State of edge (53, 52) 0 17 4294967295 4294967295 14
 Z axis: 
- State of edge (17, 40) 0 14 4294967295 4294967295 10
- State of edge (44, 26) 0 17 14 10 13
- State of edge (43, 21) 0 4294967295 4294967295 14 17
- State of edge (6, 36) 0 4294967295 4294967295 4294967295 14
+ State of edge (50, 40) 0 14 4294967295 4294967295 10
+ State of edge (44, 53) 0 17 14 10 13
+ State of edge (43, 52) 0 4294967295 4294967295 14 17
+ State of edge (47, 36) 0 4294967295 4294967295 4294967295 14
 Intersected faces: 6
 16, 17, 18, 19, 22, 23, 
 Octant 15: (8 points)
- Surface: 1
   Points: [
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  34
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 15, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  36
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, ]
-  , 
-  10
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, ]
-  , 
-  37
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, 16, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
+  40  , 
+  34  , 
+  41  , 
+  44  , 
+  36  , 
+  10  , 
+  37  , 
+  43  , 
 ]
 Octant Sub Elements:
   [40, 34, 41, 44, 36, 10, 37, 43, ]
@@ -2126,40 +1202,15 @@ Z axis:
 Intersected faces: 6
 16, 17, 18, 19, 20, 21, 
 Octant 16: (8 points)
- Surface: 1
   Points: [
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  35
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 16, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  37
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, 16, ]
-  , 
-  11
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, ]
-  , 
-  38
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, 17, ]
-  , 
+  44  , 
+  41  , 
+  35  , 
+  42  , 
+  43  , 
+  37  , 
+  11  , 
+  38  , 
 ]
 Octant Sub Elements:
   [44, 41, 35, 42, 43, 37, 11, 38, ]
@@ -2182,148 +1233,108 @@ Z axis:
 Intersected faces: 4
 15, 17, 20, 21, 
 Octant 17: (8 points)
- Surface: 1
   Points: [
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  38
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, 17, ]
-  , 
-  7
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 17, ]
-  (MID_Z)   , 
+  53  (MID_Z)   , 
+  44  , 
+  42  , 
+  51  (MID_Z)   , 
+  52  (MID_Z)   , 
+  43  , 
+  38  , 
+  48  (MID_Z)   , 
 ]
 Octant Sub Elements:
-  [26, 44, 42, 18, 21, 43, 38, 7, ]
+  [53, 44, 42, 51, 52, 43, 38, 48, ]
 MapEdge info: 
 X axis: 
- State of edge (18, 26) 0 17 13 4 8
- State of edge (7, 21) 0 4294967295 17 8 4294967295
+ State of edge (51, 53) 0 17 13 4294967295 4294967295
+ State of edge (48, 52) 0 4294967295 17 4294967295 4294967295
  State of edge (43, 38) 0 4294967295 16 17 4294967295
  State of edge (44, 42) 0 16 12 13 17
 Y axis: 
- State of edge (26, 21) 0 17 8 7 14
+ State of edge (53, 52) 0 17 4294967295 4294967295 14
  State of edge (44, 43) 0 16 17 14 15
  State of edge (42, 38) 0 4294967295 4294967295 17 16
- State of edge (18, 7) 0 4294967295 4294967295 8 17
+ State of edge (51, 48) 0 4294967295 4294967295 4294967295 17
 Z axis: 
- State of edge (26, 44) 0 17 14 10 13
- State of edge (42, 18) 0 4294967295 17 13 4294967295
- State of edge (38, 7) 0 4294967295 4294967295 17 4294967295
- State of edge (21, 43) 0 4294967295 4294967295 14 17
+ State of edge (53, 44) 0 17 14 10 13
+ State of edge (42, 51) 0 4294967295 17 13 4294967295
+ State of edge (38, 48) 0 4294967295 4294967295 17 4294967295
+ State of edge (52, 43) 0 4294967295 4294967295 14 17
 Intersected faces: 6
 14, 15, 16, 17, 22, 23, 
     * linkElementsToNodes in 0 ms
     * detectInsideNodes in 0 ms
     * linkElementsToNodes in 0 ms
+    * ShrinkToBoundary in 0 ms
 Printing Octants info: 
-Num Octants: 16, Num points: 45
+Num Octants: 16, Num points: 54
 Points: 
-Point 0: -0.02 -0.02 -1.04
-Point 1: 4.02 -0.02 -1.04
-Point 2: -0.02 4.02 -1.04
-Point 3: 4.02 4.02 -1.04
-Point 4: -0.02 -0.02 3
-Point 5: 4.02 -0.02 3
-Point 6: -0.02 4.02 3
-Point 7: 4.02 4.02 3
-Point 8: -0.02 -0.02 7.04
-Point 9: 4.02 -0.02 7.04
-Point 10: -0.02 4.02 7.04
-Point 11: 4.02 4.02 7.04
-Point 12: -0.02 -0.02 0.98
-Point 13: 2 -0.02 3
-Point 14: 4.02 -0.02 0.98
-Point 15: 2 -0.02 -1.04
-Point 16: -0.02 2 -1.04
-Point 17: -0.02 2 3
-Point 18: 4.02 2 3
-Point 19: 4.02 2 -1.04
-Point 20: -0.02 4.02 0.98
-Point 21: 2 4.02 3
-Point 22: 4.02 4.02 0.98
-Point 23: 2 4.02 -1.04
-Point 24: 2 -0.02 0.98
-Point 25: -0.02 2 0.98
-Point 26: 2 2 3
-Point 27: 4.02 2 0.98
-Point 28: 2 2 -1.04
-Point 29: 2 4.02 0.98
+Point 0: 0 0 0
+Point 1: 4 0 0
+Point 2: 0 4 0
+Point 3: 4 4 0
+Point 4: 0 0 2
+Point 5: 4 0 2
+Point 6: 0 4 2
+Point 7: 4 4 2
+Point 8: 0 0 6
+Point 9: 4 0 6
+Point 10: 0 4 6
+Point 11: 4 4 6
+Point 12: 0 0 0.98
+Point 13: 2 0 2
+Point 14: 4 0 0.98
+Point 15: 2 0 0
+Point 16: 0 2 0
+Point 17: 0 2 2
+Point 18: 4 2 2
+Point 19: 4 2 0
+Point 20: 0 4 0.98
+Point 21: 2 4 2
+Point 22: 4 4 0.98
+Point 23: 2 4 0
+Point 24: 2 0 0.98
+Point 25: 0 2 0.98
+Point 26: 2 2 2
+Point 27: 4 2 0.98
+Point 28: 2 2 0
+Point 29: 2 4 0.98
 Point 30: 2 2 0.98
-Point 31: -0.02 -0.02 5.02
-Point 32: 2 -0.02 7.04
-Point 33: 4.02 -0.02 5.02
-Point 34: -0.02 2 7.04
-Point 35: 4.02 2 7.04
-Point 36: -0.02 4.02 5.02
-Point 37: 2 4.02 7.04
-Point 38: 4.02 4.02 5.02
-Point 39: 2 -0.02 5.02
-Point 40: -0.02 2 5.02
-Point 41: 2 2 7.04
-Point 42: 4.02 2 5.02
-Point 43: 2 4.02 5.02
+Point 31: 0 0 5.02
+Point 32: 2 0 6
+Point 33: 4 0 5.02
+Point 34: 0 2 6
+Point 35: 4 2 6
+Point 36: 0 4 5.02
+Point 37: 2 4 6
+Point 38: 4 4 5.02
+Point 39: 2 0 5.02
+Point 40: 0 2 5.02
+Point 41: 2 2 6
+Point 42: 4 2 5.02
+Point 43: 2 4 5.02
 Point 44: 2 2 5.02
+Point 45: 0 0 4
+Point 46: 4 0 4
+Point 47: 0 4 4
+Point 48: 4 4 4
+Point 49: 2 0 4
+Point 50: 0 2 4
+Point 51: 4 2 4
+Point 52: 2 4 4
+Point 53: 2 2 4
 Octants: (16)
 Octant 2: (8 points)
- Surface: 1
   Points: [
-  0
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, ]
-  , 
-  12
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, ]
-  , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  15
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, ]
-  , 
-  16
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 6, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
+  0  , 
+  12  , 
+  24  , 
+  15  , 
+  16  , 
+  25  , 
+  30  , 
+  28  , 
 ]
 Octant Sub Elements:
   [0, 12, 24, 15, 16, 25, 30, 28, ]
@@ -2346,40 +1357,15 @@ Z axis:
 Intersected faces: 4
 0, 6, 7, 10, 
 Octant 3: (8 points)
- Surface: 1
   Points: [
-  12
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, ]
-  , 
-  4
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 10, ]
-  (MID_Z)   , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
+  12  , 
+  4  , 
+  13  , 
+  24  , 
+  25  , 
+  17  , 
+  26  , 
+  30  , 
 ]
 Octant Sub Elements:
   [12, 4, 13, 24, 25, 17, 26, 30, ]
@@ -2402,40 +1388,15 @@ Z axis:
 Intersected faces: 5
 0, 1, 6, 7, 8, 
 Octant 4: (8 points)
- Surface: 1
   Points: [
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  5
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 13, ]
-  (MID_Z)   , 
-  14
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
+  24  , 
+  13  , 
+  5  , 
+  14  , 
+  30  , 
+  26  , 
+  18  , 
+  27  , 
 ]
 Octant Sub Elements:
   [24, 13, 5, 14, 30, 26, 18, 27, ]
@@ -2458,40 +1419,15 @@ Z axis:
 Intersected faces: 6
 0, 1, 2, 3, 8, 9, 
 Octant 5: (8 points)
- Surface: 1
   Points: [
-  15
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, ]
-  , 
-  24
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, ]
-  , 
-  14
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, ]
-  , 
-  1
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  19
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, 9, ]
-  , 
+  15  , 
+  24  , 
+  14  , 
+  1  , 
+  28  , 
+  30  , 
+  27  , 
+  19  , 
 ]
 Octant Sub Elements:
   [15, 24, 14, 1, 28, 30, 27, 19, ]
@@ -2514,40 +1450,15 @@ Z axis:
 Intersected faces: 5
 0, 1, 2, 10, 11, 
 Octant 6: (8 points)
- Surface: 1
   Points: [
-  16
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 6, ]
-  , 
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  2
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, ]
-  , 
-  20
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  23
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 9, ]
-  , 
+  16  , 
+  25  , 
+  30  , 
+  28  , 
+  2  , 
+  20  , 
+  29  , 
+  23  , 
 ]
 Octant Sub Elements:
   [16, 25, 30, 28, 2, 20, 29, 23, ]
@@ -2570,40 +1481,15 @@ Z axis:
 Intersected faces: 4
 4, 6, 10, 11, 
 Octant 7: (8 points)
- Surface: 1
   Points: [
-  25
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 6, 7, ]
-  , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  20
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, ]
-  , 
-  6
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 14, ]
-  (MID_Z)   , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
+  25  , 
+  17  , 
+  26  , 
+  30  , 
+  20  , 
+  6  , 
+  21  , 
+  29  , 
 ]
 Octant Sub Elements:
   [25, 17, 26, 30, 20, 6, 21, 29, ]
@@ -2626,40 +1512,15 @@ Z axis:
 Intersected faces: 6
 4, 5, 6, 7, 8, 9, 
 Octant 8: (8 points)
- Surface: 1
   Points: [
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  7
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 17, ]
-  (MID_Z)   , 
-  22
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 9, ]
-  , 
+  30  , 
+  26  , 
+  18  , 
+  27  , 
+  29  , 
+  21  , 
+  7  , 
+  22  , 
 ]
 Octant Sub Elements:
   [30, 26, 18, 27, 29, 21, 7, 22, ]
@@ -2682,40 +1543,15 @@ Z axis:
 Intersected faces: 6
 2, 3, 4, 5, 8, 9, 
 Octant 9: (8 points)
- Surface: 1
   Points: [
-  28
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 5, 6, 9, ]
-  , 
-  30
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [2, 3, 4, 5, 6, 7, 8, 9, ]
-  , 
-  27
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 5, 8, 9, ]
-  , 
-  19
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [5, 9, ]
-  , 
-  23
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 9, ]
-  , 
-  29
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [6, 7, 8, 9, ]
-  , 
-  22
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 9, ]
-  , 
-  3
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [9, ]
-  , 
+  28  , 
+  30  , 
+  27  , 
+  19  , 
+  23  , 
+  29  , 
+  22  , 
+  3  , 
 ]
 Octant Sub Elements:
   [28, 30, 27, 19, 23, 29, 22, 3, ]
@@ -2738,96 +1574,46 @@ Z axis:
 Intersected faces: 6
 2, 3, 4, 5, 10, 11, 
 Octant 10: (8 points)
- Surface: 1
   Points: [
-  4
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 10, ]
-  (MID_Z)   , 
-  31
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, ]
-  , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
+  45  , 
+  31  , 
+  39  , 
+  49  , 
+  50  , 
+  40  , 
+  44  , 
+  53  , 
 ]
 Octant Sub Elements:
-  [4, 31, 39, 13, 17, 40, 44, 26, ]
+  [45, 31, 39, 49, 50, 40, 44, 53, ]
 MapEdge info: 
 X axis: 
- State of edge (13, 4) 0 10 4294967295 4294967295 3
- State of edge (26, 17) 0 14 10 3 7
+ State of edge (49, 45) 0 10 4294967295 4294967295 4294967295
+ State of edge (53, 50) 0 14 10 4294967295 4294967295
  State of edge (40, 44) 0 15 11 10 14
  State of edge (31, 39) 0 11 4294967295 4294967295 10
 Y axis: 
- State of edge (4, 17) 0 10 3 4294967295 4294967295
+ State of edge (45, 50) 0 10 4294967295 4294967295 4294967295
  State of edge (31, 40) 0 11 10 4294967295 4294967295
  State of edge (39, 44) 0 12 13 10 11
- State of edge (13, 26) 0 13 4 3 10
+ State of edge (49, 53) 0 13 4294967295 4294967295 10
 Z axis: 
- State of edge (4, 31) 0 10 4294967295 4294967295 4294967295
- State of edge (39, 13) 0 13 10 4294967295 4294967295
- State of edge (44, 26) 0 17 14 10 13
- State of edge (17, 40) 0 14 4294967295 4294967295 10
+ State of edge (45, 31) 0 10 4294967295 4294967295 4294967295
+ State of edge (39, 49) 0 13 10 4294967295 4294967295
+ State of edge (44, 53) 0 17 14 10 13
+ State of edge (50, 40) 0 14 4294967295 4294967295 10
 Intersected faces: 5
 12, 13, 18, 19, 22, 
 Octant 11: (8 points)
- Surface: 1
   Points: [
-  31
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, ]
-  , 
-  8
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, ]
-  , 
-  32
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, ]
-  , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  34
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 15, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
+  31  , 
+  8  , 
+  32  , 
+  39  , 
+  40  , 
+  34  , 
+  41  , 
+  44  , 
 ]
 Octant Sub Elements:
   [31, 8, 32, 39, 40, 34, 41, 44, ]
@@ -2850,40 +1636,15 @@ Z axis:
 Intersected faces: 4
 12, 13, 19, 20, 
 Octant 12: (8 points)
- Surface: 1
   Points: [
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  32
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, ]
-  , 
-  9
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, ]
-  , 
-  33
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  35
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 16, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
+  39  , 
+  32  , 
+  9  , 
+  33  , 
+  44  , 
+  41  , 
+  35  , 
+  42  , 
 ]
 Octant Sub Elements:
   [39, 32, 9, 33, 44, 41, 35, 42, ]
@@ -2906,152 +1667,77 @@ Z axis:
 Intersected faces: 5
 13, 14, 15, 20, 21, 
 Octant 13: (8 points)
- Surface: 1
   Points: [
-  13
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 10, 13, ]
-  (MID_Z)   , 
-  39
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, ]
-  , 
-  33
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, ]
-  , 
-  5
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 13, ]
-  (MID_Z)   , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
+  49  , 
+  39  , 
+  33  , 
+  46  , 
+  53  , 
+  44  , 
+  42  , 
+  51  , 
 ]
 Octant Sub Elements:
-  [13, 39, 33, 5, 26, 44, 42, 18, ]
+  [49, 39, 33, 46, 53, 44, 42, 51, ]
 MapEdge info: 
 X axis: 
- State of edge (5, 13) 0 13 4294967295 4294967295 4
- State of edge (18, 26) 0 17 13 4 8
+ State of edge (46, 49) 0 13 4294967295 4294967295 4294967295
+ State of edge (51, 53) 0 17 13 4294967295 4294967295
  State of edge (44, 42) 0 16 12 13 17
  State of edge (39, 33) 0 12 4294967295 4294967295 13
 Y axis: 
- State of edge (13, 26) 0 13 4 3 10
+ State of edge (49, 53) 0 13 4294967295 4294967295 10
  State of edge (39, 44) 0 12 13 10 11
  State of edge (33, 42) 0 4294967295 4294967295 13 12
- State of edge (5, 18) 0 4294967295 4294967295 4 13
+ State of edge (46, 51) 0 4294967295 4294967295 4294967295 13
 Z axis: 
- State of edge (13, 39) 0 13 10 4294967295 4294967295
- State of edge (33, 5) 0 4294967295 13 4294967295 4294967295
- State of edge (42, 18) 0 4294967295 17 13 4294967295
- State of edge (26, 44) 0 17 14 10 13
+ State of edge (49, 39) 0 13 10 4294967295 4294967295
+ State of edge (33, 46) 0 4294967295 13 4294967295 4294967295
+ State of edge (42, 51) 0 4294967295 17 13 4294967295
+ State of edge (53, 44) 0 17 14 10 13
 Intersected faces: 6
 12, 13, 14, 15, 22, 23, 
 Octant 14: (8 points)
- Surface: 1
   Points: [
-  17
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 7, 10, 14, ]
-  (MID_Z)   , 
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  6
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 14, ]
-  (MID_Z)   , 
-  36
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
+  50  , 
+  40  , 
+  44  , 
+  53  , 
+  47  , 
+  36  , 
+  43  , 
+  52  , 
 ]
 Octant Sub Elements:
-  [17, 40, 44, 26, 6, 36, 43, 21, ]
+  [50, 40, 44, 53, 47, 36, 43, 52, ]
 MapEdge info: 
 X axis: 
- State of edge (26, 17) 0 14 10 3 7
- State of edge (21, 6) 0 4294967295 14 7 4294967295
+ State of edge (53, 50) 0 14 10 4294967295 4294967295
+ State of edge (52, 47) 0 4294967295 14 4294967295 4294967295
  State of edge (36, 43) 0 4294967295 15 14 4294967295
  State of edge (40, 44) 0 15 11 10 14
 Y axis: 
- State of edge (17, 6) 0 14 7 4294967295 4294967295
+ State of edge (50, 47) 0 14 4294967295 4294967295 4294967295
  State of edge (40, 36) 0 15 14 4294967295 4294967295
  State of edge (44, 43) 0 16 17 14 15
- State of edge (26, 21) 0 17 8 7 14
+ State of edge (53, 52) 0 17 4294967295 4294967295 14
 Z axis: 
- State of edge (17, 40) 0 14 4294967295 4294967295 10
- State of edge (44, 26) 0 17 14 10 13
- State of edge (43, 21) 0 4294967295 4294967295 14 17
- State of edge (6, 36) 0 4294967295 4294967295 4294967295 14
+ State of edge (50, 40) 0 14 4294967295 4294967295 10
+ State of edge (44, 53) 0 17 14 10 13
+ State of edge (43, 52) 0 4294967295 4294967295 14 17
+ State of edge (47, 36) 0 4294967295 4294967295 4294967295 14
 Intersected faces: 6
 16, 17, 18, 19, 22, 23, 
 Octant 15: (8 points)
- Surface: 1
   Points: [
-  40
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 14, 15, ]
-  , 
-  34
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 15, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  36
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, ]
-  , 
-  10
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, ]
-  , 
-  37
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, 16, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
+  40  , 
+  34  , 
+  41  , 
+  44  , 
+  36  , 
+  10  , 
+  37  , 
+  43  , 
 ]
 Octant Sub Elements:
   [40, 34, 41, 44, 36, 10, 37, 43, ]
@@ -3074,40 +1760,15 @@ Z axis:
 Intersected faces: 6
 16, 17, 18, 19, 20, 21, 
 Octant 16: (8 points)
- Surface: 1
   Points: [
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  41
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [11, 12, 15, 16, ]
-  , 
-  35
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 16, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  37
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [15, 16, ]
-  , 
-  11
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, ]
-  , 
-  38
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, 17, ]
-  , 
+  44  , 
+  41  , 
+  35  , 
+  42  , 
+  43  , 
+  37  , 
+  11  , 
+  38  , 
 ]
 Octant Sub Elements:
   [44, 41, 35, 42, 43, 37, 11, 38, ]
@@ -3130,66 +1791,41 @@ Z axis:
 Intersected faces: 4
 15, 17, 20, 21, 
 Octant 17: (8 points)
- Surface: 1
   Points: [
-  26
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [3, 4, 7, 8, 10, 13, 14, 17, ]
-  (MID_Z)   , 
-  44
-   Inside: 1   , Projected: 0   , OutsideChecked: 1,
-    Elements: [10, 11, 12, 13, 14, 15, 16, 17, ]
-  , 
-  42
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [12, 13, 16, 17, ]
-  , 
-  18
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [4, 8, 13, 17, ]
-  (MID_Z)   , 
-  21
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [7, 8, 14, 17, ]
-  (MID_Z)   , 
-  43
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [14, 15, 16, 17, ]
-  , 
-  38
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [16, 17, ]
-  , 
-  7
-   Inside: 0   , Projected: 0   , OutsideChecked: 1,
-    Elements: [8, 17, ]
-  (MID_Z)   , 
+  53  , 
+  44  , 
+  42  , 
+  51  , 
+  52  , 
+  43  , 
+  38  , 
+  48  , 
 ]
 Octant Sub Elements:
-  [26, 44, 42, 18, 21, 43, 38, 7, ]
+  [53, 44, 42, 51, 52, 43, 38, 48, ]
 MapEdge info: 
 X axis: 
- State of edge (18, 26) 0 17 13 4 8
- State of edge (7, 21) 0 4294967295 17 8 4294967295
+ State of edge (51, 53) 0 17 13 4294967295 4294967295
+ State of edge (48, 52) 0 4294967295 17 4294967295 4294967295
  State of edge (43, 38) 0 4294967295 16 17 4294967295
  State of edge (44, 42) 0 16 12 13 17
 Y axis: 
- State of edge (26, 21) 0 17 8 7 14
+ State of edge (53, 52) 0 17 4294967295 4294967295 14
  State of edge (44, 43) 0 16 17 14 15
  State of edge (42, 38) 0 4294967295 4294967295 17 16
- State of edge (18, 7) 0 4294967295 4294967295 8 17
+ State of edge (51, 48) 0 4294967295 4294967295 4294967295 17
 Z axis: 
- State of edge (26, 44) 0 17 14 10 13
- State of edge (42, 18) 0 4294967295 17 13 4294967295
- State of edge (38, 7) 0 4294967295 4294967295 17 4294967295
- State of edge (21, 43) 0 4294967295 4294967295 14 17
+ State of edge (53, 44) 0 17 14 10 13
+ State of edge (42, 51) 0 4294967295 17 13 4294967295
+ State of edge (38, 48) 0 4294967295 4294967295 17 4294967295
+ State of edge (52, 43) 0 4294967295 4294967295 14 17
 Intersected faces: 6
 14, 15, 16, 17, 22, 23, 
-points size 45
-new_idxs size 45
-out_points_tmp size 45
-out_pts size 45
-FEMesh points: 45
-  All done in 10 ms
+points size 54
+new_idxs size 54
+out_points_tmp size 54
+out_pts size 54
+FEMesh points: 54
+  All done in 6 ms
 
 File saved to /home/joacaldo/memoria/data/out_tests/space_s1.vtk

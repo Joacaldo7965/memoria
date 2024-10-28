@@ -60,6 +60,15 @@ namespace Clobscode
 				break;
 			}
 		}
+		// Update sub_elements
+		for (unsigned int i=0; i<sub_elements.size(); i++) {
+			for (unsigned int j=0; j<sub_elements[i].size(); j++) {
+				if (sub_elements[i][j] == old_value) {
+					sub_elements[i][j] = new_value;
+					break;
+				}
+			}
+		}
 	}
 
     bool Octant::accept(Visitor *v)

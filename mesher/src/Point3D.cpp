@@ -98,6 +98,12 @@ namespace Clobscode
 		return true;
 	}
 
+    bool Point3D::operator<(const Point3D &p) const{
+        if (x != p.X()) return x < p.X();
+        if (y != p.Y()) return y < p.Y();
+        return z < p.Z();
+    }
+
 
 //	Point3D::Point3D(){
 //        x=y=z=0.0;

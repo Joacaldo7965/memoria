@@ -80,7 +80,7 @@ namespace Clobscode
         virtual vector<unsigned int> getOctantNeighbors(const unsigned int &idx);
 
         virtual void splitPoints(TriMesh &input);
-
+        
         virtual void debug();
 
         virtual void showMapEdgeInfo(unsigned int idx1, unsigned int idx2);
