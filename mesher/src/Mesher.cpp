@@ -161,9 +161,23 @@ namespace Clobscode
         
     }
 
-    void Mesher::print_octants(){
+    void Mesher::print_octants(bool outPoints){
         cout << "Printing Octants info: " << endl;
         cout << "Num Octants: " << octants.size() << ", Num points: " << points.size() << endl;
+
+        if(outPoints){
+            std::ofstream file("points.txt");
+            if (!file) {
+                std::cerr << "Error creating file!" << std::endl;
+                exit(1);
+                //return 1;
+            }
+            for (auto p: points) {
+                Point3D pt = p.getPoint();
+                file << pt.print() << endl;
+            }
+            file.close();
+        }
 
         float max_x = -1000000;
         float max_y = -1000000;
@@ -346,7 +360,7 @@ namespace Clobscode
     }
 
     void Mesher::splitPoints(TriMesh &input){
-
+        auto start_time = chrono::high_resolution_clock::now();
         list<unsigned int> candidate_pts_indices;
         list<unsigned int> point_idx_to_split;
         list<unsigned int> octant_idx_to_split;
@@ -455,7 +469,7 @@ namespace Clobscode
                     cout << "Two projection split" << endl;
                     // From the two projections, add new points and update octants in the second projection octants
 
-                    // Get second element in MapPointOctant
+                    // Get second element in MapPointOctant, FIXME: assuming X, Y, Z order sorted
                     auto it = MapPointOctant.begin();
                     it++;
                     Point3D second_projection = it->first;
@@ -468,20 +482,18 @@ namespace Clobscode
                     point_idx_to_split.push_back(pt_idx);
 
 
-                    /* Update Octants point indices */
+                    /* Add candidate_pt's octants */
                     for (auto oct_idx: second_projection_octants){
-                        // octants[oct_idx].updatePoints(pt_idx, points.size()-1);
-                        // // Update MapEdges to account the new edges
-                        // EdgeVisitor::insertEdges(&octants[oct_idx], MapEdges); // TODO: check if it can be moved to outer loop to save compute
                         octant_idx_to_split.push_back(oct_idx);
                     }
 
                     
                 }else{
                     // If length is 2 or more the point is splitted along the octants in the second elements
-                    cout << "More than 2 projection split. WIP. Skipping..." << endl;
+                    cout << "More than 2 projection split (" << length << "). WIP. Skipping..." << endl;
                 }
             }
+            cout << endl;
         }
         point_idx_to_split.sort();
         point_idx_to_split.unique();
@@ -541,6 +553,10 @@ namespace Clobscode
             EdgeVisitor::insertEdges(&octants[oct_idx], MapEdges);
         }
 
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * splitPoints in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
 
         //     // // Check if the point is projected to the same point
         //     // bool same_projection = true;
@@ -835,14 +851,13 @@ namespace Clobscode
         linkElementsToNodes();
 		detectInsideNodes(input);
 
-        print_octants();
+        //print_octants(true);
 
         cout << "       * splitPoints\n";
         splitPoints(input);
-
         //debug();
 
-        print_octants();
+        //print_octants(false);
         
         //Any mesh generated from this one will start from the same
         //Octants as the current state.
@@ -863,8 +878,8 @@ namespace Clobscode
 		linkElementsToNodes();
 		detectInsideNodes(input);
         
-        //projectCloseToBoundaryNodes(input);
-   		//removeOnSurface();
+        projectCloseToBoundaryNodes(input);
+   		removeOnSurface();
 		
 		//apply the surface Patterns
 		//applySurfacePatterns(input);
@@ -882,7 +897,7 @@ namespace Clobscode
 		//shrink outside nodes to the input domain boundary
 		shrinkToBoundary(input);
 
-        print_octants();
+        //print_octants(false);
         
         if (rotated) {
             for (unsigned int i=0; i<points.size(); i++) {

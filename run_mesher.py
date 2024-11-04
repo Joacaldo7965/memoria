@@ -67,7 +67,7 @@ def run_mesher(args):
 if __name__ == "__main__":
     # Set up argument parsing
     parser = argparse.ArgumentParser(description="Run mesher_roi with specified parameters.")
-    parser.add_argument("-m", "--mesher", default="j", type=str, required=True, help="Choose between Profe's, Tamara's and Joaquin's mesher")
+    parser.add_argument("-m", "--mesher", default="j", type=str, required=False, help="Choose between Profe's, Tamara's and Joaquin's mesher")
     #parser.add_argument("-p", "--profe", default=False, required=False, help="Use profe's mesher", action=argparse.BooleanOptionalAction)
     parser.add_argument("-o", "--input", type=str, required=True, help="Input filename")
     parser.add_argument("-s", "--surfacerl", type=int, required=False, help="Surface refinement level")
@@ -80,6 +80,7 @@ if __name__ == "__main__":
     parser.add_argument("-vc", "--verbose-compilation", default=False, required=False, help="Verbose compilation", action=argparse.BooleanOptionalAction)
     parser.add_argument("-cc", "--clean-compilation", required=False, default=False, help="Make clean compilation", action=argparse.BooleanOptionalAction)
     parser.add_argument("-ct", "--compile-test", required=False, default=False, help="Make clean compilation", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-cmk", "--cmake", required=False, default=False, help="Make Cmake", action=argparse.BooleanOptionalAction)
     #parser.add_argument("-m", "--mesher-path", required=False, help="Mesher path to be compiled", type=str)
     
     #python run_mesher.py -m test -o space -s 1 -c -vc -v -cc -ct  (Use -s or -a: i.e: -a 4)

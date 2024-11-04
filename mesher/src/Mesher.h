@@ -44,6 +44,9 @@
 #include <cstring>
 #include <chrono>
 
+#include <iostream>
+#include <fstream> // For file operations
+
 using std::vector;
 using std::list;
 using std::set;
@@ -75,12 +78,12 @@ namespace Clobscode
         virtual void setInitialState(vector<MeshPoint> &epts, vector<Octant> &eocts,
                                      map<OctreeEdge, EdgeInfo> &edge_map);
 
-        virtual void print_octants();
+        virtual void print_octants(bool outPoints);
 
         virtual vector<unsigned int> getOctantNeighbors(const unsigned int &idx);
 
         virtual void splitPoints(TriMesh &input);
-        
+
         virtual void debug();
 
         virtual void showMapEdgeInfo(unsigned int idx1, unsigned int idx2);
