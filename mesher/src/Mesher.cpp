@@ -173,6 +173,9 @@ namespace Clobscode
                 //return 1;
             }
             for (auto p: points) {
+                // if (!p.isUsed()){
+                //     continue;
+                // }
                 Point3D pt = p.getPoint();
                 file << pt.print() << endl;
             }
@@ -233,6 +236,7 @@ namespace Clobscode
             vector<unsigned int> oct_points = oct.getPoints();
 
             cout << "Octant "<< oct.getIndex() << ": (" << oct_points.size() << " points)" << endl;
+            cout << "  RL: " << oct.getRefinementLevel() << endl;
             //cout << " Surface: " << oct.isSurface() << endl;
 
             cout << "  Points: [" << endl;
@@ -360,6 +364,80 @@ namespace Clobscode
     }
 
     void Mesher::splitPoints(TriMesh &input){
+        // Get points that are actually used in elements
+        /* START */
+        // vector<Point3D> out_pts;
+        // vector<vector<unsigned int> > out_els;
+        // list<vector<unsigned int> >tmp_els;
+        
+        // //new_idxs will hold the index of used nodes in the outside vector for points.
+        // //If the a node is not used by any element, its index will be 0 in this vector,
+        // //therefore the actual index is shiffted in 1. In other words, node 0 is node 1,
+        // //and node n is node n+1.
+        // vector<unsigned int> new_idxs (points.size(),0);
+        // // cout << "points size " << points.size() << "\n";
+        // // cout << "new_idxs size " << new_idxs.size() << "\n";
+        // unsigned int out_node_count = 0;
+        // //list<Point3D> out_points_tmp;
+        
+        // //recompute node indexes and update elements with them.
+        // for (unsigned int i=0; i<octants.size(); i++) {
+        //     vector<vector<unsigned int> > sub_els= octants[i].getSubElements();
+        //     for (unsigned int j=0; j<sub_els.size(); j++) {
+                
+        //         vector<unsigned int> sub_ele_new_idxs = sub_els[j];
+        //         for (unsigned int k=0; k<sub_ele_new_idxs.size();k++) {
+                    
+        //             unsigned int p_idx = sub_ele_new_idxs[k];
+
+        //             points[p_idx].setUsed(true);
+                    
+        //             if (new_idxs[p_idx]==0) {
+        //                 sub_ele_new_idxs[k] = out_node_count++;
+        //                 new_idxs[p_idx]=out_node_count;
+        //                 //out_points_tmp.push_back(points[p_idx].getPoint());
+        //             }
+        //             else {
+        //                 sub_ele_new_idxs[k] = new_idxs[p_idx]-1;
+        //             }
+        //         }
+        //         tmp_els.push_back(sub_ele_new_idxs);
+        //     }
+        // }
+
+        // // Count used points
+        // unsigned int used_points = 0;
+        // for(auto pt: points){
+        //     if (pt.isUsed()){
+        //         used_points++;
+        //     }
+        // }
+        // cout << "Used points: " << used_points << "/" << points.size() << endl;
+        
+        // //write output elements
+        // out_els.reserve(tmp_els.size());
+        // list<vector<unsigned int> >::iterator iter;
+        // for (iter=tmp_els.begin(); iter!=tmp_els.end(); iter++) {
+        //     out_els.push_back(*iter);
+        // }
+
+        // cout << "out_points_tmp size " << out_points_tmp.size() << "\n";
+        
+        // //write output points
+        // list<Point3D>::iterator opi;
+        // out_pts.reserve(out_points_tmp.size());
+        // for (opi=out_points_tmp.begin(); opi!=out_points_tmp.end(); opi++) {
+        //     out_pts.push_back(*opi);
+        // }
+
+        // cout << "out_pts size " << out_pts.size() << "\n";
+        
+        // // mesh.setPoints(out_pts);
+        // // mesh.setElements(out_els);
+
+        /* END */
+
+
         auto start_time = chrono::high_resolution_clock::now();
         list<unsigned int> candidate_pts_indices;
         list<unsigned int> point_idx_to_split;
@@ -374,15 +452,17 @@ namespace Clobscode
             vector<unsigned int> oct_point_indices = o.getPoints();
 
             for (unsigned int oct_point_index: oct_point_indices){
-                MeshPoint mp = points[oct_point_index];
-
-                if (mp.isInside()){ // Check if the node is outside
+                // if (!points[oct_point_index].isUsed()){
+                //     continue;
+                // }
+                //MeshPoint mp = points[oct_point_index];
+                if (points[oct_point_index].isInside()){ // Check if the node is outside
                     continue;
                 }
                 // TODO: Check if needed that the node is not projected
-                // if (mp.wasProjected()){
-                //     continue;
-                // }
+                if (points[oct_point_index].wasProjected()){
+                    continue;
+                }
 
                 // Save candidate points
                 candidate_pts_indices.push_back(oct_point_index);               
@@ -392,12 +472,20 @@ namespace Clobscode
         candidate_pts_indices.sort();
         candidate_pts_indices.unique();
 
-        for (auto pt_idx:candidate_pts_indices){
+        cout << "Candidate points: " << candidate_pts_indices.size() << endl;
 
-            cout << "Point candidate: (" << pt_idx << ")" << endl;
+        for (auto pt_idx:candidate_pts_indices){
+            // if(!points[pt_idx].isUsed()){
+            //     cout << "Point not used: (" << pt_idx << ")" << endl;
+            //     continue;
+            // }
+
+            // cout << "Point candidate: (" << pt_idx << ")" << endl;
 
             // List with the octants that share the point
             list<unsigned int> p_eles = points[pt_idx].getElements();
+
+            cout << "Point: (" << pt_idx << ") has " << p_eles.size() << " octants" << endl;
 
             Point3D current_pt = points[pt_idx].getPoint();
 
@@ -456,47 +544,130 @@ namespace Clobscode
             // Check length of MapPointOctant
             unsigned int length = MapPointOctant.size();
 
-            cout << "Point: (" << pt_idx << ")" << current_pt.print() << endl;
+            //cout << "Point: (" << pt_idx << ")" << current_pt.print() << endl;
             // If length is 1, then the point is not splitted
             if (length == 0){
                 cout << "No projection found" << endl;
                 continue;
             } else if(length == 1){
-                cout << "No split needed" << endl;
+                //cout << "No split needed" << endl;
             } else {
+                cout << "Point candidate: (" << pt_idx << ")" << endl;
                 cout << "Split needed" << endl;
                 if (length == 2){
                     cout << "Two projection split" << endl;
-                    // From the two projections, add new points and update octants in the second projection octants
 
-                    // Get second element in MapPointOctant, FIXME: assuming X, Y, Z order sorted
+                    // Get the two projections
                     auto it = MapPointOctant.begin();
+                    Point3D first_projection = it->first;
+                    vector<unsigned int> first_projection_octants = it->second;
                     it++;
                     Point3D second_projection = it->first;
                     vector<unsigned int> second_projection_octants = it->second;
 
-                    // Add new point
-                    //MeshPoint new_mp(points[pt_idx]);
-                    //points.push_back(new_mp);
+
+                    double firstMaxX = -1000000;
+                    double firstMaxY = -1000000;
+                    double firstMaxZ = -1000000;
+
+                    cout << "First projection octant: " << endl;
+                    for (unsigned int first_oct_idx: first_projection_octants){
+                        cout << first_oct_idx << ", ";
+                        vector<unsigned int> o_points = octants[first_oct_idx].getPoints();
+                        for (unsigned int o_pt_idx: o_points){
+                            Point3D pt = points[o_pt_idx].getPoint();
+                            if (pt.X() > firstMaxX) {
+                                firstMaxX = pt.X();
+                            } 
+                            if (pt.Y() > firstMaxY) {
+                                firstMaxY = pt.Y();
+                            }
+                            if (pt.Z() > firstMaxZ) {
+                                firstMaxZ = pt.Z();
+                            }
+                        }
+                    }
+                    cout << endl;
+
+                    double secondMaxX = -1000000;
+                    double secondMaxY = -1000000;
+                    double secondMaxZ = -1000000;
+                    
+                    cout << "Second projection octant: " << endl;
+                    for (unsigned int second_oct_idx: second_projection_octants){
+                        cout << second_oct_idx << ", ";
+                        vector<unsigned int> o_points = octants[second_oct_idx].getPoints();
+                        for (unsigned int o_pt_idx: o_points){
+                            Point3D pt = points[o_pt_idx].getPoint();
+                            if (pt.X() > secondMaxX) {
+                                secondMaxX = pt.X();
+                            }
+                            if (pt.Y() > secondMaxY) {
+                                secondMaxY = pt.Y();
+                            }
+                            if (pt.Z() > secondMaxZ) {
+                                secondMaxZ = pt.Z();
+                            }
+                        }
+                    }
+                    cout << endl;
+
+                    bool secondOctantsCoordsIsHigher = (secondMaxX > firstMaxX || secondMaxY > firstMaxY || secondMaxZ > firstMaxZ);
+
+                    // From the two projections, add new points and update octants in the **second projection octants
+
+                    // // Get second element in MapPointOctant, FIXME: assuming X, Y, Z order sorted
+                    // auto it = MapPointOctant.begin();
+                    // // cout << "First octant list: " << it->second.size() << endl;
+                    // it++;
+                    // Point3D second_projection = it->first;
+                    // vector<unsigned int> second_projection_octants = it->second;
+                    // cout << "Second octant list: " << second_projection_octants.size() << endl;
 
                     point_idx_to_split.push_back(pt_idx);
 
+                    // Get candidate_pt's octants from highest coords
+                    if (secondOctantsCoordsIsHigher){ // Get the second element
+                        for (auto oct_idx: second_projection_octants){
+                            octant_idx_to_split.push_back(oct_idx);
+                        }
+                    } else { // Else get the first element
+                        for (auto oct_idx: first_projection_octants){
+                            octant_idx_to_split.push_back(oct_idx);
+                        }
+                    } 
+
 
                     /* Add candidate_pt's octants */
-                    for (auto oct_idx: second_projection_octants){
-                        octant_idx_to_split.push_back(oct_idx);
-                    }
+                    // for (auto oct_idx: second_projection_octants){
+                    //     octant_idx_to_split.push_back(oct_idx);
+                    // }
 
                     
                 }else{
                     // If length is 2 or more the point is splitted along the octants in the second elements
                     cout << "More than 2 projection split (" << length << "). WIP. Skipping..." << endl;
                 }
+                cout << endl;
             }
-            cout << endl;
+            //cout << endl;
         }
         point_idx_to_split.sort();
         point_idx_to_split.unique();
+
+        std::ofstream file("candidate_split_points.txt");
+        if (!file) {
+            std::cerr << "Error creating file!" << std::endl;
+            exit(1);
+            //return 1;
+        }
+        for (auto p_idx: point_idx_to_split) {
+            // if (!p.isUsed()){
+            //     continue;
+            // }
+            file << p_idx << endl;
+        }
+        file.close();
 
         octant_idx_to_split.sort();
         octant_idx_to_split.unique();
@@ -750,73 +921,48 @@ namespace Clobscode
 
     void Mesher::debug(){
         cout << "Debugging" << endl;
-
-        // O3 -> idx 1
-        //vector<unsigned int> neighbors = getOctantNeighbors(12);
-
-        cout << "Octants: " << octants.size() << endl;
-
-        // cout << "Neighbors of O14: ";
-        // for (auto n: neighbors) {
-        //     cout << n << ", ";
-        // }
-        // cout << endl;
-        vector<vector<unsigned int>> split_candidates;
-
-        map<unsigned int, unsigned int> MapOctIDToIdx;
-
-        for(unsigned int idx = 0; idx < octants.size(); idx++){
-            unsigned int oct_id = octants[idx].getIndex();
-            MapOctIDToIdx[oct_id] = idx;
-        }
-        
-
-        for (unsigned int o1_idx = 0; o1_idx < octants.size(); o1_idx++){
-            cout << "Checking octant " << o1_idx << endl;
-            vector<unsigned int> neighbors = getOctantNeighbors(o1_idx);
-
-
-            bool condition1;
-
+        unsigned int count_4 = 0;
+        unsigned int count_8 = 0;
+        unsigned int count_1 = 0;
+        unsigned int count_2 = 0;
+        unsigned int count_6 = 0;
+        unsigned int count_3 = 0;
+        // Count pt occurrences
+        for(unsigned int pt_idx = 0; pt_idx < points.size(); pt_idx++){
             unsigned int count = 0;
-            for (auto o1_pt_idx: octants[o1_idx].getPoints()){
-                MeshPoint mp = points[o1_pt_idx];
-                if(mp.isInside()){
-                    count++;
-                }
-            }
-
-            if (count != 4){
-                cout << "Octant " << o1_idx << " has " << count <<  " points inside" << endl;
-                continue;
-            } else{
-                cout << "Octant " << o1_idx << " has 4 points inside" << endl;
-            }
-
-            for (auto o2_idx: neighbors){
-                cout << "Octant " << MapOctIDToIdx[o1_idx] << " is neighbor of " << MapOctIDToIdx[o2_idx] << "(" << o1_idx << ", " << o2_idx << ")" << endl;
-                if (o2_idx == std::numeric_limits<unsigned int>::max()){
-                    continue;
-                }
-                
-                unsigned int count = 0;
-                for (auto o2_pt_idx: octants[MapOctIDToIdx[o2_idx]].getPoints()){
-                    MeshPoint mp = points[o2_pt_idx];
-                    if(mp.isInside()){
+            for (auto oct_idx: octants){
+                vector<unsigned int> oct_points = oct_idx.getPoints();
+                for (auto oct_pt_idx: oct_points){
+                    if (oct_pt_idx == pt_idx){
                         count++;
                     }
                 }
-                if (count != 4){continue;}
+            }
+            if (count > 0){
+                points[pt_idx].setUsed(true);
+            }
 
-                split_candidates.push_back({o1_idx, o2_idx});
+            cout << "Point: " << pt_idx << " count: " << count << endl;
+            if (count == 4){
+                count_4++;
+            } else if (count == 8){
+                count_8++;
+            } else if (count == 1){
+                count_1++;
+            } else if (count == 2){
+                count_2++;
+            } else if (count == 6){
+                count_6++;
+            } else if (count == 3){
+                count_3++;
             }
         }
-
-        cout << "Split candidates: " << split_candidates.size() << endl;
-        for (auto pair: split_candidates){
-            cout << "Pair: " << pair[0] << ", " << pair[1] << endl;
-        }
-
+        cout << "Count 1: " << count_1 << endl;
+        cout << "Count 2: " << count_2 << endl;
+        cout << "Count 3: " << count_3 << endl;
+        cout << "Count 4: " << count_4 << endl;
+        cout << "Count 6: " << count_6 << endl;
+        cout << "Count 8: " << count_8 << endl;
     }
     
 	
@@ -852,12 +998,12 @@ namespace Clobscode
 		detectInsideNodes(input);
 
         //print_octants(true);
+        debug();
 
         cout << "       * splitPoints\n";
         splitPoints(input);
-        //debug();
-
-        //print_octants(false);
+        
+        print_octants(true);
         
         //Any mesh generated from this one will start from the same
         //Octants as the current state.
@@ -908,8 +1054,15 @@ namespace Clobscode
         //the almighty output mesh
         FEMesh mesh;
 
+        // time function
+        auto start_time = chrono::high_resolution_clock::now();
 		//save the data of the mesh in its final state
 		saveOutputMesh(mesh);
+
+        auto end_time = chrono::high_resolution_clock::now();
+        cout << "    * saveOutputMesh in "
+        << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
+        cout << " ms"<< endl;
 
         cout << "FEMesh points: " << mesh.getPoints().size() << endl;
         
@@ -1691,11 +1844,11 @@ namespace Clobscode
         << std::chrono::duration_cast<chrono::milliseconds>(end_refine_octant_time-start_refine_octant_time).count();
         cout << " ms"<< endl;
 
-        // Insert Octants before splitPoints();
-        //insert will reserve space as well
-        octants.insert(octants.end(),make_move_iterator(candidates.begin()),make_move_iterator(candidates.end()));
-        // better to erase as let in a indeterminate state by move
-        candidates.erase(candidates.begin(),candidates.end());
+        // // Insert Octants before splitPoints();
+        // //insert will reserve space as well
+        // octants.insert(octants.end(),make_move_iterator(candidates.begin()),make_move_iterator(candidates.end()));
+        // // better to erase as let in a indeterminate state by move
+        // candidates.erase(candidates.begin(),candidates.end());
 
 
         //----------------------------------------------------------
@@ -1724,6 +1877,11 @@ namespace Clobscode
             points.reserve(points.size() + new_pts.size());
             points.insert(points.end(),new_pts.begin(),new_pts.end());
         }
+
+        //insert will reserve space as well
+        octants.insert(octants.end(),make_move_iterator(candidates.begin()),make_move_iterator(candidates.end()));
+        // better to erase as let in a indeterminate state by move
+        candidates.erase(candidates.begin(),candidates.end());
 
         octants.insert(octants.end(),make_move_iterator(clean_processed.begin()),make_move_iterator(clean_processed.end()));
         clean_processed.erase(clean_processed.begin(),clean_processed.end());

@@ -14,7 +14,7 @@ VIEWER = "/home/joacaldo/memoria/view210907/build/viewer"
 DATA_PATH = "/home/joacaldo/memoria/data"
 
 def run_mesher(args):
-    assert args['allrl'] or args['surfacerl'], "At least one refinement level must be specified"
+    assert not (args['allrl'] is None) or not (args['surfacerl'] is None), "At least one refinement level must be specified"
 
     if args['mesher'] == "t":
         mesher = MESHER_T
@@ -36,11 +36,11 @@ def run_mesher(args):
         args['mesher_path'] = os.path.dirname(os.path.dirname(mesher))
         compile_mesher(args)
 
-    if args['allrl']:
+    if args['allrl'] is not None:
         out_rl_name = f"a{args['allrl']}"
         command_rl = f"-a {args['allrl']}"
 
-    elif args['surfacerl']:
+    elif args['surfacerl'] is not None:
         out_rl_name = f"s{args['surfacerl']}"
         command_rl = f"-s {args['surfacerl']}"
 

@@ -29,6 +29,7 @@ namespace Clobscode
 		outsidechecked = false;
 		projected = false;
 		maxdistance = 0;
+		used = false;
 	}
 	
 	MeshPoint::MeshPoint(const Point3D &p){

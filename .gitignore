@@ -7,9 +7,11 @@ __pycache__
 # Build files
 mesher/build
 mesher/build_test
-
+geomview*
+*.oct
 
 # Repos
 mesher-reupload
 MixedOcTree
+MixedOcTree_old
 view210907

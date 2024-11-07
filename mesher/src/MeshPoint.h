@@ -70,6 +70,10 @@ namespace Clobscode
 		virtual void setProjected();
 		
 		virtual bool wasProjected();
+
+		virtual bool isUsed();
+
+		virtual void setUsed(bool used);
 		
 		//state methods
 		virtual void setOutside();
@@ -99,6 +103,8 @@ namespace Clobscode
 		list<unsigned int> elements;
 		
 		double maxdistance;
+
+		bool used;
 		
 	};
 	
@@ -136,8 +142,17 @@ namespace Clobscode
 	inline void MeshPoint::setIOState(bool state){
 		inside = state;
 	}
-	
-	inline bool MeshPoint::getIOState(){
+
+    inline bool MeshPoint::isUsed(){
+        return used;
+    }
+
+    inline void MeshPoint::setUsed(bool setUsed)
+    {
+        used = setUsed;
+    }
+
+    inline bool MeshPoint::getIOState(){
 		return inside;
 	}
 	
