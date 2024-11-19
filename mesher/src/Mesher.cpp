@@ -88,12 +88,12 @@ namespace Clobscode
         detectInsideNodes(input);
         
         projectCloseToBoundaryNodes(input);
-        removeOnSurface();
+        removeOnSurface(input);
         
         //linkElementsToNodes();
         //apply the surface Patterns
         applySurfacePatterns(input);
-        removeOnSurface();
+        removeOnSurface(input);
         
         detectInsideNodes(input);
         
@@ -223,10 +223,18 @@ namespace Clobscode
 
         }
 
+        // Print min and max values
+        cout << "Max X: " << max_x << ", Min X: " << min_x << endl;
+        cout << "Max Y: " << max_y << ", Min Y: " << min_y << endl;
+        cout << "Max Z: " << max_z << ", Min Z: " << min_z << endl;
+
         mid_x = (max_x + min_x) / 2;
         mid_y = (max_y + min_y) / 2;
         mid_z = (max_z + min_z) / 2;
         float epsilon = 0.0001;
+
+        // Print mid values
+        cout << "Mid X: " << mid_x << ", Mid Y: " << mid_y << ", Mid Z: " << mid_z << endl;
 
         vector<unsigned int> mid_points;
 
@@ -363,11 +371,22 @@ namespace Clobscode
         */
     }
 
-    void Mesher::splitPoints(TriMesh &input){
+    void Mesher::splitPoints(TriMesh &input, bool verbose){
         auto start_time = chrono::high_resolution_clock::now();
         list<unsigned int> candidate_pts_indices;
         list<unsigned int> point_idx_to_split;
         list<unsigned int> octant_idx_to_split;
+
+        // octants[0].computeMaxDistance(points);
+        //octants[0].getMaxDistance() * 1.5; // FIXME: Fix this
+
+        double max_distance = 0;
+        double octant_size = octants[0].getSize(points);
+        
+        max_distance = octant_size * 0.25;
+
+        cout << " Octant Size: " << octant_size << endl;
+        cout << " MaxDistance: " << max_distance << endl;
 
         // Get Octants that intersect the domain
         for (Octant o:octants){
@@ -394,7 +413,13 @@ namespace Clobscode
         candidate_pts_indices.sort();
         candidate_pts_indices.unique();
 
-        cout << "Candidate points: " << candidate_pts_indices.size() << endl;
+        // if (verbose)
+        //     cout << "Candidate points: " << candidate_pts_indices.size() << endl;
+
+        double epsilon = 45.0; // In Degrees
+        epsilon = (180 + 2*epsilon) * M_PI / 180.0; // Convert to Radians
+
+        double cos_epsilon = cos(epsilon);
 
         for (auto pt_idx:candidate_pts_indices){
             // cout << "Point candidate: (" << pt_idx << ")" << endl;
@@ -413,7 +438,8 @@ namespace Clobscode
                 o_faces.sort();
 
                 if (o_faces.empty()){
-                    cout << "No intersected faces" << endl;
+                    if (verbose)
+                        cout << "No intersected faces" << endl;
                     continue;
                 }
 
@@ -441,125 +467,114 @@ namespace Clobscode
 
             // If length is 1, then the point is not splitted
             if (length == 0){
-                cout << "No projection found" << endl;
+                if (verbose)
+                    cout << "No projection found" << endl;
                 continue;
             } else if(length == 1){
+                //if (verbose)
                 //cout << "No split needed" << endl;
             } else {
-                cout << "Point candidate: (" << pt_idx << ")" << endl;
-                cout << "Split needed" << endl;
-                if (length == 2){
-                    cout << "Two projection split" << endl;
+                // if (verbose){
+                //     cout << "Point candidate: (" << pt_idx << ")" << endl;
+                //     cout << "Split needed" << endl;
+                // }
+                if (length >= 2){
+                    // If length is 2 or more the point is splitted along the octants
+                    // if (verbose)
+                    //     cout << length << " projection split." << endl;
 
-                    // Get the two projections
-                    auto it = MapPointOctant.begin();
-                    Point3D first_projection = it->first;
-                    vector<unsigned int> first_projection_octants = it->second;
-                    it++; 
-                    // TODO: Check if the octant to split is really needed to be the second projection, 
-                    // results shows that any octant can be used
-                    Point3D second_projection = it->first;
-                    vector<unsigned int> second_projection_octants = it->second;
+                    // Check direction of split
+                    vector<Point3D> projection_dir;
 
-                    // Check if the split is in opposite directions
-                    Point3D dir1 = (first_projection - current_pt).normalize();
-                    Point3D dir2 = (second_projection - current_pt).normalize();
-                    double dot = dir1.dot(dir2);
-                    cout << "Dot product: " << dot << endl;
+                    for(auto pointOctantPair : MapPointOctant){
+                        Point3D proj = pointOctantPair.first; //(pointOctantPair.first - current_pt);
+                        projection_dir.push_back(proj);
+                    }
 
-                    if (dot >= 0 || abs(dot) < 0.001){
-                        cout << "Skipping split" << endl;
+                    // if (pt_idx == 3777){
+                    //     cout << "Debug skipped" << endl;
+                    //     continue;
+                    // }
+
+                    bool found = false;
+                    unsigned int idx1_found = 0;
+                    unsigned int idx2_found = 0;
+
+                    // Look for the best pair of projections that are in opposite directions
+                    double min_dot = 2.0;
+                    double min_dot_dist = -1;
+                    for(unsigned int i = 0; i < projection_dir.size(); i++){
+                        Point3D p1 = projection_dir[i];
+                        Point3D dir1 = (p1-current_pt).normalize();
+                        for(unsigned int j = i + 1; j < projection_dir.size(); j++){
+                            Point3D p2 = projection_dir[j];
+                            Point3D dir2 = (p2-current_pt).normalize();
+
+                            double dot = dir1.dot(dir2);
+
+                            double dist = p1.distance(p2);
+
+                            // cout << "Dot: " << dot << ", Dist: " << dist << endl;
+
+                            // if (dist > max_distance){
+                            //     cout << "Distance greater than max_distance" << endl;
+                            // }
+
+                            if (dot < min_dot && dot <= cos_epsilon && dist > max_distance){
+                                found = true;
+                                min_dot = dot;
+                                min_dot_dist = dist;
+                                idx1_found = i;
+                                idx2_found = j;
+                            }
+                        }
+                    }
+
+                    // Skip if no pair of projections are in opposite directions
+                    if(!found){
+                        // if (verbose)
+                        //     cout << "Skipping split: Pair not found" << endl;
                         continue;
                     }
-
-
-                    //TODO: Check if this is really needed
-                    double firstMaxX = -1000000;
-                    double firstMaxY = -1000000;
-                    double firstMaxZ = -1000000;
-
-                    cout << "First projection octants: " << endl;
-                    for (unsigned int first_oct_idx: first_projection_octants){
-                        cout << first_oct_idx << ", ";
-                        vector<unsigned int> o_points = octants[first_oct_idx].getPoints();
-                        for (unsigned int o_pt_idx: o_points){
-                            Point3D pt = points[o_pt_idx].getPoint();
-                            if (pt.X() > firstMaxX) {
-                                firstMaxX = pt.X();
-                            } 
-                            if (pt.Y() > firstMaxY) {
-                                firstMaxY = pt.Y();
-                            }
-                            if (pt.Z() > firstMaxZ) {
-                                firstMaxZ = pt.Z();
-                            }
-                        }
+                    if (verbose){
+                        Point3D p1 = projection_dir[idx1_found];
+                        Point3D p2 = projection_dir[idx2_found];
+                        cout << "Found split: (" << idx1_found << ", " << idx2_found << ")" << endl;
+                        cout << "Min Dot: " << min_dot << ", Dist: " << min_dot_dist << endl;
+                        cout << "p1: " << p1.print() << ", p2: " << p2.print() << endl;
+                        cout << "pt: " << current_pt.print() << endl;
                     }
-                    cout << endl;
 
-                    double secondMaxX = -1000000;
-                    double secondMaxY = -1000000;
-                    double secondMaxZ = -1000000;
-                    
-                    cout << "Second projection octants: " << endl;
-                    for (unsigned int second_oct_idx: second_projection_octants){
-                        cout << second_oct_idx << ", ";
-                        vector<unsigned int> o_points = octants[second_oct_idx].getPoints();
-                        for (unsigned int o_pt_idx: o_points){
-                            Point3D pt = points[o_pt_idx].getPoint();
-                            if (pt.X() > secondMaxX) {
-                                secondMaxX = pt.X();
+                    // Get candidate_pt's octants from second octant
+                    unsigned int count = 0;
+                    for(auto pointOctantPair : MapPointOctant){
+                        if (count == idx1_found || count == idx2_found){ // 
+                            for (auto oct_idx: pointOctantPair.second){
+                                octant_idx_to_split.push_back(oct_idx);
                             }
-                            if (pt.Y() > secondMaxY) {
-                                secondMaxY = pt.Y();
-                            }
-                            if (pt.Z() > secondMaxZ) {
-                                secondMaxZ = pt.Z();
-                            }
+                            break;
                         }
+                        count++;
                     }
-                    cout << endl;
 
-                    bool secondOctantsCoordsIsHigher = (secondMaxX > firstMaxX || secondMaxY > firstMaxY || secondMaxZ > firstMaxZ);
-
-                    cout << "Splitted point: (" << pt_idx << ")" << current_pt.print() << endl;
+                    if (verbose)
+                        cout << "Splitted point: (" << pt_idx << ")" << current_pt.print() << endl;
                     point_idx_to_split.push_back(pt_idx);
-
-                    // Get candidate_pt's octants from highest coords
-                    if (secondOctantsCoordsIsHigher){ // Get the second element
-                        for (auto oct_idx: second_projection_octants){
-                            octant_idx_to_split.push_back(oct_idx);
-                        }
-                    } else { // Else get the first element
-                        for (auto oct_idx: first_projection_octants){
-                            octant_idx_to_split.push_back(oct_idx);
-                        }
-                    }      
-                    // for (auto oct_idx: second_projection_octants){
-                    //     octant_idx_to_split.push_back(oct_idx);
-                    // }              
-                }else{
-                    // TODO: Future work
-                    // If length is 2 or more the point is splitted along the octants
-                    cout << "More than 2 projection split (" << length << "). WIP. Skipping..." << endl;
                 }
-                cout << endl;
+                if (verbose)
+                    cout << endl;
             }
-            //cout << endl;
         }
         point_idx_to_split.sort();
         point_idx_to_split.unique();
 
-        std::ofstream file("candidate_split_points.txt");
+        // Save splitted points to file
+        std::ofstream file("splitted_points.txt");
         if (!file) {
             std::cerr << "Error creating file!" << std::endl;
             exit(1);
-            //return 1;
         }
         for (auto p_idx: point_idx_to_split) {
-            // if (!p.isUsed()){
-            //     continue;
-            // }
             file << p_idx << endl;
         }
         file.close();
@@ -567,17 +582,19 @@ namespace Clobscode
         octant_idx_to_split.sort();
         octant_idx_to_split.unique();
 
-        cout << "Point to split: " << point_idx_to_split.size() << endl;
-        cout << "Octants to split: " << octant_idx_to_split.size() << endl;
+        if (verbose){
+            cout << "Point to split: " << point_idx_to_split.size() << endl;
+            cout << "Octants to split: " << octant_idx_to_split.size() << endl;
+        
+            // Print points to split
+            for (auto pt_idx:point_idx_to_split){
+                cout << "Point to split: (" << pt_idx << ")" << points[pt_idx].getPoint().print() << endl;
+            }
 
-        // Print points to split
-        for (auto pt_idx:point_idx_to_split){
-            cout << "Point to split: (" << pt_idx << ")" << points[pt_idx].getPoint().print() << endl;
-        }
-
-        // Print octants to split
-        for (auto oct_idx:octant_idx_to_split){
-            cout << "Octant to split: (" << octants[oct_idx].getIndex() << ")" << endl;
+            // Print octants to split
+            for (auto oct_idx:octant_idx_to_split){
+                cout << "Octant to split: (" << octants[oct_idx].getIndex() << ")" << endl;
+            }
         }
         
         // Add new points
@@ -598,7 +615,6 @@ namespace Clobscode
         points.insert(points.end(), new_points.begin(), new_points.end());
 
         // Update Octants
-
         for (auto oct_idx:octant_idx_to_split){
             vector<unsigned int> oct_points = octants[oct_idx].getPoints();
 
@@ -619,152 +635,12 @@ namespace Clobscode
             EdgeVisitor::insertEdges(&octants[oct_idx], MapEdges);
         }
 
+        // TODO: Check if is needed to remove the not used edges in MapEdges
+
         auto end_time = chrono::high_resolution_clock::now();
         cout << "    * splitPoints in "
         << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
         cout << " ms"<< endl;
-
-        //     // // Check if the point is projected to the same point
-        //     // bool same_projection = true;
-        //     // for (unsigned int i = 1; i < point_octant_projections.size(); i++){
-        //     //     if (!point_octant_projections[0].equal(point_octant_projections[i])){ // FIXME: Overwrite the == operator instead of equal function
-        //     //         same_projection = false;
-        //     //         break;
-        //     //     }
-        //     // }
-        //     // if (!same_projection){
-        //     //     cout << "Point: (" << pt_idx << ")" << current_pt.print() << endl;
-        //     //     cout << "Same projection: " << same_projection << endl << endl;
-        //     // }
-
-        //     // TODO: Get the octants that have different projections and split the points among them
-        // }
-
-
-        /** Hardcoded Points **/
-        // vector<unsigned int> point_idx_to_split = {4, 5, 6, 7, 13, 17, 18, 21, 26};
-
-        // /* Add new points */
-        // vector<MeshPoint> new_points;
-        // unsigned int total_points = points.size();
-        // map<unsigned int, unsigned int> old_to_new_points_idx;
-
-        // for (auto idx: point_idx_to_split){
-        //     MeshPoint new_mp(points[idx]);
-
-        //     new_points.push_back(new_mp);
-        //     old_to_new_points_idx[idx] = total_points;
-        //     total_points++;
-        // }
-
-        // points.reserve(points.size() + new_points.size());
-        // points.insert(points.end(), new_points.begin(), new_points.end());
-
-        // // Mapping from old to new points
-        // // for (const auto& pair : old_to_new_points_idx) {
-        // //     cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
-        // // }
-
-        // /* Update Octants point indices */
-
-        // // Split O3-O10
-        // // O3: [12, 4(MID_Z) , 13(MID_Z) , 24, 25, 17(MID_Z) , 26(MID_Z) , 30]
-        // // O10: [4(MID_Z) , 31, 39, 13(MID_Z) , 17(MID_Z) , 40, 44, 26(MID_Z)]
-
-        // // O10 -> idx 8
-        // octants[8].updatePoints(4, old_to_new_points_idx[4]);
-        // octants[8].updatePoints(13, old_to_new_points_idx[13]);
-        // octants[8].updatePoints(17, old_to_new_points_idx[17]);
-        // octants[8].updatePoints(26, old_to_new_points_idx[26]);
-
-        // // Edit sub elements
-        // vector<unsigned int> se = {45, 31, 39, 49, 50, 40, 44, 53};  
-        // octants[8].setSubElements(se);
-
-        // // Split O4-O13
-        // // O4: [24, 13(MID_Z) , 5(MID_Z) , 14, 30, 26(MID_Z) , 18(MID_Z) , 27, ]
-        // // O13: [13(MID_Z) , 39, 33, 5(MID_Z) , 26(MID_Z) , 44, 42, 18(MID_Z) , ]
-
-        // // O13 -> idx 11
-        // octants[11].updatePoints(5, old_to_new_points_idx[5]);
-        // octants[11].updatePoints(13, old_to_new_points_idx[13]);
-        // octants[11].updatePoints(18, old_to_new_points_idx[18]);
-        // octants[11].updatePoints(26, old_to_new_points_idx[26]);
-
-        // se = {49, 39, 33, 46, 53, 44, 42, 51};
-        // octants[11].setSubElements(se);
-
-        // // Split O7-O14
-        // // O7: [25, 17(MID_Z) , 26(MID_Z) , 30, 20, 6(MID_Z) , 21(MID_Z) , 29, ]
-        // // O14: [17(MID_Z) , 40, 44, 26(MID_Z) , 6(MID_Z) , 36, 43, 21(MID_Z) , ]
-
-        // // O14 -> idx 12
-        // octants[12].updatePoints(6, old_to_new_points_idx[6]);
-        // octants[12].updatePoints(17, old_to_new_points_idx[17]);
-        // octants[12].updatePoints(21, old_to_new_points_idx[21]);
-        // octants[12].updatePoints(26, old_to_new_points_idx[26]);
-
-        // // Edit sub elements
-        // se = {50, 40, 44, 53, 47, 36, 43, 52};
-        // octants[12].setSubElements(se);
-
-        // // Split O8-O17
-        // // O8: [30, 26(MID_Z) , 18(MID_Z) , 27, 29, 21(MID_Z) , 7(MID_Z) , 22, ]
-        // // O17: [26(MID_Z) , 44, 42, 18(MID_Z) , 21(MID_Z) , 43, 38, 7(MID_Z) , ]
-
-        // // O17 -> idx 15
-        // octants[15].updatePoints(7, old_to_new_points_idx[7]);
-        // octants[15].updatePoints(18, old_to_new_points_idx[18]);
-        // octants[15].updatePoints(21, old_to_new_points_idx[21]);
-        // octants[15].updatePoints(26, old_to_new_points_idx[26]);
-
-        // // Edit sub elements
-        // se = {53, 44, 42, 51, 52, 43, 38, 48};
-        // octants[15].setSubElements(se);
-
-        // /* Update MapEdges */
-        // //MapEdges[OctreeEdge(4, 13)].update(4, 5);
-
-        // unsigned int removed = std::numeric_limits<unsigned int>::max();
-        
-        // /* Update splitted points in MapEdges, removing the previous shared octant */
-        // // TODO: Check if this is really needed
-        // // X-axis
-        // // edges
-        // // MapEdges[OctreeEdge(4, 13)].update(1, removed);
-        // // MapEdges[OctreeEdge(13, 5)].update(1, removed);
-
-        // // MapEdges[OctreeEdge(6, 21)].update(2, removed);
-        // // MapEdges[OctreeEdge(21, 7)].update(2, removed);
-
-        // // // mid
-        // // MapEdges[OctreeEdge(17, 26)].update(1, removed);
-        // // MapEdges[OctreeEdge(17, 26)].update(2, removed);
-
-        // // MapEdges[OctreeEdge(26, 18)].update(1, removed);
-        // // MapEdges[OctreeEdge(26, 18)].update(2, removed);
-
-        // // // Y-axis
-        // // // edges
-        // // MapEdges[OctreeEdge(4, 17)].update(1, removed);
-        // // MapEdges[OctreeEdge(17, 6)].update(1, removed);
-
-        // // MapEdges[OctreeEdge(5, 18)].update(4, removed);
-        // // MapEdges[OctreeEdge(18, 7)].update(4, removed);
-
-        // // // mid
-        // // MapEdges[OctreeEdge(13, 26)].update(1, removed);
-        // // MapEdges[OctreeEdge(13, 26)].update(4, removed);
-        // // MapEdges[OctreeEdge(26, 21)].update(1, removed);
-        // // MapEdges[OctreeEdge(26, 21)].update(4, removed);
-
-
-        // // Update MapEdges to account the new edges
-        // EdgeVisitor::insertEdges(&octants[8], MapEdges);
-        // EdgeVisitor::insertEdges(&octants[11], MapEdges);
-        // EdgeVisitor::insertEdges(&octants[12], MapEdges);
-        // EdgeVisitor::insertEdges(&octants[15], MapEdges);
-
     }
 
     vector<unsigned int> Mesher::getOctantNeighbors(const unsigned int &idx){
@@ -893,10 +769,10 @@ namespace Clobscode
 		detectInsideNodes(input);
 
         //print_octants(true);
-        debug();
+        //debug();
 
-        cout << "       * splitPoints\n";
-        splitPoints(input);
+        //cout << "       * splitPoints\n";
+        splitPoints(input, true);
         
         //print_octants(true);
         
@@ -920,11 +796,11 @@ namespace Clobscode
 		detectInsideNodes(input);
         
         projectCloseToBoundaryNodes(input);
-   		removeOnSurface();
+   		removeOnSurface(input);
 		
 		//apply the surface Patterns
 		//applySurfacePatterns(input);
-        //removeOnSurface();
+        //removeOnSurface(input);
 
         
         //projectCloseToBoundaryNodes(input);
@@ -959,7 +835,7 @@ namespace Clobscode
         << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
         cout << " ms"<< endl;
 
-        cout << "FEMesh points: " << mesh.getPoints().size() << endl;
+        // cout << "FEMesh points: " << mesh.getPoints().size() << endl;
         
         
         //Write element-octant info the file
@@ -1822,8 +1698,8 @@ namespace Clobscode
         //therefore the actual index is shiffted in 1. In other words, node 0 is node 1,
         //and node n is node n+1.
         vector<unsigned int> new_idxs (points.size(),0);
-        cout << "points size " << points.size() << "\n";
-        cout << "new_idxs size " << new_idxs.size() << "\n";
+        // cout << "points size " << points.size() << endl;
+        // cout << "new_idxs size " << new_idxs.size() << endl;
         unsigned int out_node_count = 0;
         list<Point3D> out_points_tmp;
         
@@ -1857,7 +1733,7 @@ namespace Clobscode
             out_els.push_back(*iter);
         }
 
-        cout << "out_points_tmp size " << out_points_tmp.size() << "\n";
+        // cout << "out_points_tmp size " << out_points_tmp.size() << endl;
         
         //write output points
         list<Point3D>::iterator opi;
@@ -1866,7 +1742,7 @@ namespace Clobscode
             out_pts.push_back(*opi);
         }
 
-        cout << "out_pts size " << out_pts.size() << "\n";
+        // cout << "out_pts size " << out_pts.size() << endl;
         
         mesh.setPoints(out_pts);
         mesh.setElements(out_els);
@@ -2184,13 +2060,14 @@ namespace Clobscode
 	//--------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------
 	
-	void Mesher::removeOnSurface(){
+	void Mesher::removeOnSurface(TriMesh &input){
         auto start_time = chrono::high_resolution_clock::now();
 
 		list<Octant> newele,removed;
 		list<Octant>::iterator eiter;
         RemoveSubElementsVisitor rsv;
         rsv.setPoints(points);
+        rsv.setTriMesh(input);
 		//remove elements without an inside node.
 		for (unsigned int i=0; i<octants.size(); i++) {
 			if (octants[i].isInside()) {

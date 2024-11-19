@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <cmath>
 
 // include std scope
 using std::cout;
@@ -8,13 +9,12 @@ using std::map;
 
 int main(int argc, char const *argv[]){
     
-    cout << "Hello, World!" << endl;
-    map<unsigned int, unsigned int> dict;
+    double epsilon = 10.0; // In Degrees
+    epsilon = (2 * epsilon + 180) * M_PI / 180.0; // Convert to Radians
 
-    dict[1] = 1;
-    dict[2] = 2;
-
-    cout << "dict[1]: " << dict[1] << endl;
+    cout << "Epsilon in Radians: " << epsilon << endl;
+    cout << "Epsilon in Degrees: " << epsilon * 180.0 / M_PI << endl;
+    cout << "Cosine of Epsilon: " << cos(epsilon) << endl;
 
     return 0;
 }

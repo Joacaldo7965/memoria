@@ -82,7 +82,7 @@ namespace Clobscode
 
         virtual vector<unsigned int> getOctantNeighbors(const unsigned int &idx);
 
-        virtual void splitPoints(TriMesh &input);
+        virtual void splitPoints(TriMesh &input, bool verbose);
 
         virtual void debug();
 
@@ -118,7 +118,7 @@ namespace Clobscode
 
 		virtual void detectInsideNodes(TriMesh &input);
 
-		virtual void removeOnSurface();
+		virtual void removeOnSurface(TriMesh &input);
 		
 		virtual void applySurfacePatterns(TriMesh &input);
 

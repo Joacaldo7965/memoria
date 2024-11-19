@@ -96,6 +96,8 @@ namespace Clobscode
 		virtual void computeMaxDistance(vector<MeshPoint> &mp);
 		
         virtual double getMaxDistance();
+
+		virtual double getSize(vector<MeshPoint> &mp);
 		
 		//flag for inside octants that due to "inside node" moved
 		//to the input domain, it must be treated as a surface
@@ -202,6 +204,12 @@ namespace Clobscode
 		return max_dis;
 	}
 	
+	inline double Octant::getSize(vector<MeshPoint> &mp){
+		Point3D p0 = mp[pointindex[0]].getPoint();
+		Point3D p1 = mp[pointindex[1]].getPoint();
+		return (p0 - p1).Norm();
+	}
+
 	inline void Octant::setSurface(){
 		surface = true;
 	}

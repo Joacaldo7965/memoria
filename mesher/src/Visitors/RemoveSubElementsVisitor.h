@@ -47,9 +47,11 @@ namespace Clobscode
         bool visit(Octant *o);
 
         void setPoints(vector<MeshPoint> &points);
+        void setTriMesh(TriMesh &mesh);
 
     private:
         vector<MeshPoint> *points;
+        TriMesh *mesh;
     };
 }
 

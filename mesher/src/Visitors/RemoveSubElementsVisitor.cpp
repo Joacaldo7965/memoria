@@ -30,8 +30,14 @@ namespace Clobscode
         this->points = &points;
     }
 
+    void RemoveSubElementsVisitor::setTriMesh(TriMesh &mesh) {
+        this->mesh = &mesh;
+    }
+
     bool RemoveSubElementsVisitor::visit(Octant *o) {
+        // Mine
         vector<vector<unsigned int>> &sub_elements = o->sub_elements;
+        list<unsigned int> intersected_faces = o->intersected_faces;
 
         list<vector<unsigned int> > still_in;
         list<vector<unsigned int> >::iterator iter;
@@ -40,14 +46,42 @@ namespace Clobscode
 
             bool onein = false;
             vector<unsigned int> e_pts = sub_elements[i];
+
+            Point3D centroid_pt;
+
             for (unsigned int j=0; j<e_pts.size(); j++) {
+                centroid_pt += points->at(e_pts[j]).getPoint();
+
                 if (points->at(e_pts[j]).isInside()) {
                     onein = true;
                     break;
                 }
             }
+
+            centroid_pt = centroid_pt / e_pts.size();
+
             if (onein) {
+                //o->setSurface();
                 still_in.push_back(sub_elements[i]);
+            } else{
+                // If centroid point is inside the mesh
+                // this cover the case where all points are marked as outside but the centroid is inside
+                if (mesh->pointIsInMesh(centroid_pt, intersected_faces) && true) { 
+                    still_in.push_back(sub_elements[i]);
+                } 
+                // else{
+                //     // Other points near centroid
+                //     for (unsigned int j=0; j<e_pts.size(); j++) {
+                //         cout << "Other point near centroid check" << endl;
+                //         Point3D p = points->at(e_pts[j]).getPoint();
+
+                //         Point3D midpoint = (p + centroid_pt) / 2.0;
+                //         if (mesh->pointIsInMesh(midpoint, intersected_faces)) {
+                //             still_in.push_back(sub_elements[i]);
+                //             break;
+                //         }
+                //     }
+                // }
             }
         }
 
