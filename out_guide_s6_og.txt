@@ -1,0 +1,31 @@
+Compiled successfully
+/home/joacaldo/memoria/MixedOcTree/build/mesher_roi -o /home/joacaldo/memoria/data/inputs/guide.off -u /home/joacaldo/memoria/data/out_profe/guide_s6 -s 6
+Command executed successfully!
+Output:
+   Starting generation/refinement
+    * generateGridMesh in 42 ms
+         * boundary max 6 in 0 ms
+         * level 0 (#100) in 35 ms - Balanced in 0 ms
+         * level 1 (#448) in 100 ms - Balanced in 0 ms
+         * level 2 (#2296) in 253 ms - Balanced in 1 ms
+         * level 3 (#10577) in 891 ms - Balanced in 8 ms
+         * level 4 (#46140) in 3403 ms - Balanced in 63 ms
+         * level 5 (#198881) in 14385 ms - Balanced in 435 ms
+       * Refine Octant (#198881) in 19684 ms
+       * Transition Patterns (#232165) in 2992 ms
+    * generateOctreeMesh in 22677 ms
+    * linkElementsToNodes in 179 ms
+    * detectInsideNodes in 1977 ms
+    * ProjectCloseToBoundary in 1194 ms
+    * RemoveOnSurface in 570 ms
+    * ApplySurfacePatterns in 1039 ms
+    * RemoveOnSurface in 300 ms
+    * detectInsideNodes in 2 ms
+    * linkElementsToNodes in 208 ms
+    * ShrinkToBoundary in 865 ms
+  Generation done (#420067) in 32330 ms
+  Write done in 972 ms
+  All done in 33303 ms
+ Memory Usage (max resident memory) 582548 kB (568 MB)
+
+File saved to /home/joacaldo/memoria/data/out_profe/guide_s6.vtk

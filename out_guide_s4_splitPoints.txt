@@ -1,0 +1,30 @@
+Compiled successfully
+/home/joacaldo/memoria/mesher/build/mesher_roi -o /home/joacaldo/memoria/data/inputs/guide.off -u /home/joacaldo/memoria/data/out/guide_s4 -s 4
+Command executed successfully!
+Output:
+   Starting generation/refinement
+    * generateGridMesh in 41 ms
+         * boundary max 4 in 0 ms
+         * level 0 (#100) in 34 ms - Balanced in 0 ms
+         * level 1 (#448) in 100 ms - Balanced in 0 ms
+         * level 2 (#2296) in 259 ms - Balanced in 1 ms
+         * level 3 (#10577) in 873 ms - Balanced in 8 ms
+       * Refine Octant (#10577) in 1279 ms
+       * Transition Patterns (#11169) in 81 ms
+    * generateOctreeMesh in 1361 ms
+    * linkElementsToNodes in 10 ms
+    * detectInsideNodes in 249 ms
+    * splitPoints in 201 ms
+    * linkElementsToNodes in 10 ms
+    * detectInsideNodes in 0 ms
+    * ProjectCloseToBoundary in 116 ms
+    * RemoveOnSurface in 47 ms
+    * linkElementsToNodes in 9 ms
+    * ShrinkToBoundary in 88 ms
+    * saveOutputMesh in 25 ms
+  Generation done (#13687) in 2289 ms
+  Write done in 37 ms
+  All done in 2326 ms
+ Memory Usage (max resident memory) 35384 kB (34 MB)
+
+File saved to /home/joacaldo/memoria/data/out/guide_s4.vtk

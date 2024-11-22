@@ -373,61 +373,41 @@ namespace Clobscode
 
     void Mesher::splitPoints(TriMesh &input, bool verbose){
         auto start_time = chrono::high_resolution_clock::now();
-        list<unsigned int> candidate_pts_indices;
-        list<unsigned int> point_idx_to_split;
-        list<unsigned int> octant_idx_to_split;
+        list<unsigned int> candidate_pts_indices, point_idx_to_split, octant_idx_to_split;
 
-        // octants[0].computeMaxDistance(points);
-        //octants[0].getMaxDistance() * 1.5; // FIXME: Fix this
-
-        double max_distance = 0;
-        double octant_size = octants[0].getSize(points);
-        
-        max_distance = octant_size * 0.25;
-
-        cout << " Octant Size: " << octant_size << endl;
-        cout << " MaxDistance: " << max_distance << endl;
+        double max_distance = octants[0].getSize(points) * 0.6;
 
         // Get Octants that intersect the domain
         for (Octant o:octants){
-            // Check if the node is a surface node
-            if (!o.isSurface()){ 
+            if (!o.isSurface()) // Skip if the octant is not a surface
                 continue;
-            }
+            
             vector<unsigned int> oct_point_indices = o.getPoints();
 
             for (unsigned int oct_point_index: oct_point_indices){
-                if (points[oct_point_index].isInside()){ // Check if the node is outside
+                // Skip if the node is inside or was projected
+                if (points[oct_point_index].isInside() || points[oct_point_index].wasProjected())
                     continue;
-                }
-                // TODO: Check if needed that the node is not projected
-                if (points[oct_point_index].wasProjected()){
-                    continue;
-                }
 
                 // Save candidate points
                 candidate_pts_indices.push_back(oct_point_index);               
             }  
         }
+
         // Remove duplicates
         candidate_pts_indices.sort();
         candidate_pts_indices.unique();
 
-        // if (verbose)
-        //     cout << "Candidate points: " << candidate_pts_indices.size() << endl;
-
-        double epsilon = 45.0; // In Degrees
-        epsilon = (180 + 2*epsilon) * M_PI / 180.0; // Convert to Radians
-
-        double cos_epsilon = cos(epsilon);
+        double EPSILON = 45.0; // In Degrees
+        EPSILON = (180 + 2*EPSILON) * M_PI / 180.0; // Convert to Radians and add offset of 2 epsilon
+        double cos_epsilon = cos(EPSILON);
 
         for (auto pt_idx:candidate_pts_indices){
-            // cout << "Point candidate: (" << pt_idx << ")" << endl;
-
             // List with the octants that share the point
             list<unsigned int> p_eles = points[pt_idx].getElements();
 
-            //cout << "Point: (" << pt_idx << ") has " << p_eles.size() << " octants" << endl;
+            if (p_eles.size() < 2)
+                continue;  
 
             Point3D current_pt = points[pt_idx].getPoint();
 
@@ -435,13 +415,9 @@ namespace Clobscode
 
             for (unsigned int p_ele_idx: p_eles){
                 list<unsigned int> o_faces = octants[p_ele_idx].getIntersectedFaces();
-                o_faces.sort();
-
-                if (o_faces.empty()){
-                    if (verbose)
-                        cout << "No intersected faces" << endl;
+                
+                if (o_faces.empty())
                     continue;
-                }
 
                 Point3D projected_pt = input.getProjection(current_pt, o_faces);
 
@@ -463,140 +439,66 @@ namespace Clobscode
             }
 
             // Check length of MapPointOctant
-            unsigned int length = MapPointOctant.size();
+            // If length is 0 or 1, then the point is not splitted
+            // If lenght is 2 or more, the point is splitted along the octants
+            if (MapPointOctant.size() >= 2){
+                vector<Point3D> pt_projections;
 
-            // If length is 1, then the point is not splitted
-            if (length == 0){
-                if (verbose)
-                    cout << "No projection found" << endl;
-                continue;
-            } else if(length == 1){
-                //if (verbose)
-                //cout << "No split needed" << endl;
-            } else {
-                // if (verbose){
-                //     cout << "Point candidate: (" << pt_idx << ")" << endl;
-                //     cout << "Split needed" << endl;
-                // }
-                if (length >= 2){
-                    // If length is 2 or more the point is splitted along the octants
-                    // if (verbose)
-                    //     cout << length << " projection split." << endl;
+                for(auto pointOctantPair : MapPointOctant)
+                    pt_projections.push_back(pointOctantPair.first);
 
-                    // Check direction of split
-                    vector<Point3D> projection_dir;
+                bool found = false;
+                unsigned int idx1_found = 0, idx2_found = 0;
 
-                    for(auto pointOctantPair : MapPointOctant){
-                        Point3D proj = pointOctantPair.first; //(pointOctantPair.first - current_pt);
-                        projection_dir.push_back(proj);
-                    }
+                // Look for the best pair of projections that are in opposite directions
+                double min_dot = 2.0, min_dot_dist = -1.0;
+                for(unsigned int i = 0; i < pt_projections.size(); i++){
+                    Point3D p1 = pt_projections[i];
+                    Point3D dir1 = (p1-current_pt).normalize();
 
-                    // if (pt_idx == 3777){
-                    //     cout << "Debug skipped" << endl;
-                    //     continue;
-                    // }
+                    for(unsigned int j = i + 1; j < pt_projections.size(); j++){
+                        Point3D p2 = pt_projections[j];
+                        Point3D dir2 = (p2-current_pt).normalize();
 
-                    bool found = false;
-                    unsigned int idx1_found = 0;
-                    unsigned int idx2_found = 0;
+                        double dot = dir1.dot(dir2);
 
-                    // Look for the best pair of projections that are in opposite directions
-                    double min_dot = 2.0;
-                    double min_dot_dist = -1;
-                    for(unsigned int i = 0; i < projection_dir.size(); i++){
-                        Point3D p1 = projection_dir[i];
-                        Point3D dir1 = (p1-current_pt).normalize();
-                        for(unsigned int j = i + 1; j < projection_dir.size(); j++){
-                            Point3D p2 = projection_dir[j];
-                            Point3D dir2 = (p2-current_pt).normalize();
+                        if (dot >= min_dot || dot > cos_epsilon)
+                            continue;
 
-                            double dot = dir1.dot(dir2);
+                        double dist = p1.distance(p2);
 
-                            double dist = p1.distance(p2);
-
-                            // cout << "Dot: " << dot << ", Dist: " << dist << endl;
-
-                            // if (dist > max_distance){
-                            //     cout << "Distance greater than max_distance" << endl;
-                            // }
-
-                            if (dot < min_dot && dot <= cos_epsilon && dist > max_distance){
-                                found = true;
-                                min_dot = dot;
-                                min_dot_dist = dist;
-                                idx1_found = i;
-                                idx2_found = j;
-                            }
+                        if (dist > max_distance){
+                            found = true;
+                            min_dot = dot;
+                            min_dot_dist = dist;
+                            idx1_found = i;
+                            idx2_found = j;
                         }
                     }
-
-                    // Skip if no pair of projections are in opposite directions
-                    if(!found){
-                        // if (verbose)
-                        //     cout << "Skipping split: Pair not found" << endl;
-                        continue;
-                    }
-                    if (verbose){
-                        Point3D p1 = projection_dir[idx1_found];
-                        Point3D p2 = projection_dir[idx2_found];
-                        cout << "Found split: (" << idx1_found << ", " << idx2_found << ")" << endl;
-                        cout << "Min Dot: " << min_dot << ", Dist: " << min_dot_dist << endl;
-                        cout << "p1: " << p1.print() << ", p2: " << p2.print() << endl;
-                        cout << "pt: " << current_pt.print() << endl;
-                    }
-
-                    // Get candidate_pt's octants from second octant
-                    unsigned int count = 0;
-                    for(auto pointOctantPair : MapPointOctant){
-                        if (count == idx1_found || count == idx2_found){ // 
-                            for (auto oct_idx: pointOctantPair.second){
-                                octant_idx_to_split.push_back(oct_idx);
-                            }
-                            break;
-                        }
-                        count++;
-                    }
-
-                    if (verbose)
-                        cout << "Splitted point: (" << pt_idx << ")" << current_pt.print() << endl;
-                    point_idx_to_split.push_back(pt_idx);
                 }
-                if (verbose)
-                    cout << endl;
+
+                // Skip if no pair of projections are in opposite directions
+                if(!found)
+                    continue;
+
+                // Get candidate_pt's octants from second octant
+                unsigned int count = 0;
+                for(auto pointOctantPair : MapPointOctant){
+                    if (count == idx1_found || count == idx2_found){
+                        for (auto oct_idx: pointOctantPair.second)
+                            octant_idx_to_split.push_back(oct_idx);
+                        break;
+                    }
+                    count++;
+                }
+                point_idx_to_split.push_back(pt_idx);
             }
         }
-        point_idx_to_split.sort();
-        point_idx_to_split.unique();
 
-        // Save splitted points to file
-        std::ofstream file("splitted_points.txt");
-        if (!file) {
-            std::cerr << "Error creating file!" << std::endl;
-            exit(1);
-        }
-        for (auto p_idx: point_idx_to_split) {
-            file << p_idx << endl;
-        }
-        file.close();
-
+        // Remove duplicates
         octant_idx_to_split.sort();
         octant_idx_to_split.unique();
 
-        if (verbose){
-            cout << "Point to split: " << point_idx_to_split.size() << endl;
-            cout << "Octants to split: " << octant_idx_to_split.size() << endl;
-        
-            // Print points to split
-            for (auto pt_idx:point_idx_to_split){
-                cout << "Point to split: (" << pt_idx << ")" << points[pt_idx].getPoint().print() << endl;
-            }
-
-            // Print octants to split
-            for (auto oct_idx:octant_idx_to_split){
-                cout << "Octant to split: (" << octants[oct_idx].getIndex() << ")" << endl;
-            }
-        }
-        
         // Add new points
         vector<MeshPoint> new_points;
 
@@ -621,22 +523,16 @@ namespace Clobscode
             for (unsigned int i = 0; i < oct_points.size(); i++){
                 unsigned int old_value = oct_points[i];
 
-                // If the point is in the list of points to split
-                if (!(old_to_new_points_idx.find(old_value) == old_to_new_points_idx.end())) {
-                    unsigned int new_value = old_to_new_points_idx[old_value];
-                    // Update Point in the octant
-                    octants[oct_idx].updatePoints(old_value, new_value);
-                }
+                // If the point is in the list of points to split then update the point
+                if (!(old_to_new_points_idx.find(old_value) == old_to_new_points_idx.end()))
+                    octants[oct_idx].updatePoints(old_value, old_to_new_points_idx[old_value]);
             }
         }
 
         // Update MapEdges
-        for (auto oct_idx:octant_idx_to_split){
+        for (auto oct_idx:octant_idx_to_split)
             EdgeVisitor::insertEdges(&octants[oct_idx], MapEdges);
-        }
-
-        // TODO: Check if is needed to remove the not used edges in MapEdges
-
+        
         auto end_time = chrono::high_resolution_clock::now();
         cout << "    * splitPoints in "
         << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
@@ -768,13 +664,7 @@ namespace Clobscode
         linkElementsToNodes();
 		detectInsideNodes(input);
 
-        //print_octants(true);
-        //debug();
-
-        //cout << "       * splitPoints\n";
-        splitPoints(input, true);
-        
-        //print_octants(true);
+        splitPoints(input, false);
         
         //Any mesh generated from this one will start from the same
         //Octants as the current state.
@@ -799,8 +689,8 @@ namespace Clobscode
    		removeOnSurface(input);
 		
 		//apply the surface Patterns
-		//applySurfacePatterns(input);
-        //removeOnSurface(input);
+		// applySurfacePatterns(input);
+        // removeOnSurface(input);
 
         
         //projectCloseToBoundaryNodes(input);

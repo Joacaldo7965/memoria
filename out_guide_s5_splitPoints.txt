@@ -1,0 +1,31 @@
+Compiled successfully
+/home/joacaldo/memoria/mesher/build/mesher_roi -o /home/joacaldo/memoria/data/inputs/guide.off -u /home/joacaldo/memoria/data/out/guide_s5 -s 5
+Command executed successfully!
+Output:
+   Starting generation/refinement
+    * generateGridMesh in 41 ms
+         * boundary max 5 in 0 ms
+         * level 0 (#100) in 34 ms - Balanced in 0 ms
+         * level 1 (#448) in 97 ms - Balanced in 0 ms
+         * level 2 (#2296) in 254 ms - Balanced in 1 ms
+         * level 3 (#10577) in 871 ms - Balanced in 8 ms
+         * level 4 (#46140) in 3228 ms - Balanced in 60 ms
+       * Refine Octant (#46140) in 4563 ms
+       * Transition Patterns (#51438) in 541 ms
+    * generateOctreeMesh in 5105 ms
+    * linkElementsToNodes in 56 ms
+    * detectInsideNodes in 638 ms
+    * splitPoints in 634 ms
+    * linkElementsToNodes in 58 ms
+    * detectInsideNodes in 0 ms
+    * ProjectCloseToBoundary in 361 ms
+    * RemoveOnSurface in 166 ms
+    * linkElementsToNodes in 52 ms
+    * ShrinkToBoundary in 278 ms
+    * saveOutputMesh in 156 ms
+  Generation done (#79482) in 8100 ms
+  Write done in 203 ms
+  All done in 8304 ms
+ Memory Usage (max resident memory) 135464 kB (132 MB)
+
+File saved to /home/joacaldo/memoria/data/out/guide_s5.vtk
