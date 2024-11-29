@@ -104,6 +104,9 @@ int main(int argc,char** argv){
     
     bool getfem=false, vtkformat=false, octant_start=false;
     bool m3dfor=false, mvmfor=false, oneout=false, plyfor=false;
+
+    // splitPoints variables
+    bool split_points = false;
     
     //for reading an octant mesh as starting point.
     vector<MeshPoint> oct_points;
@@ -111,7 +114,7 @@ int main(int argc,char** argv){
     map<OctreeEdge, EdgeInfo> edge_map;
     vector<unsigned int> oct_ele_link;
     GeometricTransform gt;
-    
+
 	for (unsigned int i=1; i<argc; i++) {
         
 		if (argv[i][0]!='-') {
@@ -149,9 +152,11 @@ int main(int argc,char** argv){
         }
         
 		if (argc==i+1) {
-			cout << "Error: expected argument for option " << argv[i] << "\n";
-			endMsg();
-			return 0;
+            if(!(argv[i][1] == 's' && argv[i][2] == 'p')){
+                cout << "Error: expected argument for option " << argv[i] << "\n";
+                endMsg();
+                return 0;
+            }
 		}
         
         switch (argv[i][1]) {
@@ -198,6 +203,12 @@ int main(int argc,char** argv){
                 i++;
                 break;
             case 's':
+                if(argv[i][2]=='p'){
+                    split_points = true;
+                    i++;
+                    break;
+                }
+
                 rl = atoi(argv[i+1]);
                 if (ref_level<rl) {
                     ref_level = rl;
@@ -276,6 +287,8 @@ int main(int argc,char** argv){
 		unsigned int last_point = in_name.find_last_of(".");
 		out_name = in_name.substr(0,last_point);
 	}
+
+    cout << "  Using SplitPoints? " << split_points << endl;
 	
     cout << "  Starting generation/refinement\n";
     auto start_time = chrono::high_resolution_clock::now();
@@ -285,7 +298,7 @@ int main(int argc,char** argv){
     Clobscode::FEMesh output;
     
     if (!octant_start) {
-        output = mesher.generateMesh(inputs.at(0),ref_level,out_name,all_regions);
+        output = mesher.generateMesh(inputs.at(0),ref_level,out_name,all_regions, split_points);
     }
     else {
         mesher.setInitialState(oct_points,oct_octants,edge_map);

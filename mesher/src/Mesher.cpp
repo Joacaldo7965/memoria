@@ -641,7 +641,7 @@ namespace Clobscode
 	//Then split each initial element 8^rl times (where rl stands
 	//for Refinement Level).
 	FEMesh Mesher::generateMesh(TriMesh &input, const unsigned short &rl,
-								const string &name, list<RefinementRegion *> &all_reg){
+								const string &name, list<RefinementRegion *> &all_reg, bool split_points){
         
         //ATTENTION: geometric transform causes invalid input rotation when the
         //input is a cube.
@@ -660,11 +660,13 @@ namespace Clobscode
 
         /*** SPLIT POINTS ***/
 
-        // Update LinkElementsToNodes and InsideNodes
-        linkElementsToNodes();
-		detectInsideNodes(input);
+        if (split_points){
+            // Update LinkElementsToNodes and InsideNodes
+            linkElementsToNodes();
+            detectInsideNodes(input);
 
-        splitPoints(input, false);
+            splitPoints(input, false);
+        }
         
         //Any mesh generated from this one will start from the same
         //Octants as the current state.

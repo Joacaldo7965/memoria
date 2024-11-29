@@ -44,13 +44,18 @@ def run_mesher(args):
         out_rl_name = f"s{args['surfacerl']}"
         command_rl = f"-s {args['surfacerl']}"
 
+    extra_args = ""
+
+    if args['split_points']:
+        extra_args += " -sp"
+
     filename = os.path.join(DATA_PATH, "inputs", args['input'])
     output_filename = f"{args['input']}_{out_rl_name}"
 
     output_filepath = os.path.join(out_dir, output_filename)
 
     # # Construct the command using the arguments
-    command = f"{mesher} -o {filename}.off -u {output_filepath} {command_rl}"
+    command = f"{mesher} -o {filename}.off -u {output_filepath} {command_rl}{extra_args}"
 
     # Check if filename exists
     if not os.path.exists(filename + ".off"):
@@ -72,6 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--input", type=str, required=True, help="Input filename")
     parser.add_argument("-s", "--surfacerl", type=int, required=False, help="Surface refinement level")
     parser.add_argument("-a", "--allrl", type=int, required=False, help="All refinement level")
+    parser.add_argument("-sp", "--split_points", default=False, required=False, help="Use splitPoints", action=argparse.BooleanOptionalAction)
     parser.add_argument("-c", "--compile", default=False, help="Compile code", action=argparse.BooleanOptionalAction)
     parser.add_argument("-v", "--verbose", default=False, required=False, help="Verbose", action=argparse.BooleanOptionalAction)
     

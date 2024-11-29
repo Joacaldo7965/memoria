@@ -66,7 +66,7 @@ namespace Clobscode
 		virtual ~Mesher();
 				
 		virtual FEMesh generateMesh(TriMesh &input, const unsigned short &rl,
-                                    const string &name, list<RefinementRegion *> &all_reg);
+                                    const string &name, list<RefinementRegion *> &all_reg, bool split_points);
 		
         virtual FEMesh refineMesh(TriMesh &input, const unsigned short &rl,
                                   const string &name, list<unsigned int> &roctli,
