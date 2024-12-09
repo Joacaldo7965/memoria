@@ -441,58 +441,59 @@ namespace Clobscode
             // Check length of MapPointOctant
             // If length is 0 or 1, then the point is not splitted
             // If lenght is 2 or more, the point is splitted along the octants
-            if (MapPointOctant.size() >= 2){
-                vector<Point3D> pt_projections;
+            if (MapPointOctant.size() < 2)
+                continue;
+            
+            vector<Point3D> pt_projections;
 
-                for(auto pointOctantPair : MapPointOctant)
-                    pt_projections.push_back(pointOctantPair.first);
+            for(auto pointOctantPair : MapPointOctant)
+                pt_projections.push_back(pointOctantPair.first);
 
-                bool found = false;
-                unsigned int idx1_found = 0, idx2_found = 0;
+            bool found = false;
+            unsigned int idx1_found = 0, idx2_found = 0;
 
-                // Look for the best pair of projections that are in opposite directions
-                double min_dot = 2.0, min_dot_dist = -1.0;
-                for(unsigned int i = 0; i < pt_projections.size(); i++){
-                    Point3D p1 = pt_projections[i];
-                    Point3D dir1 = (p1-current_pt).normalize();
+            // // Look for the best pair of projections that are in opposite directions
+            double min_dot = 2.0, min_dot_dist = -1.0;
+            for(unsigned int i = 0; i < pt_projections.size(); i++){
+                Point3D p1 = pt_projections[i];
+                Point3D dir1 = (p1-current_pt).normalize();
 
-                    for(unsigned int j = i + 1; j < pt_projections.size(); j++){
-                        Point3D p2 = pt_projections[j];
-                        Point3D dir2 = (p2-current_pt).normalize();
+                for(unsigned int j = i + 1; j < pt_projections.size(); j++){
+                    Point3D p2 = pt_projections[j];
+                    Point3D dir2 = (p2-current_pt).normalize();
 
-                        double dot = dir1.dot(dir2);
+                    double dot = dir1.dot(dir2);
 
-                        if (dot >= min_dot || dot > cos_epsilon)
-                            continue;
+                    if (dot >= min_dot || dot > cos_epsilon)
+                        continue;
 
-                        double dist = p1.distance(p2);
+                    double dist = p1.distance(p2);
 
-                        if (dist > max_distance){
-                            found = true;
-                            min_dot = dot;
-                            min_dot_dist = dist;
-                            idx1_found = i;
-                            idx2_found = j;
-                        }
+                    if (dist > max_distance){
+                        found = true;
+                        min_dot = dot;
+                        min_dot_dist = dist;
+                        idx1_found = i;
+                        idx2_found = j;
                     }
                 }
-
-                // Skip if no pair of projections are in opposite directions
-                if(!found)
-                    continue;
-
-                // Get candidate_pt's octants from second octant
-                unsigned int count = 0;
-                for(auto pointOctantPair : MapPointOctant){
-                    if (count == idx1_found || count == idx2_found){
-                        for (auto oct_idx: pointOctantPair.second)
-                            octant_idx_to_split.push_back(oct_idx);
-                        break;
-                    }
-                    count++;
-                }
-                point_idx_to_split.push_back(pt_idx);
             }
+
+            // Skip if no pair of projections are in opposite directions
+            if(!found)
+                continue;
+
+            // Get candidate_pt's octants from second octant
+            unsigned int count = 0;
+            for(auto pointOctantPair : MapPointOctant){
+                if (count == idx1_found || count == idx2_found){
+                    for (auto oct_idx: pointOctantPair.second)
+                        octant_idx_to_split.push_back(oct_idx);
+                    break;
+                }
+                count++;
+            }
+            point_idx_to_split.push_back(pt_idx);
         }
 
         // Remove duplicates
@@ -697,12 +698,11 @@ namespace Clobscode
         
         //projectCloseToBoundaryNodes(input);
 		//removeOnSurface();
-        //detectInsideNodes(input);
+        detectInsideNodes(input);
         
 		//update element and node info.
 		linkElementsToNodes();
         
-        //debug();
 		//shrink outside nodes to the input domain boundary
 		shrinkToBoundary(input);
 
@@ -726,9 +726,6 @@ namespace Clobscode
         cout << "    * saveOutputMesh in "
         << std::chrono::duration_cast<chrono::milliseconds>(end_time-start_time).count();
         cout << " ms"<< endl;
-
-        // cout << "FEMesh points: " << mesh.getPoints().size() << endl;
-        
         
         //Write element-octant info the file
         Services::addOctElemntInfo(name,octants,removedoct,octmeshidx);
