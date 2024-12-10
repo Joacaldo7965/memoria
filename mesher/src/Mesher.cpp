@@ -371,11 +371,11 @@ namespace Clobscode
         */
     }
 
-    void Mesher::splitPoints(TriMesh &input, bool verbose){
+    void Mesher::splitPoints(TriMesh &input, float split_kappa, float split_delta, bool verbose){
         auto start_time = chrono::high_resolution_clock::now();
         list<unsigned int> candidate_pts_indices, point_idx_to_split, octant_idx_to_split;
-
-        double max_distance = octants[0].getSize(points) * 0.6;
+        cout << "Split distance: " << split_kappa << endl;
+        double max_distance = octants[0].getSize(points) * split_kappa;
 
         // Get Octants that intersect the domain
         for (Octant o:octants){
@@ -398,7 +398,8 @@ namespace Clobscode
         candidate_pts_indices.sort();
         candidate_pts_indices.unique();
 
-        double EPSILON = 45.0; // In Degrees
+        double EPSILON = split_delta; // In Degrees
+        cout << "Split angle: " << EPSILON << endl;
         EPSILON = (180 + 2*EPSILON) * M_PI / 180.0; // Convert to Radians and add offset of 2 epsilon
         double cos_epsilon = cos(EPSILON);
 
@@ -453,7 +454,7 @@ namespace Clobscode
             unsigned int idx1_found = 0, idx2_found = 0;
 
             // // Look for the best pair of projections that are in opposite directions
-            double min_dot = 2.0, min_dot_dist = -1.0;
+            double min_dot = 2.0, min_dist = 10000;
             for(unsigned int i = 0; i < pt_projections.size(); i++){
                 Point3D p1 = pt_projections[i];
                 Point3D dir1 = (p1-current_pt).normalize();
@@ -469,10 +470,10 @@ namespace Clobscode
 
                     double dist = p1.distance(p2);
 
-                    if (dist > max_distance){
+                    if (dist > max_distance && dist < min_dist){
                         found = true;
                         min_dot = dot;
-                        min_dot_dist = dist;
+                        min_dist = dist;
                         idx1_found = i;
                         idx2_found = j;
                     }
@@ -495,6 +496,7 @@ namespace Clobscode
             }
             point_idx_to_split.push_back(pt_idx);
         }
+        cout << "Points to split: " << point_idx_to_split.size() << endl;
 
         // Remove duplicates
         octant_idx_to_split.sort();
@@ -642,7 +644,7 @@ namespace Clobscode
 	//Then split each initial element 8^rl times (where rl stands
 	//for Refinement Level).
 	FEMesh Mesher::generateMesh(TriMesh &input, const unsigned short &rl,
-								const string &name, list<RefinementRegion *> &all_reg, bool split_points){
+								const string &name, list<RefinementRegion *> &all_reg, bool split_points, float split_kappa, float split_delta){
         
         //ATTENTION: geometric transform causes invalid input rotation when the
         //input is a cube.
@@ -666,7 +668,7 @@ namespace Clobscode
             linkElementsToNodes();
             detectInsideNodes(input);
 
-            splitPoints(input, false);
+            splitPoints(input, split_kappa, split_delta, false);
         }
         
         //Any mesh generated from this one will start from the same
@@ -692,8 +694,8 @@ namespace Clobscode
    		removeOnSurface(input);
 		
 		//apply the surface Patterns
-		// applySurfacePatterns(input);
-        // removeOnSurface(input);
+        applySurfacePatterns(input);
+        removeOnSurface(input);
 
         
         //projectCloseToBoundaryNodes(input);

@@ -107,6 +107,8 @@ int main(int argc,char** argv){
 
     // splitPoints variables
     bool split_points = false;
+    float split_kappa = 0.6;
+    float split_delta = 45.0;
     
     //for reading an octant mesh as starting point.
     vector<MeshPoint> oct_points;
@@ -207,6 +209,11 @@ int main(int argc,char** argv){
                     split_points = true;
                     i++;
                     break;
+                }else if(argv[i][2] == 'd'){
+                    split_delta = atof(argv[i+1]);
+                    cout << "  Split delta: " << argv[i+1] << endl;
+                    i++;
+                    break;
                 }
 
                 rl = atoi(argv[i+1]);
@@ -221,6 +228,12 @@ int main(int argc,char** argv){
                 }
                 
                 all_regions.push_back(rr);
+                i++;
+                break;
+            case 'k':
+                split_kappa = atof(argv[i+1]);
+                cout << "  Split kappa: " << argv[i+1] << endl;
+                
                 i++;
                 break;
             case 'b':
@@ -298,7 +311,7 @@ int main(int argc,char** argv){
     Clobscode::FEMesh output;
     
     if (!octant_start) {
-        output = mesher.generateMesh(inputs.at(0),ref_level,out_name,all_regions, split_points);
+        output = mesher.generateMesh(inputs.at(0),ref_level,out_name,all_regions, split_points, split_kappa, split_delta);
     }
     else {
         mesher.setInitialState(oct_points,oct_octants,edge_map);

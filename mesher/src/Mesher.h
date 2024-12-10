@@ -66,7 +66,8 @@ namespace Clobscode
 		virtual ~Mesher();
 				
 		virtual FEMesh generateMesh(TriMesh &input, const unsigned short &rl,
-                                    const string &name, list<RefinementRegion *> &all_reg, bool split_points);
+                                    const string &name, list<RefinementRegion *> &all_reg, 
+                                    bool split_points, float split_kappa, float split_delta);
 		
         virtual FEMesh refineMesh(TriMesh &input, const unsigned short &rl,
                                   const string &name, list<unsigned int> &roctli,
@@ -82,7 +83,7 @@ namespace Clobscode
 
         virtual vector<unsigned int> getOctantNeighbors(const unsigned int &idx);
 
-        virtual void splitPoints(TriMesh &input, bool verbose);
+        virtual void splitPoints(TriMesh &input, float split_kappa, float split_delta, bool verbose);
 
         virtual void debug();
 

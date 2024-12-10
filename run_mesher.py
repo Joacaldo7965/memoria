@@ -45,6 +45,12 @@ def run_mesher(args):
         command_rl = f"-s {args['surfacerl']}"
 
     extra_args = ""
+    
+    if args['split_kappa']:
+        extra_args += f" -k {args['split_kappa']}"
+
+    if args['split_delta']:
+        extra_args += f" -sd {args['split_delta']}"
 
     if args['split_points']:
         extra_args += " -sp"
@@ -78,6 +84,8 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--surfacerl", type=int, required=False, help="Surface refinement level")
     parser.add_argument("-a", "--allrl", type=int, required=False, help="All refinement level")
     parser.add_argument("-sp", "--split_points", default=False, required=False, help="Use splitPoints", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-k", "--split_kappa", type=float, required=False, help="Split Distance used in splitPoints")
+    parser.add_argument("-sd", "--split_delta", type=float, required=False, help="Split angle used in splitPoints")
     parser.add_argument("-c", "--compile", default=False, help="Compile code", action=argparse.BooleanOptionalAction)
     parser.add_argument("-v", "--verbose", default=False, required=False, help="Verbose", action=argparse.BooleanOptionalAction)
     
