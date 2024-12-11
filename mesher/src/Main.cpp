@@ -73,7 +73,7 @@ void endMsg(){
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 
-int main(int argc,char** argv){
+int main(int argc, char** argv){
 	
     if (argc<4) {
         endMsg();
@@ -106,7 +106,8 @@ int main(int argc,char** argv){
     bool m3dfor=false, mvmfor=false, oneout=false, plyfor=false;
 
     // splitPoints variables
-    bool split_points = false;
+    bool use_split_points = false;
+    bool use_surface_patterns = false;
     float split_kappa = 0.6;
     float split_delta = 45.0;
     
@@ -146,6 +147,11 @@ int main(int argc,char** argv){
                 oneout = true;
                 continue;
             case 'p':
+                if (argv[i][2]=='s') {
+                    use_surface_patterns = true;
+                    // i++;
+                    continue;
+                }
                 plyfor = true;
                 oneout = true;
                 continue;
@@ -154,7 +160,7 @@ int main(int argc,char** argv){
         }
         
 		if (argc==i+1) {
-            if(!(argv[i][1] == 's' && argv[i][2] == 'p')){
+            if(!((argv[i][1] == 's' && argv[i][2] == 'p') || (argv[i][1] == 'p' && argv[i][2] == 's'))){
                 cout << "Error: expected argument for option " << argv[i] << "\n";
                 endMsg();
                 return 0;
@@ -206,7 +212,7 @@ int main(int argc,char** argv){
                 break;
             case 's':
                 if(argv[i][2]=='p'){
-                    split_points = true;
+                    use_split_points = true;
                     i++;
                     break;
                 }else if(argv[i][2] == 'd'){
@@ -301,7 +307,8 @@ int main(int argc,char** argv){
 		out_name = in_name.substr(0,last_point);
 	}
 
-    cout << "  Using SplitPoints? " << split_points << endl;
+    cout << "  Using SplitPoints? " << use_split_points << endl;
+    cout << "  Using Surface Patterns? " << use_surface_patterns << endl;
 	
     cout << "  Starting generation/refinement\n";
     auto start_time = chrono::high_resolution_clock::now();
@@ -311,7 +318,7 @@ int main(int argc,char** argv){
     Clobscode::FEMesh output;
     
     if (!octant_start) {
-        output = mesher.generateMesh(inputs.at(0),ref_level,out_name,all_regions, split_points, split_kappa, split_delta);
+        output = mesher.generateMesh(inputs.at(0),ref_level,out_name,all_regions, use_surface_patterns, use_split_points, split_kappa, split_delta);
     }
     else {
         mesher.setInitialState(oct_points,oct_octants,edge_map);

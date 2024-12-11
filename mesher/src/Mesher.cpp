@@ -375,7 +375,7 @@ namespace Clobscode
         auto start_time = chrono::high_resolution_clock::now();
         list<unsigned int> candidate_pts_indices, point_idx_to_split, octant_idx_to_split;
         cout << "Split distance: " << split_kappa << endl;
-        double max_distance = octants[0].getSize(points) * split_kappa;
+        double min_distance_to_split = octants[0].getSize(points) * split_kappa;
 
         // Get Octants that intersect the domain
         for (Octant o:octants){
@@ -454,7 +454,7 @@ namespace Clobscode
             unsigned int idx1_found = 0, idx2_found = 0;
 
             // // Look for the best pair of projections that are in opposite directions
-            double min_dot = 2.0, min_dist = 10000;
+            double min_dot = 2.0, min_dist = -1;
             for(unsigned int i = 0; i < pt_projections.size(); i++){
                 Point3D p1 = pt_projections[i];
                 Point3D dir1 = (p1-current_pt).normalize();
@@ -465,12 +465,12 @@ namespace Clobscode
 
                     double dot = dir1.dot(dir2);
 
-                    if (dot >= min_dot || dot > cos_epsilon)
+                    if (dot > cos_epsilon || dot >= min_dot) // || 
                         continue;
 
                     double dist = p1.distance(p2);
 
-                    if (dist > max_distance && dist < min_dist){
+                    if (dist > min_distance_to_split){ // && dist < min_dist
                         found = true;
                         min_dot = dot;
                         min_dist = dist;
@@ -644,7 +644,7 @@ namespace Clobscode
 	//Then split each initial element 8^rl times (where rl stands
 	//for Refinement Level).
 	FEMesh Mesher::generateMesh(TriMesh &input, const unsigned short &rl,
-								const string &name, list<RefinementRegion *> &all_reg, bool split_points, float split_kappa, float split_delta){
+								const string &name, list<RefinementRegion *> &all_reg, bool use_surface_patterns, bool use_split_points, float split_kappa, float split_delta){
         
         //ATTENTION: geometric transform causes invalid input rotation when the
         //input is a cube.
@@ -663,7 +663,7 @@ namespace Clobscode
 
         /*** SPLIT POINTS ***/
 
-        if (split_points){
+        if (use_split_points){
             // Update LinkElementsToNodes and InsideNodes
             linkElementsToNodes();
             detectInsideNodes(input);
@@ -693,9 +693,11 @@ namespace Clobscode
         projectCloseToBoundaryNodes(input);
    		removeOnSurface(input);
 		
-		//apply the surface Patterns
-        applySurfacePatterns(input);
-        removeOnSurface(input);
+        if(use_surface_patterns){
+		    //apply the surface Patterns
+            applySurfacePatterns(input);
+            removeOnSurface(input);
+        }
 
         
         //projectCloseToBoundaryNodes(input);
