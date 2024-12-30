@@ -109,7 +109,7 @@ int main(int argc, char** argv){
     bool use_split_points = false;
     bool use_surface_patterns = false;
     float split_kappa = 0.6;
-    float split_delta = 45.0;
+    float split_delta = 90.0;
     
     //for reading an octant mesh as starting point.
     vector<MeshPoint> oct_points;

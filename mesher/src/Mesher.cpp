@@ -398,10 +398,10 @@ namespace Clobscode
         candidate_pts_indices.sort();
         candidate_pts_indices.unique();
 
-        double EPSILON = split_delta; // In Degrees
-        cout << "Split angle: " << EPSILON << endl;
-        EPSILON = (180 + 2*EPSILON) * M_PI / 180.0; // Convert to Radians and add offset of 2 epsilon
-        double cos_epsilon = cos(EPSILON);
+        double DELTA = split_delta; // In Degrees
+        cout << "Split angle: " << DELTA << endl;
+        DELTA = (180 + DELTA) * M_PI / 180.0; // Convert to Radians and add offset of 2 epsilon
+        double cos_epsilon = cos(DELTA);
 
         for (auto pt_idx:candidate_pts_indices){
             // List with the octants that share the point
