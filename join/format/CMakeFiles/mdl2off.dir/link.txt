@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/mdl2off.dir/MdlToOff.cpp.o /home/joacaldo/memoria/join/geometry/Point.o /home/joacaldo/memoria/join/geometry/Face.o /home/joacaldo/memoria/join/geometry/FaceContainer.o /home/joacaldo/memoria/join/read_write/ReadMdl.o /home/joacaldo/memoria/join/read_write/WriteOff.o -o mdl2off 

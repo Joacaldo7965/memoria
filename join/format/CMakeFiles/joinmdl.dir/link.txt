@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/joinmdl.dir/JoinMdl.cpp.o /home/joacaldo/memoria/join/geometry/Point.o /home/joacaldo/memoria/join/geometry/Face.o /home/joacaldo/memoria/join/geometry/FaceContainer.o /home/joacaldo/memoria/join/read_write/ReadMdl.o /home/joacaldo/memoria/join/read_write/WriteMdl.o -o joinmdl 
