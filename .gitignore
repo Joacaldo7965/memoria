@@ -11,7 +11,12 @@ geomview*
 *.oct
 
 # Repos
+join
 mesher-reupload
 MixedOcTree
 MixedOcTree_old
 view210907
+
+# Large files
+data/out_profe/rh.pial_s7.vtk
+data/out_profe/rh.pial_s7.oct
